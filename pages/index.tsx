@@ -169,7 +169,7 @@ export default function HomePage() {
               <Button radius="xl" size="md" className={classes.control} color='grape' onClick={() => {router.push('login')}}>
                 Get started
               </Button>
-              <Button variant="default" radius="xl" size="md" className={classes.control}>
+              <Button variant="default" radius="xl" size="md" className={classes.control} onClick={() =>{window.open('https://github.com/mdatz/ghola', '_blank')}}>
                 Source code
               </Button>
             </Group>
