@@ -41,9 +41,7 @@ Ghola comes with a range of features, including:
 
 - Creating and managing chat bot personas.
 - Engaging in conversations with your chat bot personas.
-- Customizing your chat bot's profile, including name, profile picture, and interests.
-- Saving conversation history with your chat bot personas.
-- Exporting and importing chat bot profiles.
+- Customizing your chat bot's profile, including name, profile picture, and personality.
 
 ## Getting Started
 
