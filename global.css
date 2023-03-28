@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&display=swap');
+
+.logo-text {
+    font-family: 'Comfortaa', cursive;
+    font-size: 1.8rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: 'hidden';
+    padding-inline: 20px;
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+.index-container {
+    overflow: auto;
+    padding-inline: 20px;
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+.fullscreen::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+}
+
+.index-container::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+}
