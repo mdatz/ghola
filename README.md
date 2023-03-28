@@ -1,19 +1,20 @@
-<div style="display:flex; justify-content: center; width:100%">
+<div align="center" style="display:flex; justify-content: center; width:100%">
   <img src="https://user-images.githubusercontent.com/26133178/228118389-a8cca6e1-896a-4464-848d-dad1af2faaa8.png" alt="ghola logo" style="width:25%;">
 </div>
-
 <h1 align="center">
-Ghola
+  Ghola
 </h1>
 
-<div style="display:flex;">
+<div style="display:flex;" align="center">
   <img src="https://user-images.githubusercontent.com/26133178/228116983-46f9e40e-b3f1-4809-ae4a-f085447f3328.PNG" alt="Character Panels" style="width:49%;">
   <img src="https://user-images.githubusercontent.com/26133178/228116992-5ca4cead-0009-471d-b628-78446e7a627e.PNG" alt="Conversation Panels" style="width:49%;">
 </div>
 
 
 <p align="center">Ghola is an open-source chatbot profile manager that lets you create and manage different personas and engage in conversation with them. It's a powerful tool that lets you explore new and creative ways to communicate and express yourself.</p>
+<br/><br/>
 
+Want to see Ghola in action? Check out our website at [ghola.ai](https://ghola.ai) and start creating your own chatbot personas today!
 
 **With Ghola, you can:**
 
@@ -28,8 +29,6 @@ Ghola
 - Improve their communication skills and learn how to interact with others more effectively.
 - Create unique and engaging chatbot personalities that reflect their interests and personalities.
 - Have fun chatting with chatbots and watching them learn and evolve.
-
-Want to see Ghola in action? Check out our website at (ghola.ai)[https://ghola.ai] and start creating your own chatbot personas today!
 
 ## Table of Contents
 
@@ -74,8 +73,11 @@ npm install
 3. Create a `.env` file with the following contents:
 
 ```
-MONGODB_URI=mongodb://localhost/ghola
-SESSION_SECRET=your_session_secret
+OPEN_AI_KEY=sk-youropenaiapikeyhereplz
+GOOGLE_ID=googleclientidhereplz
+GOOGLE_SECRET=googlesecrethereplz
+MONGODB_URI=mongodb_srv://yourmongodburihereplz
+NEXTAUTH_SECRET=yourjwtsigningsecrethereplz
 ```
 
 4. Start the application:
