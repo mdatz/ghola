@@ -17,8 +17,8 @@
     "test": "npm run prettier:check && npm run lint && npm run typecheck && npm run jest"
   },
   "dependencies": {
-    "@emotion/cache": "^11.10.5",
     "@emotion/react": "^11.10.6",
+    "@emotion/server": "^11.10.0",
     "@mantine/carousel": "5.9.0",
     "@mantine/core": "5.9.0",
     "@mantine/hooks": "5.9.0",
@@ -51,6 +51,7 @@
     "@types/validator": "^13.7.14",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.30.0",
+    "babel-loader": "^9.1.2",
     "eslint": "^8.18.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
