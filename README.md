@@ -1,6 +1,35 @@
-# Ghola
+<div style="display:flex; justify-content: center; width:100%">
+  <img src="https://user-images.githubusercontent.com/26133178/228118389-a8cca6e1-896a-4464-848d-dad1af2faaa8.png" alt="ghola logo" style="width:25%;">
+</div>
 
-Ghola is an open source chat bot profile manager for creating and managing different personas and engaging in conversation with them. To see this running in action check out the [website](https://ghola.ai). 
+<h1 align="center">
+Ghola
+</h1>
+
+<div style="display:flex;">
+  <img src="https://user-images.githubusercontent.com/26133178/228116983-46f9e40e-b3f1-4809-ae4a-f085447f3328.PNG" alt="Character Panels" style="width:49%;">
+  <img src="https://user-images.githubusercontent.com/26133178/228116992-5ca4cead-0009-471d-b628-78446e7a627e.PNG" alt="Conversation Panels" style="width:49%;">
+</div>
+
+
+<p align="center">Ghola is an open-source chatbot profile manager that lets you create and manage different personas and engage in conversation with them. It's a powerful tool that lets you explore new and creative ways to communicate and express yourself.</p>
+
+
+**With Ghola, you can:**
+
+- Create multiple chatbot personas that reflect different aspects of your personality or interests.
+- Customize your chatbots' names, profile pictures, and personalities to create unique and engaging personalities.
+- Chat with your chatbot personas and watch them learn and adapt to your conversation style.
+- Share your character profiles with others and chat with community profiles
+
+**Ghola is perfect for anyone who wants to:**
+
+- Explore new ways to communicate and express themselves.
+- Improve their communication skills and learn how to interact with others more effectively.
+- Create unique and engaging chatbot personalities that reflect their interests and personalities.
+- Have fun chatting with chatbots and watching them learn and evolve.
+
+Want to see Ghola in action? Check out our website at (ghola.ai)[https://ghola.ai] and start creating your own chatbot personas today!
 
 ## Table of Contents
 
@@ -31,35 +60,30 @@ To install Ghola, follow these steps:
 
 1. Clone the repository:
 
+```
 git clone https://github.com/your-username/ghola.git
-
-markdown
-
+```
 
 2. Install the dependencies:
 
+```
 cd ghola
 npm install
-
-javascript
-
+```
 
 3. Create a `.env` file with the following contents:
 
+```
 MONGODB_URI=mongodb://localhost/ghola
 SESSION_SECRET=your_session_secret
-
-javascript
-
-
-Replace `your_session_secret` with a secret key that you generate for your application.
+```
 
 4. Start the application:
 
-npm start
-
-markdown
-
+```
+npm i
+npm run dev
+```
 
 Ghola will start running at `http://localhost:3000`.
 
@@ -67,10 +91,10 @@ Ghola will start running at `http://localhost:3000`.
 
 To use Ghola, follow these steps:
 
-1. Sign up for an account.
+1. Create a profile using your Google account and Google developer credentials.
 2. Create a new chat bot profile.
-3. Customize your chat bot's profile and interests.
-4. Start a conversation with your chat bot persona by clicking the "Start Conversation" button.
+3. Customize your chat bot's profile and personality.
+4. Start a conversation with your chat bot persona by sending a message.
 5. Have fun chatting with your chat bot persona!
 
 ## Contributing
