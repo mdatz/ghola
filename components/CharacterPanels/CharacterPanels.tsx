@@ -5,6 +5,7 @@ import { AddProfileButton } from '../AddProfileButton/AddProfileButton';
 import { Dispatch, SetStateAction } from 'react';
 import { IconCompass } from '@tabler/icons';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 
 const useStyles = createStyles((theme) => ({
   desktopCard: {
@@ -93,6 +94,7 @@ function Card({ profile, setSelectedProfile }: CardProps) {
 }
 
 export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelProps) {
+  const { data: session, status } = useSession();
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
   const randProfiles = shuffleArray(profiles);
@@ -160,19 +162,21 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
       </div>
       <div style={{position: 'absolute', bottom: 35, right: 35}}>
         <AddProfileButton />
-        <ActionIcon
-          onClick={() => {router.push('/explore')}}
-          size={64}
-          mt={-12}
-          radius="xl"
-          sx={(theme) => ({
-            backgroundColor:
-              theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
-            color: theme.colorScheme === 'dark' ? theme.colors.green[7] : theme.colors.grape[7],
-          })}
-        >
-          {colorScheme === 'dark' ? <IconCompass size={32} /> : <IconCompass size={32}/> }
-        </ActionIcon>
+        {(status === 'authenticated' && session.user.role === 'admin') && 
+          <ActionIcon
+            onClick={() => {router.push('/explore')}}
+            size={64}
+            mt={-12}
+            radius="xl"
+            sx={(theme) => ({
+              backgroundColor:
+                theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
+              color: theme.colorScheme === 'dark' ? theme.colors.green[7] : theme.colors.grape[7],
+            })}
+          >
+            {colorScheme === 'dark' ? <IconCompass size={32} /> : <IconCompass size={32}/> }
+          </ActionIcon>
+        }
       </div>
     </div>
   );
