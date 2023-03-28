@@ -4,17 +4,13 @@
 <h1 align="center">
   Ghola
 </h1>
-
-<div style="display:flex;" align="center">
-  <img src="https://user-images.githubusercontent.com/26133178/228116983-46f9e40e-b3f1-4809-ae4a-f085447f3328.PNG" alt="Character Panels" style="width:49%;">
-  <img src="https://user-images.githubusercontent.com/26133178/228116992-5ca4cead-0009-471d-b628-78446e7a627e.PNG" alt="Conversation Panels" style="width:49%;">
+<p align="center">Ghola is an open-source chatbot profile manager that lets you create and manage different personas and engage in conversation with them. It's a powerful tool that lets you explore new and creative ways to communicate and express yourself. Want to see Ghola in action? Check out our website at <a href="https://ghola.ai">ghola.ai</a> and start creating your own chatbot personas today!</p>
+<br/>
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/26133178/228116983-46f9e40e-b3f1-4809-ae4a-f085447f3328.PNG" alt="Character Panels" style="width:90%;">
+  <img src="https://user-images.githubusercontent.com/26133178/228116992-5ca4cead-0009-471d-b628-78446e7a627e.PNG" alt="Conversation Panels" style="width:90%;">
 </div>
-
-
-<p align="center"><i>Ghola is an open-source chatbot profile manager that lets you create and manage different personas and engage in conversation with them. It's a powerful tool that lets you explore new and creative ways to communicate and express yourself.</i></p>
-<br/><br/>
-
-Want to see Ghola in action? Check out our website at [ghola.ai](https://ghola.ai) and start creating your own chatbot personas today!
+<br/>
 
 **With Ghola, you can:**
 
@@ -45,9 +41,7 @@ Ghola comes with a range of features, including:
 
 - Creating and managing chat bot personas.
 - Engaging in conversations with your chat bot personas.
-- Customizing your chat bot's profile, including name, profile picture, and interests.
-- Saving conversation history with your chat bot personas.
-- Exporting and importing chat bot profiles.
+- Customizing your chat bot's profile, including name, profile picture, and personality.
 
 ## Getting Started
 
