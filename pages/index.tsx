@@ -163,6 +163,9 @@ export default function HomePage() {
               <List.Item>
                 <b>Profile Community</b> – share your chat bot with others and get feedback on your chat bot’s personality
               </List.Item>
+              <List.Item>
+                <b>Open Source</b> – strong believers in the power of open source, we want to build a community around our project
+              </List.Item>
             </List>
 
             <Group mt={30}>
