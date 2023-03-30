@@ -167,6 +167,7 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
             onClick={() => {router.push('/explore')}}
             size={64}
             mt={-12}
+            variant='filled'
             radius="xl"
             sx={(theme) => ({
               backgroundColor:

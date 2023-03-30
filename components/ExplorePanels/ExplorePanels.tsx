@@ -167,6 +167,7 @@ export function ExplorePanels({profiles, setSelectedProfile}: CharacterPanelProp
             size={64}
             mt={-12}
             radius="xl"
+            variant='filled'
             sx={(theme) => ({
               backgroundColor:
                 theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],

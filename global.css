@@ -1,9 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&display=swap');
 
+@font-face {
+    font-family: 'mograch';
+    src: url('/fonts/mograch.otf');
+}
+
 .logo-text {
-    font-family: 'Comfortaa', cursive;
-    font-size: 1.8rem;
-    font-weight: 700;
+    font-family: 'mograch';
+    font-size: 2.2rem;
+    font-weight: 500;
     cursor: pointer;
 }
 
