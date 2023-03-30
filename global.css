@@ -7,9 +7,11 @@
 
 .logo-text {
     font-family: 'mograch';
-    font-size: 2.2rem;
+    font-size: 2.3rem;
     font-weight: 500;
     cursor: pointer;
+    letter-spacing: 2px;
+    margin-block: 0;
 }
 
 .fullscreen {
