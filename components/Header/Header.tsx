@@ -20,7 +20,7 @@ export function Header({selectedProfile, setSelectedProfile}: HeaderProps) {
 
     return (
         <>
-            <Grid align='center' justify='center' my={0}>
+            <Grid align='center' justify='center' my={isMobile ? 4 : 0}>
                 <>
                     <Grid.Col span={4}>
                         {selectedProfile ?
