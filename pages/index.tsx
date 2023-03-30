@@ -204,7 +204,7 @@ export default function HomePage() {
 
               <Accordion.Item className={classes.item} value="another-account">
                 <Accordion.Control>Can I create more than one AI to talk to?</Accordion.Control>
-                <Accordion.Panel>{'Yes! Gganbu is capable of holding any/all chat bot profiles and the conversations with them!'}</Accordion.Panel>
+                <Accordion.Panel>{'Yes! Ghola is capable of holding any/all chat bot profiles and the conversations with them!'}</Accordion.Panel>
               </Accordion.Item>
 
               <Accordion.Item className={classes.item} value="newsletter">

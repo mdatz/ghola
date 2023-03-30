@@ -1,10 +1,11 @@
 import { Carousel } from '@mantine/carousel';
 import { useMediaQuery } from '@mantine/hooks';
-import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, ActionIcon, useMantineColorScheme, Grid } from '@mantine/core';
+import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, ActionIcon, useMantineColorScheme, Grid, Input, Center } from '@mantine/core';
 import { Dispatch, SetStateAction } from 'react';
 import { IconHome } from '@tabler/icons';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { TbSearch } from 'react-icons/tb';
 
 const useStyles = createStyles((theme) => ({
   desktopCard: {
@@ -102,6 +103,15 @@ export function ExplorePanels({profiles, setSelectedProfile}: CharacterPanelProp
 
   return (
     <div>
+      <Center>
+        <Input
+          icon={<TbSearch />}
+          placeholder="Search for a profile"
+          style={{width: '100%', maxWidth: '1000px', marginTop: '25px'}}
+          size="md"
+          radius="xl"
+        />
+      </Center>
       <div style={{display: 'flex', alignItems: 'start', justifyContent: 'center', marginTop: '25px', marginBottom: '25px', height: '80vh', width: '100%'}}>
         {
           randProfiles && randProfiles.length > 0 && (
