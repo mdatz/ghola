@@ -121,10 +121,10 @@ export default function HomePage() {
   let isMobile = useMediaQuery('(max-width: 768px)');
   const router = useRouter();
   const links = [
-    { link: 'link1', label: 'Contact' },
-    { link: 'link2', label: 'About Us' },
-    { link: 'link3', label: 'Privacy' },
-    { link: 'link3', label: 'Terms & Conditions' },
+    // { link: 'link1', label: 'Contact' },
+    // { link: 'link2', label: 'About Us' },
+    { link: 'privacy', label: 'Privacy' },
+    { link: 'terms', label: 'Terms & Conditions' },
   ];
 
   return (

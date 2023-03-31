@@ -41,7 +41,6 @@ export function Footer({ links }: FooterSimpleProps) {
       color="dimmed"
       key={link.label}
       href={link.link}
-      onClick={(event) => event.preventDefault()}
       size="sm"
     >
       {link.label}
