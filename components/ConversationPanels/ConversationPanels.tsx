@@ -5,7 +5,7 @@ import { AttributePanel } from './AttributePanel/AttributePanel';
 import { ConversationPanel } from './ConversationPanel/ConversationPanel';
 import { Quote } from './Quote/Quote';
 import Axios from 'axios';
-import { Flex } from '@mantine/core';
+import { Card, Flex } from '@mantine/core';
 
 interface ConversationProps {
     selectedProfile: Profile;
@@ -75,15 +75,10 @@ export function ConversationPanels({selectedProfile}: ConversationProps) {
     return (
         <>
         {isMobile ?
-            <div style={{overflowY: 'hidden'}}>
-            <Flex direction='column' py='xl' style={{height: '180vh'}}>
-                <Flex style={{height: '80vh', display: 'flex', alignItems: 'center'}}>
-                        <div style={{width: '100%'}}>
-                            <AttributePanel profile={profile} setProfile={setProfile}/>
-                        </div>
-                </Flex>
+            <div style={{overflow: 'hidden'}}>
+            <Flex direction='column' py='xl' style={{height: '100%'}}>
                 <Flex>
-                    <div style={{height: '100vh', display: 'flex', alignItems: 'center'}}>
+                    <div style={{height: '100%', display: 'flex', alignItems: 'center'}}>
                         <div style={{width: '100%'}}>
                             <ConversationPanel messages={messages} setMessages={setMessages} generating={generating}/>
                         </div>
@@ -94,7 +89,9 @@ export function ConversationPanels({selectedProfile}: ConversationProps) {
         :
             <div style={{height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '-6rem'}}>
                 <div style={{display: 'flex', alignItems: 'center', marginRight: '20px'}}>
-                    <AttributePanel profile={profile} setProfile={setProfile}/>
+                    <Card shadow='md' pt={5} style={isMobile ? {} : {width: '300px'}}>
+                        <AttributePanel profile={profile} setProfile={setProfile}/>
+                    </Card>
                 </div>
                 <div style={{display: 'flex', alignItems: 'center'}}>
                     <ConversationPanel messages={messages} setMessages={setMessages} generating={generating}/>

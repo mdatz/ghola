@@ -1,11 +1,13 @@
 import { Carousel } from '@mantine/carousel';
 import { useMediaQuery } from '@mantine/hooks';
-import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, ActionIcon, useMantineColorScheme } from '@mantine/core';
+import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, ActionIcon, useMantineColorScheme, Modal, Flex } from '@mantine/core';
 import { AddProfileButton } from '../AddProfileButton/AddProfileButton';
-import { Dispatch, SetStateAction } from 'react';
-import { IconCompass } from '@tabler/icons';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { IconCompass, IconTool } from '@tabler/icons';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { AttributePanel } from '../ConversationPanels/AttributePanel/AttributePanel';
+
 
 const useStyles = createStyles((theme) => ({
   desktopCard: {
@@ -71,7 +73,7 @@ function shuffleArray(array: Profile[]) {
 function Card({ profile, setSelectedProfile }: CardProps) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
-  const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
+  const mobile = useMediaQuery(`(max-width: 768px)`);
 
   return (
     <Paper
@@ -87,7 +89,7 @@ function Card({ profile, setSelectedProfile }: CardProps) {
         </Title>
       </div>
       <Button variant="white" color="dark" onClick={() => {setSelectedProfile(profile)}}>
-        Open Profile
+        {mobile ? 'Open Chat' : 'Open Profile'}
       </Button>
     </Paper>
   );
@@ -96,10 +98,20 @@ function Card({ profile, setSelectedProfile }: CardProps) {
 export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelProps) {
   const { data: session, status } = useSession();
   const theme = useMantineTheme();
-  const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
+  const mobile = useMediaQuery(`(max-width: 768px)`);
   const randProfiles = shuffleArray(profiles);
   const { colorScheme } = useMantineColorScheme();
   const router = useRouter();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [profile, setProfile] = useState<Profile|null>(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const editCurrentProfile = () => {
+    //get current profile from carosoul key and set it to profile
+    if(!randProfiles) {return;}
+    setProfile(randProfiles[selectedIndex]);
+    setModalOpen(true);
+  }
 
   return (
     <div>
@@ -116,6 +128,8 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
               height={mobile ? 600 : 'auto'}
               orientation={mobile ? 'vertical' : 'horizontal'}
               slidesToScroll={1}
+              initialSlide={selectedIndex}
+              onSlideChange={(index) => {setSelectedIndex(index)}}
               loop>
                 {randProfiles.map((item) => (
                   <Carousel.Slide key={item.name}>
@@ -123,6 +137,13 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
                   </Carousel.Slide>
                 ))}
             </Carousel>
+            <Modal opened={modalOpen} transition='slide-down' onClose={() => {setModalOpen(false); setProfile(null)}} withCloseButton={false}>
+              <Flex style={{display: 'flex', alignItems: 'center'}}>
+                <div style={{width: '100%'}}>
+                    {profile && <AttributePanel profile={profile} setProfile={setProfile}/>}
+                </div>
+              </Flex>
+            </Modal>
             </>
         )}
         { 
@@ -162,11 +183,25 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
       </div>
       <div style={{position: 'absolute', bottom: 35, right: 35}}>
         <AddProfileButton />
+        {mobile && (<ActionIcon
+            onClick={() => {editCurrentProfile()}}
+            size={64}
+            mb='xs'
+            variant='filled'
+            radius="xl"
+            sx={(theme) => ({
+              backgroundColor:
+                theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
+              color: theme.colorScheme === 'dark' ? theme.colors.green[7] : theme.colors.grape[7],
+            })}
+          >
+            {colorScheme === 'dark' ? <IconTool size={32} /> : <IconTool size={32}/> }
+          </ActionIcon>
+          )}
         {(status === 'authenticated' && session.user.role === 'admin') && 
           <ActionIcon
             onClick={() => {router.push('/explore')}}
             size={64}
-            mt={-12}
             variant='filled'
             radius="xl"
             sx={(theme) => ({

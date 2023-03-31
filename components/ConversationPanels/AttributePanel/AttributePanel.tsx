@@ -9,7 +9,7 @@ import useSWR from 'swr';
 
 interface AttributePanelProps {
     profile: Profile;
-    setProfile: Dispatch<SetStateAction<Profile>>;
+    setProfile: Dispatch<SetStateAction<Profile>> | Dispatch<SetStateAction<Profile|null>>;
 }
 
 const fetcher = async(input:RequestInfo, init:RequestInit) => {
@@ -93,37 +93,35 @@ export function AttributePanel({profile, setProfile}: AttributePanelProps) {
 
     return (
         <>
-            <Card shadow='md' pt={5} style={isMobile ? {} : {width: '300px'}}>
-                <Stack pt='sm'>
-                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                        <ActionIcon color="red" radius="xl" variant="outline" size={36} onClick={() => {setModalOpened(true)}}>
-                            <TbTrashX size={20}/>
-                        </ActionIcon>
-                        <SegmentedControl
-                          data={[
-                            { label: 'Private', value: 'private' },
-                            { label: 'Public', value: 'public' },
-                          ]}
-                          value={profile.visibility}
-                          onChange={(value) => setProfile({...profile, ...{visibility: value}})}
-                        />
-                    </div>
-                    <Center mb={-20}>
-                        <Paper radius={100} shadow='xl' withBorder>
-                            <Avatar src={profile.imageUrl} size={200} radius={100}/>
-                        </Paper>
-                    </Center>
-                    <Input.Wrapper label='Profile Name'>
-                        <Input placeholder='enter a name' value={profile.name} onChange={(event: any) => setProfile({...profile, ...{name: event.currentTarget.value}})} />
-                    </Input.Wrapper>
-                    <Input.Wrapper label='Profile Image URL'>
-                        <Input placeholder='enter a url' value={profile.imageUrl} onChange={(event: any) => setProfile({...profile, ...{imageUrl: event.currentTarget.value}})} />
-                    </Input.Wrapper>
-                    <Textarea label='Profile Description' placeholder='include a detailed summary of the profiles character' minRows={isMobile ? 3 : 6} maxRows={isMobile ? 3 : 6} value={profile.description} onChange={(event) => setProfile({...profile, ...{description: event.currentTarget.value}})} autosize/>
-                    <Divider/>
-                    <Button color='grape' onClick={() => {updateProfile()}} disabled={!modified} loading={loading}>Save Profile</Button>
-                </Stack>
-            </Card>
+            <Stack pt='sm'>
+                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                    <ActionIcon color="red" radius="xl" variant="outline" size={36} onClick={() => {setModalOpened(true)}}>
+                        <TbTrashX size={20}/>
+                    </ActionIcon>
+                    <SegmentedControl
+                      data={[
+                        { label: 'Private', value: 'private' },
+                        { label: 'Public', value: 'public' },
+                      ]}
+                      value={profile.visibility}
+                      onChange={(value) => setProfile({...profile, ...{visibility: value}})}
+                    />
+                </div>
+                <Center mb={-20}>
+                    <Paper radius={100} shadow='xl' withBorder>
+                        <Avatar src={profile.imageUrl} size={200} radius={100}/>
+                    </Paper>
+                </Center>
+                <Input.Wrapper label='Profile Name'>
+                    <Input placeholder='enter a name' value={profile.name} onChange={(event: any) => setProfile({...profile, ...{name: event.currentTarget.value}})} />
+                </Input.Wrapper>
+                <Input.Wrapper label='Profile Image URL'>
+                    <Input placeholder='enter a url' value={profile.imageUrl} onChange={(event: any) => setProfile({...profile, ...{imageUrl: event.currentTarget.value}})} />
+                </Input.Wrapper>
+                <Textarea label='Profile Description' placeholder='include a detailed summary of the profiles character' minRows={isMobile ? 3 : 6} maxRows={isMobile ? 3 : 6} value={profile.description} onChange={(event) => setProfile({...profile, ...{description: event.currentTarget.value}})} autosize/>
+                <Divider/>
+                <Button color='grape' onClick={() => {updateProfile()}} disabled={!modified} loading={loading}>Save Profile</Button>
+            </Stack>
             <Modal opened={modalOpened} onClose={() => {setModalOpened(false)}}>
               <Center mt={-30}>
                 <ThemeIcon size={100} radius={50} variant='outline' color='red'>

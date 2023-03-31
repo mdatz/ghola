@@ -67,7 +67,7 @@ export function AddProfileButton() {
 
   return (
     <>
-      <Group position="center" my="xl">
+      <Group position="center" my="xs">
         <ActionIcon
           onClick={() => {setModalOpened(true)}}
           size={64}
