@@ -30,7 +30,7 @@ export function ConversationPanel({ messages, setMessages, generating }: { messa
     return (
         <>
             <Card shadow='md' style={isMobile ? {minWidth: '91vw'} : {minWidth: '40vw'}}>
-                <ScrollArea style={isMobile ? {display: 'flex', flexDirection: 'column', height: '50vh', zIndex: 2077} : {display: 'flex', flexDirection: 'column', height: '583px', zIndex: 2077}} viewportRef={viewport} offsetScrollbars>
+                <ScrollArea style={isMobile ? {display: 'flex', flexDirection: 'column', height: '65vh', zIndex: 2077} : {display: 'flex', flexDirection: 'column', height: '583px', zIndex: 2077}} viewportRef={viewport} offsetScrollbars>
                     {messages.length ? messages.map((message) => {
                         return (
                             <>
@@ -56,7 +56,7 @@ export function ConversationPanel({ messages, setMessages, generating }: { messa
                     {generating && <Skeleton px={8} py={3} radius='sm' mb='lg' width={isMobile ? '74%' : '45%'} height={35} style={{marginRight: 'auto'}} />}
                 </ScrollArea>
                 <Divider mb='sm' mt='md' />
-                <div style={{width: '100%', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px'}}>
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px'}}>
                     <Textarea style={{width: '100%'}} minRows={1} maxRows={3} value={message} onChange={(event) => setMessage(event.currentTarget.value)} autosize/>
                     <Button color='grape' onClick={() => {updateConversation()}}>Send</Button>
                 </div>

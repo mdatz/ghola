@@ -57,22 +57,8 @@ interface CharacterPanelProps {
   setSelectedProfile: Dispatch<SetStateAction<null|Profile>>;
 }
 
-function shuffleArray(array: Profile[]) {
-  if (!array) {return;}
-  let curId = array.length;
-  while (0 !== curId) {
-    let randId = Math.floor(Math.random() * curId);
-    curId -= 1;
-    let tmp = array[curId];
-    array[curId] = array[randId];
-    array[randId] = tmp;
-  }
-  return array;
-}
-
 function Card({ profile, setSelectedProfile }: CardProps) {
   const { classes } = useStyles();
-  const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: 768px)`);
 
   return (
@@ -99,7 +85,6 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
   const { data: session, status } = useSession();
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: 768px)`);
-  const randProfiles = shuffleArray(profiles);
   const { colorScheme } = useMantineColorScheme();
   const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
@@ -107,9 +92,8 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const editCurrentProfile = () => {
-    //get current profile from carosoul key and set it to profile
-    if(!randProfiles) {return;}
-    setProfile(randProfiles[selectedIndex]);
+    if(!profiles) {return;}
+    setProfile(profiles[selectedIndex]);
     setModalOpen(true);
   }
 
@@ -117,7 +101,7 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
     <div>
       <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80vh', width: '100%'}}>
         {
-          randProfiles && randProfiles.length > 0 && (
+          profiles && profiles.length > 0 && (
             <>
               <Carousel
               style={mobile ? {width: '100%'} : {width: '95%'}}
@@ -131,7 +115,7 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
               initialSlide={selectedIndex}
               onSlideChange={(index) => {setSelectedIndex(index)}}
               loop>
-                {randProfiles.map((item) => (
+                {profiles.map((item) => (
                   <Carousel.Slide key={item.name}>
                     <Card profile={item} setSelectedProfile={setSelectedProfile}/>
                   </Carousel.Slide>
@@ -147,7 +131,7 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
             </>
         )}
         { 
-          randProfiles && randProfiles.length === 0 && (
+          profiles && profiles.length === 0 && (
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
               {!mobile && <h1 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'}}>You don't have any profiles yet.</h1>}
               <h2 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'}}>Add a profile to get started.</h2>
@@ -155,7 +139,7 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
           )
         }
         {
-          !randProfiles && (
+          !profiles && (
             <Carousel
             style={mobile ? {width: '100%'} : {width: '95%'}}
             slideSize={"25%"}
@@ -185,7 +169,7 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
         <AddProfileButton />
         {mobile && (<ActionIcon
             onClick={() => {editCurrentProfile()}}
-            size={64}
+            size={mobile ? 52 : 64}
             mb='xs'
             variant='filled'
             radius="xl"
@@ -201,7 +185,7 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
         {(status === 'authenticated' && session.user.role === 'admin') && 
           <ActionIcon
             onClick={() => {router.push('/explore')}}
-            size={64}
+            size={mobile ? 52 : 64}
             variant='filled'
             radius="xl"
             sx={(theme) => ({

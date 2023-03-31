@@ -4,6 +4,7 @@ import { IconUserPlus } from '@tabler/icons';
 import { useState } from 'react';
 import Axios from 'axios';
 import useSWR from 'swr';
+import { useMediaQuery } from '@mantine/hooks';
 
 const fetcher = async(input:RequestInfo, init:RequestInit) => {
   const res = await fetch(input, init); 
@@ -16,6 +17,7 @@ export function AddProfileButton() {
   
   const { colorScheme } = useMantineColorScheme();
 
+  const mobile = useMediaQuery(`(max-width: 768px)`);
   const [modalOpened, setModalOpened] = useState(false);
   const [newProfileName, setNewProfileName] = useState('');
   const [newProfileImage, setNewProfileImage] = useState('');
@@ -70,7 +72,7 @@ export function AddProfileButton() {
       <Group position="center" my="xs">
         <ActionIcon
           onClick={() => {setModalOpened(true)}}
-          size={64}
+          size={mobile ? 52 : 64}
           radius="xl"
           variant='filled'
           sx={(theme) => ({

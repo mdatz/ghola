@@ -1,4 +1,4 @@
-import { useMediaQuery, useScrollIntoView } from '@mantine/hooks';
+import { useMediaQuery } from '@mantine/hooks';
 import { showNotification } from '@mantine/notifications';
 import { useEffect, useState } from 'react';
 import { AttributePanel } from './AttributePanel/AttributePanel';
@@ -19,10 +19,7 @@ type Message = {
 export function ConversationPanels({selectedProfile}: ConversationProps) {
     
     let isMobile = useMediaQuery('(max-width: 768px)');
-    //Rewrite this to use alias names for scrollInotView and targetRef
-    const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({});
     
-
     const [messages, setMessages] = useState<Message[]>([]);
     const [profile, setProfile] = useState<Profile>(selectedProfile);
     const [generating, setGenerating] = useState<boolean>(false);
@@ -76,14 +73,10 @@ export function ConversationPanels({selectedProfile}: ConversationProps) {
         <>
         {isMobile ?
             <div style={{overflow: 'hidden'}}>
-            <Flex direction='column' py='xl' style={{height: '100%'}}>
-                <Flex>
-                    <div style={{height: '100%', display: 'flex', alignItems: 'center'}}>
-                        <div style={{width: '100%'}}>
-                            <ConversationPanel messages={messages} setMessages={setMessages} generating={generating}/>
-                        </div>
-                    </div>
-                </Flex>
+            <Flex direction='column' py='xl' px='xs' style={{height: '100%'}}>
+                <div style={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                    <ConversationPanel messages={messages} setMessages={setMessages} generating={generating}/>
+                </div>
             </Flex>
             </div>
         :
@@ -96,7 +89,7 @@ export function ConversationPanels({selectedProfile}: ConversationProps) {
                 <div style={{display: 'flex', alignItems: 'center'}}>
                     <ConversationPanel messages={messages} setMessages={setMessages} generating={generating}/>
                 </div>
-                <div style={{position: 'absolute', bottom: '40px', left: '20px'}}>
+                <div style={{position: 'absolute', bottom: '40px', left: '20px', zIndex: -1}}>
                     <Quote/>                
                 </div>
             </div>

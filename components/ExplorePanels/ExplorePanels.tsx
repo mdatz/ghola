@@ -96,7 +96,7 @@ function Card({ profile, setSelectedProfile }: CardProps) {
 export function ExplorePanels({profiles, setSelectedProfile}: CharacterPanelProps) {
   const { data: session, status } = useSession();
   const theme = useMantineTheme();
-  const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
+  let mobile = useMediaQuery(`(max-width: 768px)`);
   const randProfiles = shuffleArray(profiles);
   const { colorScheme } = useMantineColorScheme();
   const router = useRouter();
@@ -116,7 +116,7 @@ export function ExplorePanels({profiles, setSelectedProfile}: CharacterPanelProp
         {
           randProfiles && randProfiles.length > 0 && (
             <>
-              <Grid style={mobile ? {width: '100%', height: '600px'} : {width: '95%', height: 'auto'}}>
+              <Grid style={mobile ? {width: '100%', height: '400px'} : {width: '95%', height: 'auto'}}>
               {randProfiles.map((item) => (
                 <Grid.Col span={mobile ? 12 : 3}>
                     <Card profile={item} setSelectedProfile={setSelectedProfile}/>
@@ -148,10 +148,10 @@ export function ExplorePanels({profiles, setSelectedProfile}: CharacterPanelProp
               {mobile ? (
                 <Skeleton height={600} />
               ):(
-                <Grid style={mobile ? {width: '100%', height: '600px'} : {width: '95%', height: 'auto'}}>
+                <Grid style={mobile ? {width: '100%', height: '400px'} : {width: '95%', height: 'auto'}}>
                   {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16].map((item, index) => (
                       <Grid.Col span={mobile ? 12 : 3} key={index}>
-                        <Skeleton height='100%'/>
+                        <Skeleton height='20vh'/>
                       </Grid.Col>
                   ))}
                 </Grid>
@@ -164,7 +164,7 @@ export function ExplorePanels({profiles, setSelectedProfile}: CharacterPanelProp
         {(status === 'authenticated' && session.user.role === 'admin') && 
           <ActionIcon
             onClick={() => {router.push('/dashboard')}}
-            size={64}
+            size={mobile ? 52 : 64}
             mt={-12}
             radius="xl"
             variant='filled'
