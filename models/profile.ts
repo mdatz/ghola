@@ -5,6 +5,8 @@ const ProfileSchema = new Schema({
     description: { type: String, required: true },
     imageUrl: { type: String, required: true },
     visibility: { type: String, required: true },
+    messageCount: { type: Number, required: true, default: 0 },
+    favouriteCount: { type: Number, required: true, default: 0 },
     creator: { type: Schema.Types.ObjectId, ref: 'User' },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
