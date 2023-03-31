@@ -114,7 +114,7 @@ import { useRouter } from 'next/router';
                 </Title>
                 <Text align="justify">If you have any questions about these Terms & Conditions, please contact us:</Text>
                 <ul>
-                    <li>By email: <a style={{textDecoration: 'none'}} href="mailto: kadatzmatthew@gmail.com">Matt Kadatz</a></li>
+                    <li>By email: <a style={{textDecoration: 'none'}} href="mailto: kadatzmatthew@gmail.com">Matthew Kadatz</a></li>
                 </ul>
             </ScrollArea>
         </Paper>
