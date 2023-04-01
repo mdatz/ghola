@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
-import { Header } from '../components/Header/Header';
-import { ConversationPanels } from '../components/ConversationPanels/ConversationPanels';
-import { CharacterPanels } from '../components/CharacterPanels/CharacterPanels';
+import { useEffect } from 'react';
+import { Header } from '../components/General/Header/Header';
+import { CharacterPanels } from '../components/Panels/CharacterPanels/CharacterPanels';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
@@ -17,7 +16,6 @@ export default function Dashboard() {
     const { data: session, status } = useSession();
     const { data: profiles, error: profilesError } = useSWR(session ? '/api/profile' : null, fetcher);
     const router = useRouter();
-    const [selectedProfile, setSelectedProfile] = useState<null|Profile>(null);
 
     useEffect(() => {
         if (status === 'unauthenticated') {
@@ -27,12 +25,8 @@ export default function Dashboard() {
 
     return (
         <div className='fullscreen'>
-            <Header selectedProfile={selectedProfile} setSelectedProfile={setSelectedProfile}/>
-            {selectedProfile ?
-                <ConversationPanels selectedProfile={selectedProfile}/> :
-                <CharacterPanels profiles={profiles?.data} setSelectedProfile={setSelectedProfile}/>
-            }
+            <Header/>
+            <CharacterPanels profiles={profiles?.data}/>
         </div>
-        
     );
 }

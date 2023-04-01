@@ -1,20 +1,14 @@
 import { useEffect } from 'react';
 import { Header } from '../components/General/Header/Header';
-import { ExplorePanels } from '../components/Panels/ExplorePanels/ExplorePanels';
+import { ConversationPanels } from '../components/Panels/ConversationPanels/ConversationPanels';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
+import { useConversationContext } from '../context/ConversationContext';
 
 
-const fetcher = async(input:RequestInfo, init:RequestInit) => {
-  const res = await fetch(input, init); 
-  return res.json();
-};
-
-export default function Dashboard() {
+export default function Chat() {
 
     const { data: session, status } = useSession();
-    const { data: profiles, error: profilesError } = useSWR(session ? '/api/profile/public' : null, fetcher);
     const router = useRouter();
 
     useEffect(() => {
@@ -26,7 +20,7 @@ export default function Dashboard() {
     return (
         <div className='fullscreen'>
             <Header/>
-            <ExplorePanels profiles={profiles?.data}/>
+            <ConversationPanels/>
         </div>
     );
 }

@@ -6,22 +6,20 @@ import { ConversationPanel } from './ConversationPanel/ConversationPanel';
 import { Quote } from './Quote/Quote';
 import Axios from 'axios';
 import { Card, Flex } from '@mantine/core';
+import { useConversationContext } from '../../../context/ConversationContext';
 
-interface ConversationProps {
-    selectedProfile: Profile;
-}
-  
 type Message = {
     role: 'user' | 'assistant' | 'system';
     content: string;
 }
 
-export function ConversationPanels({selectedProfile}: ConversationProps) {
+export function ConversationPanels() {
     
     let isMobile = useMediaQuery('(max-width: 768px)');
+    const { selectedProfile } = useConversationContext();
     
     const [messages, setMessages] = useState<Message[]>([]);
-    const [profile, setProfile] = useState<Profile>(selectedProfile);
+    const [profile, setProfile] = useState<Profile | null>(selectedProfile);
     const [generating, setGenerating] = useState<boolean>(false);
 
     useEffect(() => {

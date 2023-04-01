@@ -1,4 +1,4 @@
-import { Center, Text, Card, Avatar, Stack, Divider, ThemeIcon, Input, Textarea, Button, Paper, SegmentedControl, ActionIcon, Modal, Group } from '@mantine/core';
+import { Center, Text, Avatar, Stack, Divider, ThemeIcon, Input, Textarea, Button, Paper, SegmentedControl, ActionIcon, Modal, Group } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { useMediaQuery } from '@mantine/hooks';
 import { Dispatch, SetStateAction, useState, useEffect } from 'react';
@@ -8,7 +8,7 @@ import Axios from 'axios';
 import useSWR from 'swr';
 
 interface AttributePanelProps {
-    profile: Profile;
+    profile: Profile | null;
     setProfile: Dispatch<SetStateAction<Profile>> | Dispatch<SetStateAction<Profile|null>>;
 }
 
@@ -64,7 +64,7 @@ export function AttributePanel({profile, setProfile}: AttributePanelProps) {
 
     const deleteProfile = () => {
       setDeleting(true);
-      Axios.delete('/api/profile', {data:{_id: profile._id, creator: profile.creator}}).then(() => {
+      Axios.delete('/api/profile', {data:{_id: profile?._id, creator: profile?.creator}}).then(() => {
         updateProfiles();
         showNotification({
           title: 'Profile Deleted',
@@ -103,22 +103,29 @@ export function AttributePanel({profile, setProfile}: AttributePanelProps) {
                         { label: 'Private', value: 'private' },
                         { label: 'Public', value: 'public' },
                       ]}
-                      value={profile.visibility}
+                      value={profile?.visibility}
+                      // @ts-ignore
                       onChange={(value) => setProfile({...profile, ...{visibility: value}})}
                     />
                 </div>
                 <Center mb={-20}>
                     <Paper radius={100} shadow='xl' withBorder>
-                        <Avatar src={profile.imageUrl} size={200} radius={100}/>
+                        <Avatar src={profile?.imageUrl} size={200} radius={100}/>
                     </Paper>
                 </Center>
                 <Input.Wrapper label='Profile Name'>
-                    <Input placeholder='enter a name' value={profile.name} onChange={(event: any) => setProfile({...profile, ...{name: event.currentTarget.value}})} />
+                    <Input placeholder='enter a name' value={profile?.name} 
+                    // @ts-ignore
+                    onChange={(event: any) => setProfile({...profile, ...{name: event.currentTarget.value}})} />
                 </Input.Wrapper>
                 <Input.Wrapper label='Profile Image URL'>
-                    <Input placeholder='enter a url' value={profile.imageUrl} onChange={(event: any) => setProfile({...profile, ...{imageUrl: event.currentTarget.value}})} />
+                    <Input placeholder='enter a url' value={profile?.imageUrl} 
+                    // @ts-ignore
+                    onChange={(event: any) => setProfile({...profile, ...{imageUrl: event.currentTarget.value}})} />
                 </Input.Wrapper>
-                <Textarea label='Profile Description' placeholder='include a detailed summary of the profiles character' minRows={isMobile ? 3 : 6} maxRows={isMobile ? 3 : 6} value={profile.description} onChange={(event) => setProfile({...profile, ...{description: event.currentTarget.value}})} autosize/>
+                <Textarea label='Profile Description' placeholder='include a detailed summary of the profiles character' minRows={isMobile ? 3 : 6} maxRows={isMobile ? 3 : 6} value={profile?.description}
+                // @ts-ignore
+                onChange={(event) => setProfile({...profile, ...{description: event.currentTarget.value}})} autosize/>
                 <Divider/>
                 <Button color='grape' onClick={() => {updateProfile()}} disabled={!modified} loading={loading}>Save Profile</Button>
             </Stack>

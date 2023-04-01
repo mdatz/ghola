@@ -1,19 +1,15 @@
 import { useMediaQuery } from '@mantine/hooks';
 import { Divider, Grid, Center, ActionIcon } from '@mantine/core';
 import { useRouter } from 'next/router';
-import { ColorSchemeToggle } from '../ColorSchemeToggle/ColorSchemeToggle';
-import { Dispatch, SetStateAction } from 'react';
+import { ColorSchemeToggle } from '../../Buttons/ColorSchemeToggle/ColorSchemeToggle';
 import { IconArrowLeft } from '@tabler/icons';
-import { LogOutButton } from '../LogOutButton/LogOutButton';
+import { LogOutButton } from '../../Buttons/LogOutButton/LogOutButton';
 import { useSession } from 'next-auth/react';
+import { useConversationContext } from '../../../context/ConversationContext';
 
-interface HeaderProps {
-    selectedProfile?: Profile|null;
-    setSelectedProfile: Dispatch<SetStateAction<null|Profile>>;
-}
+export function Header() {
 
-export function Header({selectedProfile, setSelectedProfile}: HeaderProps) {
-
+    const { selectedProfile, setSelectedProfile } = useConversationContext();
     const { data: session, status } = useSession();
     let isMobile = useMediaQuery('(max-width: 768px)');
     const router = useRouter();
@@ -26,7 +22,7 @@ export function Header({selectedProfile, setSelectedProfile}: HeaderProps) {
                         {selectedProfile ?
                             <div style={{display: 'flex', justifyContent: 'flex-start', paddingLeft: '1rem'}}>
                                 <ActionIcon
-                                    onClick={() => setSelectedProfile(null)}
+                                    onClick={() => {setSelectedProfile(null); router.back();}}
                                     size="xl"
                                     radius="xl"
                                 >

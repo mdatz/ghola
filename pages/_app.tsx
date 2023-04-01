@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { SessionProvider } from 'next-auth/react';
+import { ConversationProvider } from '../context/ConversationContext';
 import '../global.css';
 
 export default function App(props: AppProps & { colorScheme: ColorScheme, session: any }) {
@@ -29,7 +30,9 @@ export default function App(props: AppProps & { colorScheme: ColorScheme, sessio
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
           <MantineProvider theme={{ colorScheme, white: '#F8F9FA' }} withGlobalStyles withNormalizeCSS>
             <NotificationsProvider>
-              <Component {...pageProps} />
+              <ConversationProvider>
+                <Component {...pageProps} />
+              </ConversationProvider>
             </NotificationsProvider>
           </MantineProvider>
         </ColorSchemeProvider>

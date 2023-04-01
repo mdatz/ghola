@@ -47,7 +47,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
             try{
 
-                const profiles = await Profile.find({ visibility: 'public' }).limit(16).sort({ createdAt: -1});
+                const profiles = await Profile.find({ visibility: 'public' }).sort({ messageCount: -1 }).limit(16);
 
                 //return profiles as an array of json objects
                 res.status(200).json({

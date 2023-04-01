@@ -1,4 +1,4 @@
-import { useMantineColorScheme, ActionIcon, Group } from '@mantine/core';
+import { useMantineColorScheme, ActionIcon } from '@mantine/core';
 import { signOut } from 'next-auth/react';
 import { TbDoorExit } from 'react-icons/tb';
 
@@ -6,7 +6,6 @@ export function LogOutButton() {
   const { colorScheme } = useMantineColorScheme();
 
   return (
-    <Group position="center" my="xl">
       <ActionIcon
         onClick={() => {signOut({ callbackUrl: window.location.origin + '/login' })}}
         size='xl'
@@ -19,6 +18,5 @@ export function LogOutButton() {
       >
         {colorScheme === 'dark' ? <TbDoorExit size={20} /> : <TbDoorExit size={20}/> }
       </ActionIcon>
-    </Group>
   );
 }

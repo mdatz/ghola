@@ -102,6 +102,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     imageUrl: imageUrl,
                     visibility: visibility,
                     creator: token.uid,
+                    messageCount: 0,
+                    favouriteCount: 0
                 });
 
                 await profile.save();

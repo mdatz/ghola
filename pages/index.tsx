@@ -13,12 +13,12 @@ import {
   Col,
 } from '@mantine/core';
 import { IconCheck } from '@tabler/icons';
-import { Header } from '../components/Header/Header';
+import { Header } from '../components/General/Header/Header';
 import imageA from '../public/undraw/undraw_8.svg';
 import imageB from '../public/undraw/undraw_2.svg';
 import { useRouter } from 'next/router';
 import { useMediaQuery } from '@mantine/hooks';
-import { Footer } from '../components/Footer/Footer';
+import { Footer } from '../components/General/Footer/Footer';
 import { Analytics } from '@vercel/analytics/react';
 
 const useStyles = createStyles((theme) => ({
@@ -121,8 +121,6 @@ export default function HomePage() {
   let isMobile = useMediaQuery('(max-width: 768px)');
   const router = useRouter();
   const links = [
-    // { link: 'link1', label: 'Contact' },
-    // { link: 'link2', label: 'About Us' },
     { link: 'privacy', label: 'Privacy' },
     { link: 'terms', label: 'Terms & Conditions' },
   ];
@@ -130,7 +128,7 @@ export default function HomePage() {
   return (
     <div className='index-container'>
     <div>
-      <Header setSelectedProfile={() => {}}/>
+      <Header/>
       <Container mt={isMobile ? -30 : -30} mb={isMobile ? -80 : -30}> 
         <div className={classes.inner}>
           <div className={classes.content}>

@@ -1,12 +1,13 @@
 import { Carousel } from '@mantine/carousel';
 import { useMediaQuery } from '@mantine/hooks';
 import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, ActionIcon, useMantineColorScheme, Modal, Flex } from '@mantine/core';
-import { AddProfileButton } from '../AddProfileButton/AddProfileButton';
+import { AddProfileButton } from '../../Buttons/AddProfileButton/AddProfileButton';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { IconCompass, IconTool } from '@tabler/icons';
+import { IconTool } from '@tabler/icons';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
 import { AttributePanel } from '../ConversationPanels/AttributePanel/AttributePanel';
+import { ExploreButton } from '../../Buttons/ExploreButton/ExploreButton';
+import { useConversationContext } from '../../../context/ConversationContext';
 
 
 const useStyles = createStyles((theme) => ({
@@ -54,12 +55,12 @@ interface CardProps {
 
 interface CharacterPanelProps {
   profiles: Profile[];
-  setSelectedProfile: Dispatch<SetStateAction<null|Profile>>;
 }
 
 function Card({ profile, setSelectedProfile }: CardProps) {
   const { classes } = useStyles();
   const mobile = useMediaQuery(`(max-width: 768px)`);
+  const router = useRouter();
 
   return (
     <Paper
@@ -74,22 +75,21 @@ function Card({ profile, setSelectedProfile }: CardProps) {
           {profile.name}
         </Title>
       </div>
-      <Button variant="white" color="dark" onClick={() => {setSelectedProfile(profile)}}>
+      <Button variant="white" color="dark" onClick={() => {setSelectedProfile(profile); router.push('/chat');}}>
         {mobile ? 'Open Chat' : 'Open Profile'}
       </Button>
     </Paper>
   );
 }
 
-export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelProps) {
-  const { data: session, status } = useSession();
+export function CharacterPanels({profiles}: CharacterPanelProps) {
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: 768px)`);
   const { colorScheme } = useMantineColorScheme();
-  const router = useRouter();
   const [modalOpen, setModalOpen] = useState(false);
   const [profile, setProfile] = useState<Profile|null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const { setSelectedProfile } = useConversationContext();
 
   const editCurrentProfile = () => {
     if(!profiles) {return;}
@@ -114,6 +114,7 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
               slidesToScroll={1}
               initialSlide={selectedIndex}
               onSlideChange={(index) => {setSelectedIndex(index)}}
+              withIndicators={!mobile}
               loop>
                 {profiles.map((item) => (
                   <Carousel.Slide key={item.name}>
@@ -167,7 +168,9 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
       </div>
       <div style={{position: 'absolute', bottom: 35, right: 35}}>
         <AddProfileButton />
-        {mobile && (<ActionIcon
+        {/* TODO: Extract this action icon */}
+        {mobile && (
+          <ActionIcon
             onClick={() => {editCurrentProfile()}}
             size={mobile ? 52 : 64}
             mb='xs'
@@ -181,22 +184,8 @@ export function CharacterPanels({profiles, setSelectedProfile}: CharacterPanelPr
           >
             {colorScheme === 'dark' ? <IconTool size={32} /> : <IconTool size={32}/> }
           </ActionIcon>
-          )}
-        {(status === 'authenticated' && session.user.role === 'admin') && 
-          <ActionIcon
-            onClick={() => {router.push('/explore')}}
-            size={mobile ? 52 : 64}
-            variant='filled'
-            radius="xl"
-            sx={(theme) => ({
-              backgroundColor:
-                theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
-              color: theme.colorScheme === 'dark' ? theme.colors.green[7] : theme.colors.grape[7],
-            })}
-          >
-            {colorScheme === 'dark' ? <IconCompass size={32} /> : <IconCompass size={32}/> }
-          </ActionIcon>
-        }
+        )}
+        <ExploreButton />
       </div>
     </div>
   );

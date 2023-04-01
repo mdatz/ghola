@@ -4,6 +4,7 @@ import { authOptions } from "../auth/[...nextauth]";
 
 import mongooseConnector from '../../../lib/db/mongooseConnector';
 import Profile from '../../../models/profile';
+import { getToken } from 'next-auth/jwt';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -22,6 +23,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             });
         }
 
+        const token = await getToken({ req });
+        if(!token) {
+            res.status(401).json({
+                message: 'Unauthorized'
+            });
+            return;
+        }
+
         try{
             const { messages, profile } = req.body;
             if(!messages || !profile) {
@@ -29,6 +38,40 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     message: 'Missing messages and/or profile'
                 });
                 return;
+            }
+
+            try{
+                await mongooseConnector();
+            }catch(error) {
+                console.error('Error connecting to database')
+                console.error(error);
+                res.status(500).json({
+                    message: 'Server Error - Please try again later',
+                });
+                return;
+            }
+
+            try{
+                const srcProfile = await Profile.findById(profile._id);
+                if(!srcProfile) {
+                    res.status(400).json({
+                        message: 'Profile does not exist'
+                    });
+                    return;
+                }
+                if(srcProfile.visibility === 'private' && srcProfile.creator.toString() !== token.uid) {
+                    res.status(400).json({
+                        message: 'Profile is not public'
+                    });
+                    return;
+                }
+
+            }catch(error) {
+                console.error('Error retrieving profile with id: ' + profile._id);
+                console.error(error);
+                res.status(400).json({
+                    message: 'Profile does not exist'
+                });
             }
 
             const moderation = await fetch('https://api.openai.com/v1/moderations', {
@@ -85,14 +128,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 })
             });
             
-            //Increment Profile Message Count
-            try{
-                await mongooseConnector();
-            }catch(error) {
-                console.error('Error connecting to database')
-                console.error(error);
-            }
-
             try{
                 await Profile.findByIdAndUpdate(profile._id, {
                     $inc: { messageCount: 1 }
