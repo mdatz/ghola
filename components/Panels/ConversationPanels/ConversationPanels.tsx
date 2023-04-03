@@ -71,7 +71,7 @@ export function ConversationPanels() {
         <>
         {isMobile ?
             <div style={{overflow: 'hidden'}}>
-            <Flex direction='column' py='xl' px='xs' style={{height: '100%'}}>
+            <Flex direction='column' py='xl' px='xs' style={{height: '80vh'}}>
                 <div style={{height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                     <ConversationPanel messages={messages} setMessages={setMessages} generating={generating}/>
                 </div>

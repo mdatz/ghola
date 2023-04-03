@@ -18,7 +18,7 @@ export function HomeButton() {
             sx={(theme) => ({
             backgroundColor:
                 theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
-            color: theme.colorScheme === 'dark' ? theme.colors.green[7] : theme.colors.grape[7],
+            color: theme.colorScheme === 'dark' ? theme.colors.grape[6] : theme.colors.grape[6],
             })}>
                 {colorScheme === 'dark' ? <IconHome size={32} /> : <IconHome size={32}/> }
         </ActionIcon>

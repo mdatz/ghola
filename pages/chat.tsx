@@ -8,6 +8,7 @@ import { useConversationContext } from '../context/ConversationContext';
 
 export default function Chat() {
 
+    const { selectedProfile } = useConversationContext();
     const { data: session, status } = useSession();
     const router = useRouter();
 
@@ -16,6 +17,12 @@ export default function Chat() {
             router.push('/login');
         }
     }, [status]);
+
+    useEffect(() => {
+        if (selectedProfile === null) {
+            router.push('/dashboard');
+        }
+    });
 
     return (
         <div className='fullscreen'>

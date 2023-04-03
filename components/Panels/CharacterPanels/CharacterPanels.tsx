@@ -22,7 +22,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   mobileCard: {
-    height: 600,
+    height: '80vh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -109,12 +109,12 @@ export function CharacterPanels({profiles}: CharacterPanelProps) {
               breakpoints={[{ maxWidth: 'sm', slideSize: '100%', slideGap: 2 }]}
               slideGap="xl"
               align="start"
-              height={mobile ? 600 : 'auto'}
+              height={mobile ? '80vh' : 'auto'}
               orientation={mobile ? 'vertical' : 'horizontal'}
               slidesToScroll={1}
               initialSlide={selectedIndex}
               onSlideChange={(index) => {setSelectedIndex(index)}}
-              withIndicators={!mobile}
+              pt={mobile ? 'xl' : 0}
               loop>
                 {profiles.map((item) => (
                   <Carousel.Slide key={item.name}>
@@ -179,7 +179,7 @@ export function CharacterPanels({profiles}: CharacterPanelProps) {
             sx={(theme) => ({
               backgroundColor:
                 theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
-              color: theme.colorScheme === 'dark' ? theme.colors.green[7] : theme.colors.grape[7],
+              color: theme.colorScheme === 'dark' ? theme.colors.grape[6] : theme.colors.grape[6],
             })}
           >
             {colorScheme === 'dark' ? <IconTool size={32} /> : <IconTool size={32}/> }

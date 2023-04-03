@@ -1,5 +1,5 @@
 import { useMediaQuery } from '@mantine/hooks';
-import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, Grid, Center, TextInput, Loader } from '@mantine/core';
+import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, Grid, Center, TextInput, Loader, Stack } from '@mantine/core';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { TbSearch } from 'react-icons/tb';
@@ -18,7 +18,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   mobileCard: {
-    height: 600,
+    height: '40vh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -123,7 +123,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
         {
           (profiles && profiles.length > 0 && !searching ) && (
             <>
-              <Grid style={mobile ? {width: '100%', height: '400px'} : {width: '95%', height: 'auto'}}>
+              <Grid style={mobile ? {width: '100%', height: '40vh'} : {width: '95%', height: 'auto'}}>
               {profiles.map((item) => (
                 <Grid.Col span={mobile ? 12 : 3}>
                     <Card profile={item} setSelectedProfile={setSelectedProfile}/>
@@ -145,7 +145,10 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
             <>
             {mobile ? 
               (
-                <Skeleton height={600} radius='md' />
+                <div style={{display: 'flex', height: '90vh', width: '100%', flexDirection: 'column'}}>
+                  <Skeleton height='40vh' radius='md' />
+                  <Skeleton height='40vh' mt='md' radius='md' />
+                </div>
               ) 
             : 
               (

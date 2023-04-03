@@ -30,7 +30,7 @@ export function ConversationPanel({ messages, setMessages, generating }: { messa
     return (
         <>
             <Card shadow='md' style={isMobile ? {minWidth: '91vw'} : {minWidth: '40vw'}}>
-                <ScrollArea style={isMobile ? {display: 'flex', flexDirection: 'column', height: '65vh', zIndex: 2077} : {display: 'flex', flexDirection: 'column', height: '583px', zIndex: 2077}} viewportRef={viewport} offsetScrollbars>
+                <ScrollArea style={isMobile ? {display: 'flex', flexDirection: 'column', height: '50vh', zIndex: 2077} : {display: 'flex', flexDirection: 'column', height: '583px', zIndex: 2077}} viewportRef={viewport} offsetScrollbars>
                     {messages.length ? messages.map((message) => {
                         return (
                             <>
