@@ -22,7 +22,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   mobileCard: {
-    height: '80vh',
+    height: '70vh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -109,12 +109,11 @@ export function CharacterPanels({profiles}: CharacterPanelProps) {
               breakpoints={[{ maxWidth: 'sm', slideSize: '100%', slideGap: 2 }]}
               slideGap="xl"
               align="start"
-              height={mobile ? '80vh' : 'auto'}
+              height={mobile ? '70vh' : 'auto'}
               orientation={mobile ? 'vertical' : 'horizontal'}
               slidesToScroll={1}
               initialSlide={selectedIndex}
               onSlideChange={(index) => {setSelectedIndex(index)}}
-              pt={mobile ? 'xl' : 0}
               loop>
                 {profiles.map((item) => (
                   <Carousel.Slide key={item.name}>

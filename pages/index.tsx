@@ -129,7 +129,7 @@ export default function HomePage() {
     <div className='index-container'>
     <div>
       <Header/>
-      <Container mt={isMobile ? -30 : -30} mb={isMobile ? -80 : -30}> 
+      <Container mt={isMobile ? -70 : -30} mb={isMobile ? -80 : -30}> 
         <div className={classes.inner}>
           <div className={classes.content}>
             <Title className={classes.title}>
