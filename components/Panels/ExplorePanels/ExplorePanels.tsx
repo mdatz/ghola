@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { TbSearch } from 'react-icons/tb';
 import { useConversationContext } from '../../../context/ConversationContext';
 import { HomeButton } from '../../Buttons/HomeButton/HomeButton';
+import Axios from 'axios';
 
 const useStyles = createStyles((theme) => ({
   desktopCard: {
@@ -88,6 +89,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
   const [searchValue, setSearchValue] = useState('');
   const [searching, setSearching] = useState(false);
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [searchResults, setSearchResults] = useState<Profile[]>([]);
 
   useEffect(() => {
     if (searchTimeout) {
@@ -96,11 +98,14 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
     if (searchValue.length > 0) {
       setSearching(true);
       setSearchTimeout(setTimeout(() => {
-        //TODO: Insert Network Request Here
+        Axios.get('/api/profile/public', {params: {search: searchValue}}).then((res) => {
+          setSearchResults(res.data.data);
+        });
         setSearching(false);
-      }, 400));
+      }, 600));
     } else {
       if(searchTimeout) {clearTimeout(searchTimeout);}
+      if(searchResults.length > 0) {setSearchResults([]);}
       setSearching(false);
     }
   }, [searchValue]);
@@ -121,7 +126,26 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
       </Center>
       <div style={{display: 'flex', alignItems: 'start', justifyContent: 'center', marginTop: '25px', marginBottom: '25px', height: '80vh', width: '100%'}}>
         {
-          (profiles && profiles.length > 0 && !searching ) && (
+          (searchResults && searchResults.length > 0 && !searching) && (
+            <>
+              <Grid style={mobile ? {width: '100%', height: '40vh'} : {width: '95%', height: 'auto'}}>
+              {searchResults.map((item) => (
+                <Grid.Col span={mobile ? 12 : 3}>
+                    <Card profile={item} setSelectedProfile={setSelectedProfile}/>
+                </Grid.Col>
+              ))}
+              </Grid>
+            </>
+        )}
+        { 
+          searchResults && searchResults.length === 0 && searchValue && searchValue.length > 0 && !searching && (
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+              {!mobile && <h1 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'}}>No better time to create a new profile!</h1>}
+              <h2 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 28, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 28, lineHeight: 1.2, textAlign: 'center'}}>No profiles found</h2>
+            </div>
+          )
+        }
+          {(profiles && profiles.length > 0 && !searching && searchValue?.length === 0) && (
             <>
               <Grid style={mobile ? {width: '100%', height: '40vh'} : {width: '95%', height: 'auto'}}>
               {profiles.map((item) => (
@@ -136,7 +160,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
           profiles && profiles.length === 0 && (
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
               {!mobile && <h1 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'}}>No community profiles found.</h1>}
-              <h2 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'}}>Please check back later.</h2>
+              <h2 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 28, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 28, lineHeight: 1.2, textAlign: 'center'}}>Please check back later.</h2>
             </div>
           )
         }

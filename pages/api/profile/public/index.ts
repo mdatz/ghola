@@ -45,26 +45,47 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 return;
             }
 
-            try{
+            if(req.query.search) {
 
-                const profiles = await Profile.find({ visibility: 'public' }).sort({ messageCount: -1 }).limit(16);
+                try{
+                    const profiles = await Profile.find({ $and: [ { visibility: 'public' }, { $or: [ { username: { $regex: req.query.search, $options: 'i' } }, { name: { $regex: req.query.search, $options: 'i' } } ] } ] }).limit(16);
 
-                //return profiles as an array of json objects
-                res.status(200).json({
-                    message: 'Profiles fetched successfully',
-                    data: profiles,
-                });
+                    res.status(200).json({
+                        message: 'Profiles fetched successfully',
+                        data: profiles,
+                    });
+    
+                    return;
+                }catch(error) {
+                    console.log(error);
+                    res.status(500).json({
+                        message: 'Error fetching queried profiles',
+                    });
+                    return;
+                }
+            }else{
+                try{
 
-                return;
-
-            }catch(error) {
-                console.log(error);
-                res.status(500).json({
-                    message: 'Error fetching profiles',
-                });
-                return;
+                    const profiles = await Profile.find({ visibility: 'public' }).sort({ messageCount: -1 }).limit(16);
+    
+                    //return profiles as an array of json objects
+                    res.status(200).json({
+                        message: 'Profiles fetched successfully',
+                        data: profiles,
+                    });
+    
+                    return;
+    
+                }catch(error) {
+                    console.log(error);
+                    res.status(500).json({
+                        message: 'Error fetching top 16 profiles',
+                    });
+                    return;
+                }
             }
     
         }
 
+        return;
 }
