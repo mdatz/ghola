@@ -146,7 +146,7 @@ export function CharacterPanels({profiles}: CharacterPanelProps) {
             breakpoints={[{ maxWidth: 'sm', slideSize: '100%', slideGap: 2 }]}
             slideGap="xl"
             align="start"
-            height={mobile ? 600 : 'auto'}
+            height={mobile ? '70vh' : 'auto'}
             orientation={mobile ? 'vertical' : 'horizontal'}
             slidesToScroll={1}
             loop>
