@@ -121,8 +121,8 @@ export function CharacterPanels({profiles}: CharacterPanelProps) {
                   </Carousel.Slide>
                 ))}
             </Carousel>
-            <Modal opened={modalOpen} transition='slide-down' onClose={() => {setModalOpen(false); setProfile(null)}} withCloseButton={false}>
-              <Flex style={{display: 'flex', alignItems: 'center'}}>
+            <Modal title='Edit Profile' opened={modalOpen} transition='slide-down' onClose={() => {setModalOpen(false); setProfile(null)}}>
+              <Flex style={{display: 'flex', alignItems: 'center'}} mt={-15}>
                 <div style={{width: '100%'}}>
                     {profile && <AttributePanel profile={profile} setProfile={setProfile}/>}
                 </div>
@@ -152,7 +152,7 @@ export function CharacterPanels({profiles}: CharacterPanelProps) {
             loop>
               {mobile ? (
                 <Carousel.Slide>
-                  <Skeleton height={600} />
+                  <Skeleton height={'70vh'} />
                 </Carousel.Slide>
               ):(
                 [1,2,3,4].map((item) => (
