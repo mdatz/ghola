@@ -67,6 +67,51 @@ export function ConversationPanels() {
         }
     }, [messages]);
 
+    useEffect(() => {
+        if(profile && !generating) {
+            setGenerating(true);
+            Axios.post('/api/generate', {
+                messages: messages,
+                profile: profile
+            }).then((response) => {
+                setMessages([...messages, {
+                    role: 'assistant',
+                    content: response.data.message
+                }]);
+            }).catch((error) => {
+                if(error.response.status === 400) {
+                    if(error.response.data.scores){
+                        console.log('Moderation Categories: ', error.response.data.categories);
+                        console.log('Moderation Scores: ', error.response.data.scores);
+                        setMessages(messages.slice(0, messages.length - 1));
+                        showNotification({
+                            title: 'Error',
+                            message: 'This conversation is not ideal...Please try again...',
+                            autoClose: 3000,
+                            color: 'red'
+                        });
+                    } else {
+                        showNotification({
+                            title: 'Error',
+                            message: 'Bad Request. Please try again later.',
+                            autoClose: 3000,
+                            color: 'red'
+                        });
+                    } 
+                } else {
+                    showNotification({
+                        title: 'Error',
+                        message: 'An error occurred while generating a greeting message. Please try again later.',
+                        autoClose: 3000,
+                        color: 'red'
+                    })
+                }
+            }).finally(() => {
+                setGenerating(false);
+            }); 
+        }
+    }, [])
+
     return (
         <>
         {isMobile ?

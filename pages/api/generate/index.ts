@@ -74,25 +74,27 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 });
             }
 
-            const moderation = await fetch('https://api.openai.com/v1/moderations', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${process.env.OPEN_AI_KEY}`
-                },
-                body: JSON.stringify({
-                    input: messages[messages.length - 1].content,
-                })
-            });
-
-            const moderationData = await moderation.json();
-            if(moderationData.results[0].flagged) {
-                res.status(400).json({
-                    message: 'Message fails moderation checks',
-                    categories: moderationData.results[0].categories,
-                    scores: moderationData.results[0].category_scores
+            if(messages.length) {
+                const moderation = await fetch('https://api.openai.com/v1/moderations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${process.env.OPEN_AI_KEY}`
+                    },
+                    body: JSON.stringify({
+                        input: messages[messages.length - 1].content,
+                    })
                 });
-                return;
+
+                const moderationData = await moderation.json();
+                if(moderationData.results[0].flagged) {
+                    res.status(400).json({
+                        message: 'Message fails moderation checks',
+                        categories: moderationData.results[0].categories,
+                        scores: moderationData.results[0].category_scores
+                    });
+                    return;
+                }
             }
             
             let systemPreamble = '';
@@ -101,12 +103,21 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 [ADDITIONAL CONTEXT]\n
                     - Please note that the character description may not be complete, but feel free to use your imagination to play the role.\n
                     - No need for introducing yourself.`;
-            } else {
-                systemPreamble = `Please only respond as the character ${profile.name} and role play as if ${profile.name} was sending a text message response to continue the following conversation. The character description of ${profile.name} is as follows: ${profile.description}.\n
+            } else if(!messages.length) {
+                systemPreamble = `Please create a message to start a conversation as ${profile.name} and role play as if ${profile.name} was beginning a text message conversation. The conversation you are having is with the user ${token.name} (or a fun shorthand name/nickname of it) and the detailed character description of ${profile.name} is as follows: ${profile.description}.\n\n
                                   [ADDITIONAL CONTEXT]\n
                                     - Please note that the character description may not be complete, but feel free to use your imagination to play the role.\n
                                     - No need for introducing yourself.\n
-                                    - Please do not include any pre formatted intro tags like [name]:`;
+                                    - Please DO NOT include any formatting like: ${profile.name}:\n
+                                    - If there are no messages in the conversation, please just start the conversation.\n
+                                    - Please meet all the previous requirements.`;
+            } else {
+                systemPreamble = `Please only respond as ${profile.name} and role play as if ${profile.name} was sending a response text message to the following conversation. The conversation you are having is with the user ${token.name} (or a fun shorthand name/nickname of it) and the detailed character description of ${profile.name} is as follows: ${profile.description}.\n\n
+                                  [ADDITIONAL CONTEXT]\n
+                                    - Please note that the character description may not be complete, but feel free to use your imagination to play the role.\n
+                                    - No need for introducing yourself.\n
+                                    - Please DO NOT include any formatting like: ${profile.name}:\n
+                                    - Please meet all the previous requirements.`;
             }
 
             const response = await fetch('https://api.openai.com/v1/chat/completions', {
