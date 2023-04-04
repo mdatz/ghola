@@ -58,7 +58,7 @@ export function ConversationPanel({ messages, setMessages, generating }: { messa
                 <Divider mb='sm' mt='md' />
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px'}}>
                     <Textarea style={{width: '100%'}} minRows={1} maxRows={3} value={message} onChange={(event) => setMessage(event.currentTarget.value)} autosize/>
-                    <Button color='grape' onClick={() => {updateConversation()}}>Send</Button>
+                    <Button color='grape' onClick={() => {updateConversation()}} loading={generating}>Send</Button>
                 </div>
             </Card>
         </>

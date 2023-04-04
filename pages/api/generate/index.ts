@@ -117,6 +117,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                                     - Please note that the character description may not be complete, but feel free to use your imagination to play the role.\n
                                     - No need for introducing yourself.\n
                                     - Please DO NOT include any formatting like: ${profile.name}:\n
+                                    - Don't use the users name too much, it's a bit weird.\n
                                     - Please meet all the previous requirements.`;
             }
 
