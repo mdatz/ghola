@@ -1979,7 +1979,7 @@
     "@typescript-eslint/types" "5.57.0"
     "eslint-visitor-keys" "^3.3.0"
 
-"@vercel/analytics@^0.1.6":
+"@vercel/analytics@^0.1.11":
   "integrity" "sha512-mj5CPR02y0BRs1tN3oZcBNAX9a8NxsIUl9vElDPcqxnMfP0RbRc9fI9Ud7+QDg/1Izvt5uMumsr+6YsmVHcyuw=="
   "resolved" "https://registry.npmjs.org/@vercel/analytics/-/analytics-0.1.11.tgz"
   "version" "0.1.11"

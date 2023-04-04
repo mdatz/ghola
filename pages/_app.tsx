@@ -6,6 +6,7 @@ import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core
 import { NotificationsProvider } from '@mantine/notifications';
 import { SessionProvider } from 'next-auth/react';
 import { ConversationProvider } from '../context/ConversationContext';
+import { Analytics } from '@vercel/analytics/react';
 import '../global.css';
 
 export default function App(props: AppProps & { colorScheme: ColorScheme, session: any }) {
@@ -37,6 +38,7 @@ export default function App(props: AppProps & { colorScheme: ColorScheme, sessio
           </MantineProvider>
         </ColorSchemeProvider>
       </SessionProvider>
+      <Analytics />
     </>
   );
 }
