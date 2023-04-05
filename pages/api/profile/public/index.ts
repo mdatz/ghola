@@ -48,7 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             if(req.query.search) {
 
                 try{
-                    const profiles = await Profile.find({ $and: [ { visibility: 'public' }, { $or: [ { username: { $regex: req.query.search, $options: 'i' } }, { name: { $regex: req.query.search, $options: 'i' } } ] } ] }).limit(16);
+                    const profiles = await Profile.find({ $and: [ { visibility: 'public' }, { $or: [ { username: { $regex: req.query.search, $options: 'i' } }, { name: { $regex: req.query.search, $options: 'i' } } ] } ] }).sort({messageCount: -1}).limit(16);
 
                     res.status(200).json({
                         message: 'Profiles fetched successfully',

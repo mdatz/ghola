@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import { AttributePanel } from '../ConversationPanels/AttributePanel/AttributePanel';
 import { ExploreButton } from '../../Buttons/ExploreButton/ExploreButton';
 import { useConversationContext } from '../../../context/ConversationContext';
+import { TbMessages } from 'react-icons/tb';
 
 
 const useStyles = createStyles((theme) => ({
@@ -74,6 +75,12 @@ function Card({ profile, setSelectedProfile }: CardProps) {
         <Title order={3} className={classes.title}>
           {profile.name}
         </Title>
+        <Flex gap={4} mt={4}>
+          <TbMessages size={20}/>
+          <Title order={4} className={classes.category}>
+            {profile.messageCount}
+          </Title>
+        </Flex>
       </div>
       <Button variant="white" color="dark" onClick={() => {setSelectedProfile(profile); router.push('/chat');}}>
         {mobile ? 'Open Chat' : 'Open Profile'}

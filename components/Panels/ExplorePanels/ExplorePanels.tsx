@@ -1,8 +1,8 @@
 import { useMediaQuery } from '@mantine/hooks';
-import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, Grid, Center, TextInput, Loader, Stack } from '@mantine/core';
+import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, Grid, Center, TextInput, Loader, Stack, Flex } from '@mantine/core';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { TbSearch } from 'react-icons/tb';
+import { TbSearch, TbMessages } from 'react-icons/tb';
 import { useConversationContext } from '../../../context/ConversationContext';
 import { HomeButton } from '../../Buttons/HomeButton/HomeButton';
 import Axios from 'axios';
@@ -72,6 +72,12 @@ function Card({ profile, setSelectedProfile }: CardProps) {
         <Title order={3} className={classes.title}>
           {profile.name}
         </Title>
+        <Flex gap={4} mt={4}>
+          <TbMessages size={20}/>
+          <Title order={4} className={classes.category}>
+            {profile.messageCount}
+          </Title>
+        </Flex>
       </div>
       <Button variant="white" color="dark" onClick={() => {setSelectedProfile(profile); router.push('/chat');}}>
         Open Profile
@@ -129,7 +135,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
           (searchResults && searchResults.length > 0 && !searching) && (
             <>
               <Grid style={mobile ? {width: '100%', height: '40vh'} : {width: '95%', height: 'auto'}}>
-              {searchResults.map((item) => (
+              {searchResults.map((item, index) => (
                 <Grid.Col span={mobile ? 12 : 3}>
                     <Card profile={item} setSelectedProfile={setSelectedProfile}/>
                 </Grid.Col>
