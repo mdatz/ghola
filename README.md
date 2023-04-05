@@ -7,6 +7,7 @@
 <p align="center">Ghola is an open-source chatbot profile manager that lets you create and manage different personas and engage in conversation with them. It's a powerful tool that lets you explore new and creative ways to communicate and express yourself. <b>Want to see Ghola in action?</b> <em>Check out our website</em> at <a href="https://ghola.ai">ghola.ai</a> and start creating your own chatbot personas today or start exploring profiles from the community!</p>
 <br/>
 <div align="center">
+  <img src="https://user-images.githubusercontent.com/26133178/229704380-aca2659f-8dce-47cb-9608-654650af4e14.PNG" alt="Explore Panels" style="width:90%;">
   <img src="https://user-images.githubusercontent.com/26133178/228116983-46f9e40e-b3f1-4809-ae4a-f085447f3328.PNG" alt="Character Panels" style="width:90%;">
   <img src="https://user-images.githubusercontent.com/26133178/228116992-5ca4cead-0009-471d-b628-78446e7a627e.PNG" alt="Conversation Panels" style="width:90%;">
 </div>
