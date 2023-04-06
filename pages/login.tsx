@@ -25,15 +25,6 @@ import { useEffect } from 'react';
       backgroundRepeat: 'no-repeat', 
       border: 'none', 
       cursor: 'pointer',
-      '&:hover': {
-        backgroundImage: 'url(/google/btn_google_signin_light_focus_web.png)',
-      },
-      '&:active': {
-        backgroundImage: 'url(/google/btn_google_signin_light_pressed_web.png)',
-      },
-      '&:disabled': {
-        backgroundImage: 'url(/google/btn_google_signin_light_disabled_web.png)',
-      }
     },
 
     form: {
