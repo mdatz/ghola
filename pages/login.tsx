@@ -3,12 +3,13 @@ import {
     createStyles,
     Title,
     ActionIcon,
-    Center,
+    Button,
   } from '@mantine/core';
 import { IconArrowLeft } from '@tabler/icons';
 import { useRouter } from 'next/router';
 import { useSession, signIn } from 'next-auth/react';
 import { useEffect } from 'react';
+import { FcGoogle } from 'react-icons/fc';
   
   const useStyles = createStyles((theme) => ({
     wrapperImage: {
@@ -79,9 +80,9 @@ import { useEffect } from 'react';
           <Title order={2} className={classes.title} align="center" mt="md" mb={50}>
             Welcome to ghola!
           </Title>
-          <Center>
-            <div className={classes.googleSignIn} onClick={() => {signIn("google", { callbackUrl: window.location.origin + '/dashboard' })}}/>
-          </Center>
+          <Button fullWidth mt="xl" size="md" color='grape' leftIcon={<FcGoogle size={32} />} onClick={() => {signIn("google", { callbackUrl: window.location.origin + '/dashboard' })}}>
+            Sign in with Google
+          </Button>
         </Paper>
       </div>
     );
