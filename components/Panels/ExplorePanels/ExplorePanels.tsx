@@ -194,7 +194,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
           )
         }
       </div>
-      <div style={{position: 'fixed', bottom: 35, right: 35}}>
+      <div style={{position: 'fixed', bottom: 35, right: 35, zIndex: 2077}}>
           <HomeButton/>
       </div>
     </div>
