@@ -121,6 +121,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                                     - Please meet all the previous requirements.`;
             }
 
+            const constrainedMessages = messages.slice(-12);
             const response = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: {
@@ -135,7 +136,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                             "role": "system",
                             "content": systemPreamble
                         },
-                        ...messages
+                        ...constrainedMessages
                     ]
                 })
             });
