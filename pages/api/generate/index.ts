@@ -122,6 +122,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             }
 
             const constrainedMessages = messages.slice(-12);
+            constrainedMessages.forEach((message: {role: string, content: string}) => {
+                if (message.content.length > 350 && message.role === 'user') {
+                    message.content = message.content.slice(0, 500);
+                }
+            });
+
             const response = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: {
