@@ -1,15 +1,14 @@
 import {
     Paper,
     createStyles,
-    Button,
     Title,
     ActionIcon,
+    Center,
   } from '@mantine/core';
 import { IconArrowLeft } from '@tabler/icons';
 import { useRouter } from 'next/router';
 import { useSession, signIn } from 'next-auth/react';
 import { useEffect } from 'react';
-import { FcGoogle } from 'react-icons/fc';
   
   const useStyles = createStyles((theme) => ({
     wrapperImage: {
@@ -18,7 +17,25 @@ import { FcGoogle } from 'react-icons/fc';
       backgroundImage:
         'url(https://images.unsplash.com/photo-1496504175726-c7b4523c7e81?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2117&q=80)',
     },
-  
+    
+    googleSignIn : {
+      backgroundImage: 'url(/google/btn_google_signin_light_normal_web.png)',
+      width: '191px', 
+      height: '46px', 
+      backgroundRepeat: 'no-repeat', 
+      border: 'none', 
+      cursor: 'pointer',
+      '&:hover': {
+        backgroundImage: 'url(/google/btn_google_signin_light_focus_web.png)',
+      },
+      '&:active': {
+        backgroundImage: 'url(/google/btn_google_signin_light_pressed_web.png)',
+      },
+      '&:disabled': {
+        backgroundImage: 'url(/google/btn_google_signin_light_disabled_web.png)',
+      }
+    },
+
     form: {
       borderRight: `1px solid ${
         theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[3]
@@ -71,10 +88,9 @@ import { FcGoogle } from 'react-icons/fc';
           <Title order={2} className={classes.title} align="center" mt="md" mb={50}>
             Welcome to ghola!
           </Title>
-  
-          <Button fullWidth mt="xl" size="md" color='grape' leftIcon={<FcGoogle size={32} />} onClick={() => {signIn("google", { callbackUrl: window.location.origin + '/dashboard' })}}>
-            Sign in with Google
-          </Button>
+          <Center>
+            <div className={classes.googleSignIn} onClick={() => {signIn("google", { callbackUrl: window.location.origin + '/dashboard' })}}/>
+          </Center>
         </Paper>
       </div>
     );
