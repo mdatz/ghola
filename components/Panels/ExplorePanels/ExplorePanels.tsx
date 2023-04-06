@@ -9,7 +9,7 @@ import Axios from 'axios';
 
 const useStyles = createStyles((theme) => ({
   desktopCard: {
-    minHeight: '20vh',
+    minHeight: '23vh',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -183,7 +183,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
             : 
               (
                 <Grid style={mobile ? {width: '100%', height: '400px'} : {width: '95%', height: 'auto'}}>
-                  {[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16].map((item, index) => (
+                  {[1,2,3,4,5,6,7,8,9,10,11,12].map((item, index) => (
                       <Grid.Col span={mobile ? 12 : 3} key={index}>
                         <Skeleton height='20vh' radius='md'/>
                       </Grid.Col>

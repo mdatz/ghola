@@ -44,11 +44,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 });
                 return;
             }
-
-            if(req.query.search) {
+            
+            if(req.query.total) {
+                try{
+                    const total = await Profile.countDocuments({ visibility: 'public' });
+                    res.status(200).json({
+                        message: 'Total profiles fetched successfully',
+                        data: total,
+                    });
+                    return;
+                }catch(error) {
+                    console.log(error);
+                    res.status(500).json({
+                        message: 'Error fetching total profiles',
+                    });
+                    return;
+                }
+            }else if(req.query.search) {
 
                 try{
-                    const profiles = await Profile.find({ $and: [ { visibility: 'public' }, { $or: [ { username: { $regex: req.query.search, $options: 'i' } }, { name: { $regex: req.query.search, $options: 'i' } } ] } ] }).sort({messageCount: -1}).limit(16);
+                    const profiles = await Profile.find({ $and: [ { visibility: 'public' }, { $or: [ { username: { $regex: req.query.search, $options: 'i' } }, { name: { $regex: req.query.search, $options: 'i' } } ] } ] }).limit(12);
 
                     res.status(200).json({
                         message: 'Profiles fetched successfully',
@@ -63,28 +78,40 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     });
                     return;
                 }
-            }else{
+            }else if(req.query.page) {
                 try{
+                    const profiles = await Profile.find({ visibility: 'public' }).sort({messageCount: -1}).skip(16 * (parseInt(req.query.page?.[0]) - 1)).limit(12);
 
-                    const profiles = await Profile.find({ visibility: 'public' }).sort({ messageCount: -1 }).limit(16);
-    
-                    //return profiles as an array of json objects
                     res.status(200).json({
                         message: 'Profiles fetched successfully',
                         data: profiles,
                     });
     
                     return;
-    
                 }catch(error) {
                     console.log(error);
                     res.status(500).json({
-                        message: 'Error fetching top 16 profiles',
+                        message: 'Error fetching queried profiles',
+                    });
+                    return;
+                }
+            } else {
+                try{
+                    //Default to fetching top 12 profiles
+                    const profiles = await Profile.find({ visibility: 'public' }).sort({ messageCount: -1 }).limit(12);
+                    res.status(200).json({
+                        message: 'Profiles fetched successfully',
+                        data: profiles,
+                    });
+                    return;
+                }catch(error) {
+                    console.log(error);
+                    res.status(500).json({
+                        message: 'Error fetching top 12 profiles',
                     });
                     return;
                 }
             }
-    
         }
 
         return;
