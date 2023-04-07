@@ -1,17 +1,14 @@
-import { Text, Card, Textarea, Button, Paper, Divider, Stack, ScrollArea, Skeleton, useMantineTheme, Checkbox } from '@mantine/core';
+import { Text, Card, Textarea, Button, Paper, Divider, Stack, ScrollArea, Skeleton, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-
-type Message = {
-    role: 'user' | 'assistant' | 'system';
-    content: string;
-}
+import { HighlightConversationButton } from '../../../Buttons/HighlightConversationButton/HighlighConversationButton';
 
 export function ConversationPanel({ messages, setMessages, generating }: { messages: Message[], setMessages: Dispatch<SetStateAction<Message[]>>, generating: boolean}) {
 
     const theme = useMantineTheme();
     let isMobile = useMediaQuery('(max-width: 768px)');
     const [message, setMessage] = useState<string>('');
+    const [selectedMessages, setSelectedMessages] = useState<SelectedMessage[]>([]);
 
     useEffect(() => {scrollToBottom()}, [messages]);
     useEffect(() => {generating && scrollToBottom()}, [generating]);
@@ -27,19 +24,33 @@ export function ConversationPanel({ messages, setMessages, generating }: { messa
         setMessage('');
     }
 
+    const selectMessage = (message : Message, index : number) => {
+        const selectedMessage = { message, index };
+        if (selectedMessages.some((msg) => msg.index === index)) {
+          setSelectedMessages(selectedMessages.filter((msg) => msg.index !== index));
+        } else {
+          setSelectedMessages([...selectedMessages, selectedMessage]);
+        }
+    }
+
+    const isSelected = (index : number) => {
+        return selectedMessages.some((msg) => msg.index === index);
+    };
+      
     return (
         <>
             <Card shadow='md' style={isMobile ? {minWidth: '91vw'} : {minWidth: '40vw'}}>
                 <ScrollArea style={isMobile ? {display: 'flex', flexDirection: 'column', height: '60vh', zIndex: 2077} : {display: 'flex', flexDirection: 'column', height: '583px', zIndex: 2077}} viewportRef={viewport} offsetScrollbars>
-                    {messages.length ? messages.map((message) => {
+                    {messages.length ? messages.map((message, index) => {
                         return (
                             <>
                                 {message.role === 'user' 
-                                    ? <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5'} : {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5'}} shadow='xl'>
+                                    ? 
+                                    <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5', border: '3px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5', border: '3px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5'})} onClick={() => {selectMessage(message, index)}} shadow='xl'>
                                         <Text color='#fafafa'>{message.content}</Text>
-                                        <Checkbox color='grape'/>
                                     </Paper>
-                                    : <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? {width: 'max-content', maxWidth: '30ch', marginRight: 'auto'} : {width: 'max-content', maxWidth: '50ch', marginRight: 'auto'}} shadow='xl' withBorder>
+                                    : 
+                                    <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginRight: 'auto', border: '3px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginRight: 'auto'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginRight: 'auto', border: '3px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginRight: 'auto'})} onClick={() => {selectMessage(message, index)}} shadow='xl' withBorder>
                                         <Text>{message.content}</Text>
                                     </Paper>
                                 }
@@ -62,6 +73,11 @@ export function ConversationPanel({ messages, setMessages, generating }: { messa
                     <Button color='grape' onClick={() => {updateConversation()}} loading={generating}>Send</Button>
                 </div>
             </Card>
+            {/* {selectedMessages.length > 0 && 
+                <div style={{position: 'fixed', bottom: '10px', right: '10px', zIndex: 2077}}>
+                    <HighlightConversationButton highlightedMessages={selectedMessages} />
+                </div>
+            } */}
         </>
     );
 }
