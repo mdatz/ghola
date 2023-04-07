@@ -130,7 +130,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
           rightSection={searching ? <Loader size="xs" /> : <></>}
         />
       </Center>
-      <div style={{display: 'flex', alignItems: 'start', justifyContent: 'center', marginTop: '25px', marginBottom: '25px', height: '80vh', width: '100%'}}>
+      <div style={{display: 'flex', alignItems: 'start', justifyContent: 'center', marginTop: '25px', height: '80vh', width: '100%'}}>
         {
           (searchResults && searchResults.length > 0 && !searching) && (
             <>
@@ -194,7 +194,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
           )
         }
       </div>
-      <div style={{position: 'fixed', bottom: 35, right: 35, zIndex: 2077}}>
+      <div style={mobile ? {position: 'fixed', bottom: 85, right: 35, zIndex: 2077} : {position: 'fixed', bottom: 35, right: 35, zIndex: 2077}}>
           <HomeButton/>
       </div>
     </div>

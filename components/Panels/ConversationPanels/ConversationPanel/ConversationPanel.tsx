@@ -1,7 +1,7 @@
 import { Text, Card, Textarea, Button, Paper, Divider, Stack, ScrollArea, Skeleton, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import { HighlightConversationButton } from '../../../Buttons/HighlightConversationButton/HighlighConversationButton';
+import { ShareConversationButton } from '../../../Buttons/ShareConversationButton/ShareConversationButton';
 
 export function ConversationPanel({ messages, setMessages, generating }: { messages: Message[], setMessages: Dispatch<SetStateAction<Message[]>>, generating: boolean}) {
 
@@ -36,7 +36,7 @@ export function ConversationPanel({ messages, setMessages, generating }: { messa
     const isSelected = (index : number) => {
         return selectedMessages.some((msg) => msg.index === index);
     };
-      
+
     return (
         <>
             <Card shadow='md' style={isMobile ? {minWidth: '91vw'} : {minWidth: '40vw'}}>
@@ -46,11 +46,11 @@ export function ConversationPanel({ messages, setMessages, generating }: { messa
                             <>
                                 {message.role === 'user' 
                                     ? 
-                                    <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5', border: '3px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5', border: '3px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5'})} onClick={() => {selectMessage(message, index)}} shadow='xl'>
+                                    <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5'})} onClick={() => {selectMessage(message, index)}} shadow='xl'>
                                         <Text color='#fafafa'>{message.content}</Text>
                                     </Paper>
                                     : 
-                                    <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginRight: 'auto', border: '3px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginRight: 'auto'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginRight: 'auto', border: '3px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginRight: 'auto'})} onClick={() => {selectMessage(message, index)}} shadow='xl' withBorder>
+                                    <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginRight: 'auto'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginRight: 'auto'})} onClick={() => {selectMessage(message, index)}} shadow='xl' withBorder>
                                         <Text>{message.content}</Text>
                                     </Paper>
                                 }
@@ -73,11 +73,11 @@ export function ConversationPanel({ messages, setMessages, generating }: { messa
                     <Button color='grape' onClick={() => {updateConversation()}} loading={generating}>Send</Button>
                 </div>
             </Card>
-            {/* {selectedMessages.length > 0 && 
+            {selectedMessages.length > 2 && 
                 <div style={{position: 'fixed', bottom: '10px', right: '10px', zIndex: 2077}}>
-                    <HighlightConversationButton highlightedMessages={selectedMessages} />
+                    <ShareConversationButton highlightedMessages={selectedMessages} messages={messages}/>
                 </div>
-            } */}
+            }
         </>
     );
 }

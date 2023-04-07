@@ -8,11 +8,6 @@ import Axios from 'axios';
 import { Card, Flex } from '@mantine/core';
 import { useConversationContext } from '../../../context/ConversationContext';
 
-type Message = {
-    role: 'user' | 'assistant' | 'system';
-    content: string;
-}
-
 export function ConversationPanels() {
     
     let isMobile = useMediaQuery('(max-width: 768px)');

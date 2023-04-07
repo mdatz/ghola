@@ -121,6 +121,7 @@ export function CharacterPanels({profiles}: CharacterPanelProps) {
               slidesToScroll={1}
               initialSlide={selectedIndex}
               onSlideChange={(index) => {setSelectedIndex(index)}}
+              skipSnaps
               loop>
                 {profiles.map((item) => (
                   <Carousel.Slide key={item.name}>
