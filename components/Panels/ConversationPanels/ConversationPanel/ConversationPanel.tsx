@@ -1,4 +1,4 @@
-import { Text, Card, Textarea, Button, Paper, Divider, Stack, ScrollArea, Skeleton, useMantineTheme } from '@mantine/core';
+import { Text, Card, Textarea, Button, Paper, Divider, Stack, ScrollArea, Skeleton, useMantineTheme, Checkbox } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
@@ -37,6 +37,7 @@ export function ConversationPanel({ messages, setMessages, generating }: { messa
                                 {message.role === 'user' 
                                     ? <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5'} : {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5'}} shadow='xl'>
                                         <Text color='#fafafa'>{message.content}</Text>
+                                        <Checkbox color='grape'/>
                                     </Paper>
                                     : <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? {width: 'max-content', maxWidth: '30ch', marginRight: 'auto'} : {width: 'max-content', maxWidth: '50ch', marginRight: 'auto'}} shadow='xl' withBorder>
                                         <Text>{message.content}</Text>
