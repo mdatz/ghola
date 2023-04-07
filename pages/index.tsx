@@ -11,6 +11,7 @@ import {
   Accordion,
   Grid,
   Col,
+  Badge,
 } from '@mantine/core';
 import { IconCheck } from '@tabler/icons';
 import { Header } from '../components/General/Header/Header';
@@ -159,8 +160,14 @@ export default function HomePage() {
                 <b>Multiple Profiles</b> – create multiple chat bots with different personalities and interests 
               </List.Item>
               <List.Item>
-                <b>Profile Community</b> – share your chat bot with others and get feedback on your chat bot’s personality
+                <b>Profile Sharing</b> – share your chat bot with others and get feedback on your chat bot’s personality
               </List.Item>
+              <List.Item>
+                <b>Conversation Sharing</b> <Badge color="grape">In Development</Badge> - share your funniest or most insightful conversations with the world 
+              </List.Item>
+              {/* <List.Item>
+                <b>Backend API</b> <Badge color="grape">In Development</Badge> - use our API to integrate our chat bot into your own projects and services
+              </List.Item> */}
               <List.Item>
                 <b>Open Source</b> – strong believers in the power of open source, we want to build a community around our project
               </List.Item>

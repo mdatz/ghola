@@ -41,6 +41,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 return;
             }
 
+            if(messages.length < 3 || highlightedMessages.length < 3) {
+                res.status(400).json({
+                    message: 'Highlighted conversation is too short'
+                });
+                return;
+            }
+
+            if(highlightedMessages.length > 40) {
+                res.status(400).json({
+                    message: 'Highlighted conversation is too long'
+                });
+                return;
+            }
+
             try{
                 await mongooseConnector();
             }catch(error) {
