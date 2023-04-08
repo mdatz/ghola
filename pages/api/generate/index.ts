@@ -4,6 +4,7 @@ import { authOptions } from "../auth/[...nextauth]";
 
 import mongooseConnector from '../../../lib/db/mongooseConnector';
 import Profile from '../../../models/profile';
+import UsageRecord from '../../../models/usageRecord';
 import { getToken } from 'next-auth/jwt';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
@@ -146,17 +147,44 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     ]
                 })
             });
+
+            if(response.status !== 200) {
+                res.status(500).json({
+                    message: 'Error with chatGPT API request',
+                });
+                return;
+            }
+
+            const data = await response.json();
             
             try{
                 await Profile.findByIdAndUpdate(profile._id, {
                     $inc: { messageCount: 1 }
                 });
             }catch(error) {
-                console.error('Error updating profile message count')
+                console.error('Error updating profile message & token count')
                 console.error(error);
             }
 
-            const data = await response.json();
+            try{
+                const usageRecord = await UsageRecord.findOne({ userId: token.uid, date: new Date().setHours(0,0,0,0) });
+                if(usageRecord) {
+                    await UsageRecord.findByIdAndUpdate(usageRecord._id, {
+                        $inc: { messageCount: 1, tokenCount: data.usage.total_tokens }
+                    });
+                }else{
+                    await UsageRecord.create({
+                        userId: token.uid,
+                        date: new Date().setHours(0,0,0,0),
+                        messageCount: 1,
+                        tokenCount: data.usage.total_tokens
+                    });
+                }
+            }catch(error) {
+                console.error('Error updating usage record')
+                console.error(error);
+            }
+
             res.status(200).json({
                 message: data.choices[0].message.content
             });
