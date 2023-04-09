@@ -96,6 +96,29 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 const cleanedName = xss(name);
                 const cleanedDescription = xss(description);
 
+                const profilePreamble = `Please only respond as ${cleanedName} and role play as if ${cleanedName} was sending a response text message to the following conversation. The detailed character description of ${cleanedName} is as follows: ${cleanedDescription}.`;
+
+                const moderation = await fetch('https://api.openai.com/v1/moderations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${process.env.OPEN_AI_KEY}`
+                    },
+                    body: JSON.stringify({
+                        input: profilePreamble,
+                    })
+                });
+
+                const moderationData = await moderation.json();
+                if(moderationData.results[0].flagged) {
+                    res.status(400).json({
+                        message: 'Profile description or name fails moderation checks',
+                        categories: moderationData.results[0].categories,
+                        scores: moderationData.results[0].category_scores
+                    });
+                    return;
+                }
+
                 const profile = new Profile({
                     name: cleanedName,
                     description: cleanedDescription,
@@ -158,6 +181,29 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 
                 const cleanedName = xss(name);
                 const cleanedDescription = xss(description);
+
+                const profilePreamble = `Please only respond as ${cleanedName} and role play as if ${cleanedName} was sending a response text message to the following conversation. The detailed character description of ${cleanedName} is as follows: ${cleanedDescription}.`;
+
+                const moderation = await fetch('https://api.openai.com/v1/moderations', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${process.env.OPEN_AI_KEY}`
+                    },
+                    body: JSON.stringify({
+                        input: profilePreamble,
+                    })
+                });
+
+                const moderationData = await moderation.json();
+                if(moderationData.results[0].flagged) {
+                    res.status(400).json({
+                        message: 'Profile description or name fails moderation checks',
+                        categories: moderationData.results[0].categories,
+                        scores: moderationData.results[0].category_scores
+                    });
+                    return;
+                }
     
                 const profile = await Profile.where({ _id: _id, creator: creator }).updateOne({
                     name: cleanedName,

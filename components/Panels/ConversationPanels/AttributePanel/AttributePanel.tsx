@@ -54,11 +54,19 @@ export function AttributePanel({profile, setProfile}: AttributePanelProps) {
           });
         }).catch((error) => {
           if(error.response.status === 400) {
-            showNotification({
-              title: 'Error with Profile Update Request',
-              message: 'There was an error with your request. Please check your input values and try again',
-              color: 'red',
-            });
+            if(error.response.data?.message.includes('moderation')) {
+              showNotification({
+                title: 'Content Fails Moderation',
+                message: 'Your profile description or name fails our moderation checks. Please remove any profanity and try again.',
+                color: 'red',
+              });
+            } else {
+              showNotification({
+                title: 'Error with Profile Request',
+                message: 'There was an error with your request. Please check your input values and try again',
+                color: 'red',
+              });
+            }
           } else {
             showNotification({
               title: 'Error Updating Profile',

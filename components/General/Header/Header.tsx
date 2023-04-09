@@ -7,7 +7,7 @@ import { LogOutButton } from '../../Buttons/LogOutButton/LogOutButton';
 import { useSession } from 'next-auth/react';
 import { useConversationContext } from '../../../context/ConversationContext';
 
-export function Header() {
+export function Header({back = false}) {
 
     const { selectedProfile, setSelectedProfile } = useConversationContext();
     const { data: session, status } = useSession();
@@ -19,7 +19,7 @@ export function Header() {
             <Grid align='center' justify='center' my={isMobile ? 4 : 0}>
                 <>
                     <Grid.Col span={4}>
-                        {selectedProfile ?
+                        {(selectedProfile || back) ?
                             <div style={{display: 'flex', justifyContent: 'flex-start', paddingLeft: '1rem'}}>
                                 <ActionIcon
                                     onClick={() => {setSelectedProfile(null); router.back();}}

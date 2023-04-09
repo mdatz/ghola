@@ -9,7 +9,7 @@ import { getToken } from 'next-auth/jwt';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
-        if(req.method !== 'POST') {
+        if(req.method !== 'POST' && req.method !== 'GET') {
             res.status(405).json({
                 message: 'Method not allowed'
             });
@@ -32,29 +32,91 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             return;
         }
 
-        try{
-            const { messages, highlightedMessages, profile } = req.body;
-            if(!messages || !profile || !highlightedMessages) {
-                res.status(400).json({
-                    message: 'Missing highlighted messages and/or profile'
+        if(req.method === 'POST') {
+            try{
+                const { messages, highlightedMessages, profile } = req.body;
+                if(!messages || !profile || !highlightedMessages) {
+                    res.status(400).json({
+                        message: 'Missing highlighted messages and/or profile'
+                    });
+                    return;
+                }
+    
+                if(messages.length < 3 || highlightedMessages.length < 3) {
+                    res.status(400).json({
+                        message: 'Highlighted conversation is too short'
+                    });
+                    return;
+                }
+    
+                if(highlightedMessages.length > 40) {
+                    res.status(400).json({
+                        message: 'Highlighted conversation is too long'
+                    });
+                    return;
+                }
+    
+                try{
+                    await mongooseConnector();
+                }catch(error) {
+                    console.error('Error connecting to database')
+                    console.error(error);
+                    res.status(500).json({
+                        message: 'Server Error - Please try again later',
+                    });
+                    return;
+                }
+    
+                try{
+                    const srcProfile = await Profile.findById(profile._id);
+                    if(!srcProfile) {
+                        res.status(400).json({
+                            message: 'Profile does not exist'
+                        });
+                        return;
+                    }
+                    if(srcProfile.visibility === 'private' && srcProfile.creator.toString() !== token.uid) {
+                        res.status(400).json({
+                            message: 'Profile is not available for this user'
+                        });
+                        return;
+                    }
+    
+                }catch(error) {
+                    console.error('Error retrieving profile with id: ' + profile._id);
+                    console.error(error);
+                    res.status(400).json({
+                        message: 'Profile does not exist'
+                    });
+                }
+                
+                try{
+                    const sharedConversation = new SharedConversation({
+                        profile: profile,
+                        rawMessages: messages,
+                        messages: highlightedMessages,
+                        creator: token.uid,
+                    });
+                    await sharedConversation.save();
+                }catch(error) {
+                    console.error('Error creating shared conversation');
+                    console.error(error);
+                }
+    
+                res.status(200).json({
+                    message: 'Conversation shared successfully'
                 });
-                return;
-            }
-
-            if(messages.length < 3 || highlightedMessages.length < 3) {
-                res.status(400).json({
-                    message: 'Highlighted conversation is too short'
+    
+            } catch(error) {
+                console.log(error);
+                res.status(500).json({
+                    message: 'Error retrieving response',
                 });
-                return;
             }
-
-            if(highlightedMessages.length > 40) {
-                res.status(400).json({
-                    message: 'Highlighted conversation is too long'
-                });
-                return;
-            }
-
+        } else if (req.method === 'GET') {
+            const page = req.query.page ? parseInt(req.query.page.toString()) : 1;
+            const limit = 3;
+            const skip = (page - 1) * limit;
             try{
                 await mongooseConnector();
             }catch(error) {
@@ -65,51 +127,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 });
                 return;
             }
-
             try{
-                const srcProfile = await Profile.findById(profile._id);
-                if(!srcProfile) {
-                    res.status(400).json({
-                        message: 'Profile does not exist'
-                    });
-                    return;
-                }
-                if(srcProfile.visibility === 'private' && srcProfile.creator.toString() !== token.uid) {
-                    res.status(400).json({
-                        message: 'Profile is not available for this user'
-                    });
-                    return;
-                }
-
+                const sharedConversation = await SharedConversation.find({}).select("-rawMessages").sort({likeCount: -1}).skip(skip).limit(limit).populate('profile');
+                res.status(200).json({
+                    sharedConversation
+                });
             }catch(error) {
-                console.error('Error retrieving profile with id: ' + profile._id);
+                console.error('Error retrieving shared conversations');
                 console.error(error);
-                res.status(400).json({
-                    message: 'Profile does not exist'
+                res.status(500).json({
+                    message: 'Server Error - Please try again later',
                 });
             }
-            
-            try{
-                const sharedConversation = new SharedConversation({
-                    profile: profile,
-                    rawMessages: messages,
-                    messages: highlightedMessages,
-                    creator: token.uid,
-                });
-                await sharedConversation.save();
-            }catch(error) {
-                console.error('Error creating shared conversation');
-                console.error(error);
-            }
-
-            res.status(200).json({
-                message: 'Conversation shared successfully'
-            });
-
-        } catch(error) {
-            console.log(error);
-            res.status(500).json({
-                message: 'Error retrieving response',
-            });
         }
 }
