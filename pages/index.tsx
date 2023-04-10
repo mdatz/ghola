@@ -165,20 +165,14 @@ export default function HomePage() {
               <List.Item>
                 <b>Conversation Sharing</b> <Badge color="grape">In Development</Badge> - share your funniest or most insightful conversations with the world 
               </List.Item>
-              {/* <List.Item>
-                <b>Backend API</b> <Badge color="grape">In Development</Badge> - use our API to integrate our chat bot into your own projects and services
-              </List.Item> */}
               <List.Item>
-                <b>Open Source</b> – strong believers in the power of open source, we want to build a community around our project
+                <b>Backend API</b> <Badge color="grape">In Development</Badge> - use our API to integrate our profiles into your own projects and services
               </List.Item>
             </List>
 
             <Group mt={30}>
               <Button radius="xl" size="md" className={classes.control} color='grape' onClick={() => {router.push('login')}}>
                 Get started
-              </Button>
-              <Button variant="default" radius="xl" size="md" className={classes.control} onClick={() =>{window.open('https://github.com/mdatz/ghola', '_blank')}}>
-                Source code
               </Button>
             </Group>
           </div>
