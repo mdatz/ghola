@@ -63,7 +63,7 @@ export function Header({back = false}) {
                                     {(session && status === 'authenticated') ? 
                                         <Menu.Item mb='xs' color='red' icon={<TbDoorExit/>} onClick={() => {signOut()}}>Sign Out</Menu.Item> 
                                     :
-                                        <Menu.Item mb='xs' color='grape' icon={<TbDoorEnter/>} onClick={() => {signIn('google', {callbackUrl: window.location.origin + '/dashboard'})}}>Sign In or Register</Menu.Item>
+                                        <Menu.Item mb='xs' color='grape' icon={<TbDoorEnter/>} onClick={() => {signIn('google', {callbackUrl: window.location.origin + '/dashboard'})}}>Sign In / Register</Menu.Item>
                                     }
                                     <Divider/>
                                     <div style={{width: '180px'}}>
