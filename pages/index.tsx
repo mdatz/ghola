@@ -73,7 +73,7 @@ const useStyles = createStyles((theme) => ({
 
   highlight: {
     position: 'relative',
-    backgroundColor: theme.fn.variant({ variant: 'light', color: theme.colors.grape[4] }).background,
+    backgroundColor: theme.colorScheme === 'dark' ? '#ae3ec933' : '#9c36b533',
     borderRadius: theme.radius.sm,
     padding: '4px 12px',
   },
@@ -195,28 +195,28 @@ export default function HomePage() {
               Frequently Asked Questions
             </Title>
 
-            <Accordion chevronPosition="right" defaultValue="reset-password" variant="separated">
+            <Accordion chevronPosition="right" defaultValue="ai-privacy-security" variant="separated">
               <Accordion.Item className={classes.item} value="reset-password">
                 <Accordion.Control>Are AI chatbots secure and private?</Accordion.Control>
-                <Accordion.Panel>{'Most AI chatbots are designed with security and privacy in mind, and use encryption and other measures to protect user data. However, it is always a good idea to review the privacy policy and terms of service of any chatbot or other online service before providing personal or sensitive information.'}</Accordion.Panel>
+                <Accordion.Panel>{'Most AI chatbots are designed with security and privacy in mind, and use encryption and other measures to protect user data. User accounts are provided solely through Google OAuth for strong privacy measures.'}</Accordion.Panel>
               </Accordion.Item>
 
-              <Accordion.Item className={classes.item} value="another-account">
+              <Accordion.Item className={classes.item} value="multiple-profiles">
                 <Accordion.Control>Can I create more than one AI to talk to?</Accordion.Control>
-                <Accordion.Panel>{'Yes! Ghola is capable of holding any/all chat bot profiles and the conversations with them!'}</Accordion.Panel>
+                <Accordion.Panel>{'Yes! Ghola is capable of holding any/all chat bot profiles and the conversations with them, make as many as you like and share them with the community by making them public.'}</Accordion.Panel>
               </Accordion.Item>
 
-              <Accordion.Item className={classes.item} value="newsletter">
-                <Accordion.Control>Can AI chatbots handle complex or unique questions or problems?</Accordion.Control>
-                <Accordion.Panel>{'Some AI chatbots are more sophisticated than others and may be better equipped to handle complex or unique questions or problems. However, if a chatbot is unable to provide a satisfactory answer or resolution, it may be able to escalate the issue to a human operator for further assistance.'}</Accordion.Panel>
+              <Accordion.Item className={classes.item} value="conversational-data-policy">
+                <Accordion.Control>Does Ghola save my conversations?</Accordion.Control>
+                <Accordion.Panel>{'Ghola does not store private or public conversational data, except in the case the user chooses to share a private or public conversation with the community through the explore page.'}</Accordion.Panel>
               </Accordion.Item>
 
-              <Accordion.Item className={classes.item} value="payment">
+              <Accordion.Item className={classes.item} value="ai-understanding">
                 <Accordion.Control>Will an AI chatbot be able to understand and respond to my needs and concerns?</Accordion.Control>
-                <Accordion.Panel>{"Many AI chatbots are designed to use natural language processing (NLP) and machine learning algorithms to understand and respond to user input. While there may be some limitations to the chatbot's understanding, in many cases it should be able to provide relevant and useful information or assistance"}</Accordion.Panel>
+                <Accordion.Panel>{"Many AI chatbots are designed to use natural language processing (NLP) and large language models to understand and respond to user input. While there may be some limitations to the chatbot's understanding, in many cases it should be able to provide relevant and useful information or assistance"}</Accordion.Panel>
               </Accordion.Item>
 
-              <Accordion.Item className={classes.item} value="credit-card">
+              <Accordion.Item className={classes.item} value="chatbot-reliability">
                 <Accordion.Control>Are AI chatbots reliable?</Accordion.Control>
                 <Accordion.Panel>{'AI chatbots are generally reliable, but like any technology, they may occasionally experience errors or bugs. However, most chatbots are constantly learning and improving, and they are often monitored by human operators to ensure that they are providing accurate and helpful information.'}</Accordion.Panel>
               </Accordion.Item>
