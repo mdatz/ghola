@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { TbSearch, TbMessages } from 'react-icons/tb';
 import { useConversationContext } from '../../../context/ConversationContext';
-import { HomeButton } from '../../Buttons/HomeButton/HomeButton';
 import Axios from 'axios';
 
 const useStyles = createStyles((theme) => ({
@@ -193,9 +192,6 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
             </>
           )
         }
-      </div>
-      <div style={mobile ? {position: 'fixed', bottom: 85, right: 35, zIndex: 2077} : {position: 'fixed', bottom: 35, right: 35, zIndex: 2077}}>
-          <HomeButton/>
       </div>
     </div>
   );

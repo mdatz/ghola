@@ -6,7 +6,6 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { IconTool } from '@tabler/icons';
 import { useRouter } from 'next/router';
 import { AttributePanel } from '../ConversationPanels/AttributePanel/AttributePanel';
-import { ExploreButton } from '../../Buttons/ExploreButton/ExploreButton';
 import { useConversationContext } from '../../../context/ConversationContext';
 import { TbMessages } from 'react-icons/tb';
 
@@ -192,7 +191,6 @@ export function CharacterPanels({profiles}: CharacterPanelProps) {
             {colorScheme === 'dark' ? <IconTool size={32} /> : <IconTool size={32}/> }
           </ActionIcon>
         )}
-        <ExploreButton />
       </div>
     </div>
   );

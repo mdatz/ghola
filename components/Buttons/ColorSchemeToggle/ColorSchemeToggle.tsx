@@ -1,25 +1,35 @@
-import { ActionIcon, useMantineColorScheme } from '@mantine/core';
-import { IconSun, IconMoonStars } from '@tabler/icons';
+import { useMantineColorScheme, SegmentedControl, Group, Center, Box } from '@mantine/core';
+import { IconSun, IconMoon } from '@tabler/icons';
 
-export function ColorSchemeToggle() {
+export  function ColorSchemeToggle() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   return (
-      <ActionIcon
-        onClick={() => toggleColorScheme()}
-        size="xl"
-        radius="xl"
-        sx={(theme) => ({
-          backgroundColor:
-            theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-          color: theme.colorScheme === 'dark' ? theme.colors.yellow[4] : theme.colors.grape[7],
-        })}
-      >
-        {colorScheme === 'dark' ? (
-          <IconSun size={20} stroke={1.5} />
-        ) : (
-          <IconMoonStars size={20} stroke={1.5} />
-        )}
-      </ActionIcon>
+    <Group position="center" mt={8} mb={4}>
+      <SegmentedControl
+        value={colorScheme}
+        onChange={(value: 'light' | 'dark') => toggleColorScheme(value)}
+        data={[
+          {
+            value: 'light',
+            label: (
+              <Center>
+                <IconSun size="1rem" stroke={1.5} />
+                <Box ml={10}>Light</Box>
+              </Center>
+            ),
+          },
+          {
+            value: 'dark',
+            label: (
+              <Center>
+                <IconMoon size="1rem" stroke={1.5} />
+                <Box ml={10}>Dark</Box>
+              </Center>
+            ),
+          },
+        ]}
+      />
+    </Group>
   );
 }
