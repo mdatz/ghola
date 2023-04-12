@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /dashboard/
+Disallow: /explore/
+Disallow: /conversations/
+Disallow: /login/
