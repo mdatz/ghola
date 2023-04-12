@@ -1,4 +1,4 @@
-import { Center, Text, Avatar, Stack, Divider, ThemeIcon, Input, Textarea, Button, Paper, SegmentedControl, ActionIcon, Modal, Group, Skeleton, Title, ScrollArea } from '@mantine/core';
+import { Center, Text, Avatar, Stack, Divider, ThemeIcon, Input, Textarea, Button, Paper, SegmentedControl, ActionIcon, Modal, Group, Skeleton, Title, ScrollArea, Flex } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { useMediaQuery } from '@mantine/hooks';
 import { Dispatch, SetStateAction, useState, useEffect } from 'react';
@@ -170,9 +170,10 @@ export function AttributePanel({profile, setProfile}: AttributePanelProps) {
                         // @ts-ignore
                         onChange={(event: any) => setProfile({...profile, ...{imageUrl: event.currentTarget.value}})} />
                     </Input.Wrapper>
-                    <Textarea label='Profile Description' placeholder='include a detailed summary of the profiles character' minRows={isMobile ? 3 : 6} maxRows={isMobile ? 3 : 6} value={profile?.description}
+                    <Textarea label={<Text>Profile Description</Text>} placeholder='include a detailed summary of the profiles character' minRows={isMobile ? 3 : 6} maxRows={isMobile ? 3 : 6} value={profile?.description}
                     // @ts-ignore
-                    onChange={(event) => setProfile({...profile, ...{description: event.currentTarget.value}})} autosize/>
+                    onChange={(event) => setProfile({...profile, ...{description: event.currentTarget.value.slice(0,1000)}})} autosize/>
+                    <div style={{position: 'relative', display: 'flex', marginTop: -15, justifyContent: 'end'}}><Text size='xs' color='dimmed'>{profile?.description.length}/1000</Text></div>
                     <Divider/>
                     <Button color='grape' onClick={() => {updateProfile()}} disabled={!modified} loading={loading}>Save Profile</Button>
                 </Stack>

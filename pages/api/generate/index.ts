@@ -124,8 +124,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
             const constrainedMessages = messages.slice(-12);
             constrainedMessages.forEach((message: {role: string, content: string}) => {
-                if (message.content.length > 350 && message.role === 'user') {
-                    message.content = message.content.slice(0, 500);
+                if (message.content.length > 1000 && message.role === 'user') {
+                    message.content = message.content.slice(0, 1000);
                 }
             });
 

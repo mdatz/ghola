@@ -1,4 +1,4 @@
-import { useMantineColorScheme, ActionIcon, Group, Modal, TextInput, Textarea, SegmentedControl, Center, Paper, Avatar, Button } from '@mantine/core';
+import { useMantineColorScheme, ActionIcon, Group, Modal, TextInput, Textarea, SegmentedControl, Center, Paper, Avatar, Button, Text } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconUserPlus } from '@tabler/icons';
 import { useState } from 'react';
@@ -137,6 +137,7 @@ export function AddProfileButton() {
           autosize
           mt='sm'
         />
+        <div style={{position: 'relative', display: 'flex', justifyContent: 'end'}}><Text size='xs' color='dimmed'>{newProfileDescription?.length}/1000</Text></div>
         <Button mt='xl' color='grape' onClick={() => {createProfile()}} loading={loading} fullWidth>Create Profile</Button>
       </Modal>
     </>

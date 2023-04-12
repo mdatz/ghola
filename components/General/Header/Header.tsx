@@ -52,18 +52,18 @@ export function Header({back = false}) {
                                     {session && status === 'authenticated' &&
                                         <>
                                             <Menu.Label>Application</Menu.Label>
-                                            <Menu.Item icon={<TbUsers/>} onClick={() => {router.push('/dashboard')}}>My Profiles</Menu.Item>
-                                            <Menu.Item icon={<TbCompass/>} onClick={() => {router.push('/explore')}}>Explore</Menu.Item>
+                                            <Menu.Item mb={2} icon={<TbUsers size={20}/>} onClick={() => {router.push('/dashboard')}}>My Profiles</Menu.Item>
+                                            <Menu.Item mb={2} icon={<TbCompass size={20}/>} onClick={() => {router.push('/explore')}}>Explore</Menu.Item>
                                         </>
                                     }
                                     <Menu.Label>Support</Menu.Label>
-                                    <Menu.Item icon={<TbSpy/>} onClick={() => {router.push('/privacy')}}>Privacy Policy</Menu.Item>
-                                    <Menu.Item icon={<TbScale/>} onClick={() => {router.push('/terms')}}>Terms of Service</Menu.Item>
+                                    <Menu.Item mb={2} icon={<TbSpy size={20}/>} onClick={() => {router.push('/privacy')}}>Privacy Policy</Menu.Item>
+                                    <Menu.Item mb={2} icon={<TbScale size={20}/>} onClick={() => {router.push('/terms')}}>Terms of Service</Menu.Item>
 
                                     {(session && status === 'authenticated') ? 
-                                        <Menu.Item mb='xs' color='red' icon={<TbDoorExit/>} onClick={() => {signOut()}}>Sign Out</Menu.Item> 
+                                        <Menu.Item mb='xs' color='red' icon={<TbDoorExit size={20}/>} onClick={() => {signOut()}}>Sign Out</Menu.Item> 
                                     :
-                                        <Menu.Item mb='xs' color='grape' icon={<TbDoorEnter/>} onClick={() => {signIn('google', {callbackUrl: window.location.origin + '/dashboard'})}}>Sign In / Register</Menu.Item>
+                                        <Menu.Item mb='xs' color='grape' icon={<TbDoorEnter size={20}/>} onClick={() => {signIn('google', {callbackUrl: window.location.origin + '/dashboard'})}}>Sign In / Register</Menu.Item>
                                     }
                                     <Menu.Divider/>
                                     <div style={{width: '180px'}}>

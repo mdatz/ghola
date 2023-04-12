@@ -68,9 +68,12 @@ export function ConversationPanel({ messages, setMessages, generating }: { messa
                     {generating && <Skeleton px={8} py={3} radius='sm' mb='lg' width={isMobile ? '74%' : '45%'} height={35} style={{marginRight: 'auto'}} />}
                 </ScrollArea>
                 <Divider mb='sm' mt='md' />
-                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px'}}>
-                    <Textarea style={{width: '100%'}} minRows={1} maxRows={3} value={message} onChange={(event) => setMessage(event.currentTarget.value)} autosize/>
-                    <Button color='grape' onClick={() => {updateConversation()}} loading={generating}>Send</Button>
+                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'start', gap: '10px'}}>
+                    <div style={{width: '100%'}}>
+                        <Textarea  minRows={1} maxRows={3} value={message} onChange={(event) => setMessage(event.currentTarget.value.slice(0, 1000))} autosize/>
+                        <div style={{position: 'relative', display: 'flex', justifyContent: 'end', marginBottom: -10}}><Text size='xs' color='dimmed'>{message?.length}/1000</Text></div>
+                    </div>
+                    <Button color='grape' size='md' onClick={() => {updateConversation()}} loading={generating}>Send</Button>
                 </div>
             </Card>
             {selectedMessages.length > 2 && 

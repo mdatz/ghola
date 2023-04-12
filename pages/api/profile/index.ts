@@ -92,6 +92,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 return;
             }
 
+            if(description.length > 1000) {
+                res.status(400).json({
+                    message: 'Description too long'
+                });
+                return;
+            }
+
             try{
                 const cleanedName = xss(name);
                 const cleanedDescription = xss(description);
@@ -173,6 +180,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 console.log(error);
                 res.status(500).json({
                     message: 'Error connecting to database',
+                });
+                return;
+            }
+
+            if(description.length > 1000) {
+                res.status(400).json({
+                    message: 'Description too long'
                 });
                 return;
             }
