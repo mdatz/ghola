@@ -43,7 +43,7 @@ export function Header({back = false}) {
                     </Grid.Col>
                     <Grid.Col span={4}>
                         <div style={{display: 'flex', justifyContent: 'flex-end', paddingRight: '1rem'}}>
-                            <Menu onChange={() => {setMenuOpen(!menuOpen)}} offset={isMobile ? 26 : 32} position='bottom-end'>
+                            <Menu onChange={(value) => {setMenuOpen(value)}} offset={isMobile ? 26 : 32} transition={'slide-left'} position='bottom-end'>
                                 <Menu.Target>
                                     <Burger opened={menuOpen} onClick={() => {setMenuOpen(!menuOpen)}}/>
                                 </Menu.Target>
@@ -65,7 +65,7 @@ export function Header({back = false}) {
                                     :
                                         <Menu.Item mb='xs' color='grape' icon={<TbDoorEnter/>} onClick={() => {signIn('google', {callbackUrl: window.location.origin + '/dashboard'})}}>Sign In / Register</Menu.Item>
                                     }
-                                    <Divider/>
+                                    <Menu.Divider/>
                                     <div style={{width: '180px'}}>
                                         <ColorSchemeToggle/>
                                     </div>

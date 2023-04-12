@@ -3,3 +3,4 @@ Disallow: /dashboard/
 Disallow: /explore/
 Disallow: /conversations/
 Disallow: /login/
+Disallow: /chat/

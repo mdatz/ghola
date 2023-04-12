@@ -127,7 +127,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className='index-container'>
+    <div className='fullscreen'>
     <div>
       <Header/>
       <Container mt={isMobile ? -70 : -30} mb={isMobile ? -80 : -30}> 
