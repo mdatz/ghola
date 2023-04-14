@@ -157,7 +157,7 @@ export function  SharedConversationPanel({ index, key }: { index: number, key: n
                 </div>
             }
 
-            <Center mt='xs'>
+            <Center>
                 <ActionIcon size='xl' radius='xl'>
                     <TbArrowDown size={28} />
                 </ActionIcon>
