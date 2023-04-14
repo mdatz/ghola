@@ -1,10 +1,12 @@
-import { Text, Card, Textarea, Button, Paper, Divider, Stack, ScrollArea, Skeleton, useMantineTheme } from '@mantine/core';
+import { Text, Card, Textarea, Button, Paper, Divider, Stack, ScrollArea, Skeleton, useMantineTheme, ActionIcon, Flex, Center } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { showNotification } from '@mantine/notifications';
 import { useEffect, useRef, useState } from 'react';
 import { ShareConversationButton } from '../../../Buttons/ShareConversationButton/ShareConversationButton';
+import { useConversationContext } from '../../../../context/ConversationContext';
 import Axios from 'axios';
 import useSWR from 'swr';
+import { TbArrowDown, TbHeart, TbHeartFilled } from 'react-icons/tb';
 
 
 const fetcher = async(input:RequestInfo, init:RequestInit) => {
@@ -12,14 +14,15 @@ const fetcher = async(input:RequestInfo, init:RequestInit) => {
     return res.json();
 };
 
-export function SharedConversationPanel({ index, key }: { index: number, key: number }) {
+export function  SharedConversationPanel({ index, key }: { index: number, key: number }) {
 
     const theme = useMantineTheme();
     let isMobile = useMediaQuery('(max-width: 768px)');
+    const { selectedProfile, setSelectedProfile } = useConversationContext();
     const [message, setMessage] = useState<string>('');
     const [messages, setMessages] = useState<Message[]>([]);
-    const [profile, setProfile] = useState<Profile | null>(null);
     const [generating, setGenerating] = useState<boolean>(false);
+    const [liked, setLiked] = useState<boolean>(false);
     const [selectedMessages, setSelectedMessages] = useState<SelectedMessage[]>([]);
 
     const { data: conversations, error: conversationsError } = useSWR(`/api/conversations/share?page=${index}`, fetcher);
@@ -28,12 +31,12 @@ export function SharedConversationPanel({ index, key }: { index: number, key: nu
     useEffect(() => {generating && scrollToBottom()}, [generating]);
     useEffect(() => {
         if(conversations?.sharedConversation[0]) {
-            setProfile(conversations?.sharedConversation[0].profile);
-            let temp: Message[] = [];
+            setSelectedProfile(conversations?.sharedConversation[0].profile);
+            let _: Message[] = [];
             conversations?.sharedConversation[0].messages.forEach((messageItem: {message: Message, index: number}) => {
-                temp.push(messageItem.message);
+                _.push(messageItem.message);
             });
-            setMessages(temp);
+            setMessages(_);
         }
     }, [conversations]);
 
@@ -66,7 +69,7 @@ export function SharedConversationPanel({ index, key }: { index: number, key: nu
             setGenerating(true);
             Axios.post('/api/generate', {
                 messages: messages,
-                profile: profile
+                profile: selectedProfile
             }).then((response) => {
                 setMessages([...messages, {
                     role: 'assistant',
@@ -107,7 +110,7 @@ export function SharedConversationPanel({ index, key }: { index: number, key: nu
     }, [messages]);
 
     return (
-        <>
+        <Flex direction='column'>
             <Card shadow='md' style={isMobile ? {minWidth: '91vw'} : {minWidth: '40vw'}}>
                 <ScrollArea style={isMobile ? {display: 'flex', flexDirection: 'column', height: '60vh', zIndex: 2077} : {display: 'flex', flexDirection: 'column', height: '583px', zIndex: 2077}} viewportRef={viewport} offsetScrollbars>
                     {messages.length ? messages.map((message, index) => {
@@ -142,11 +145,23 @@ export function SharedConversationPanel({ index, key }: { index: number, key: nu
                     <Button color='grape' onClick={() => {updateConversation()}} loading={generating}>Send</Button>
                 </div>
             </Card>
+            <Flex mt={4} align='center' justify='end'>
+                <Text color='dimmed' mr={2}>1,000</Text>
+                <ActionIcon size='lg' radius='xl' onClick={() => {setLiked(!liked)}}>
+                    {liked ? <TbHeartFilled size={20}/> :  <TbHeart size={20}/>}
+                </ActionIcon>
+            </Flex>
             {selectedMessages.length > 2 && 
                 <div style={{position: 'fixed', bottom: '10px', right: '10px', zIndex: 2077}}>
                     <ShareConversationButton highlightedMessages={selectedMessages} messages={messages}/>
                 </div>
             }
-        </>
+
+            <Center mt='xs'>
+                <ActionIcon size='xl' radius='xl'>
+                    <TbArrowDown size={28} />
+                </ActionIcon>
+            </Center>
+        </Flex>
     );
 }

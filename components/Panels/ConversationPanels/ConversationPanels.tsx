@@ -131,7 +131,7 @@ export function ConversationPanels() {
                     <Quote/>                
                 </div>
             </div>
-    }
+        }
     </>
     );
 }
