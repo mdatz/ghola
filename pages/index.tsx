@@ -163,7 +163,7 @@ export default function HomePage() {
                 <b>Profile Sharing</b> – share your chat bot with others and get feedback on your chat bot’s personality
               </List.Item>
               <List.Item>
-                <b>Conversation Sharing</b> <Badge color="grape">In Development</Badge> - share your funniest or most insightful conversations with the world 
+                <b>Conversation Showcase</b> <Badge color="grape">In Development</Badge> - share your funniest or most insightful conversations and let others pick up where you left off 
               </List.Item>
               <List.Item>
                 <b>Backend API</b> <Badge color="grape">In Development</Badge> - use our API to integrate our profiles into your own projects and services

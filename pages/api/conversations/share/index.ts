@@ -7,6 +7,8 @@ import SharedConversation from '../../../../models/sharedConversation';
 import Profile from '../../../../models/profile';
 import { getToken } from 'next-auth/jwt';
 
+// import WeaviateClient from 'weaviate-ts-client';
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         if(req.method !== 'POST' && req.method !== 'GET') {
@@ -102,10 +104,65 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     console.error('Error creating shared conversation');
                     console.error(error);
                 }
-    
-                res.status(200).json({
-                    message: 'Conversation shared successfully'
-                });
+
+
+                // //Send conversation data to weaviate
+                // const client = WeaviateClient.client({
+                //     scheme: 'https',
+                //     host: process.env.WEAVIATE_URL ?? '',
+                //     apiKey: new WeaviateClient.ApiKey(process.env.WEAVIATE_KEY ?? ''),
+                //     headers: {'X-OpenAI-Api-Key': process.env.OPEN_AI_KEY ?? ''},
+                // });
+
+                // let classObj = {
+                //     'class': 'Conversation4',
+                //     'description': 'A conversation between two individuals, 1 message each back and forth',
+                //     'vectorizeClassName': true,
+                //     'properties': [
+                //         {
+                //         'dataType': [
+                //             'string'
+                //         ],
+                //         'description': JSON.stringify(messages),
+                //         'name': 'messages',
+                //         'vectorizePropertyName': true,
+                //         'index': true
+                //         },
+                //         {
+                //         'dataType': [
+                //             'text'
+                //         ],
+                //         'description': JSON.stringify(profile),
+                //         'name': 'profileName'
+                //         }
+                //     ]
+                // }
+
+                // client
+                // .schema
+                // .classCreator()
+                // .withClass(classObj)
+                // .do()
+                // .then(res => {
+                //     client.graphql
+                //         .get()
+                //         .withClassName('Conversation4')
+                //         .withFields('profileName messages')
+                //         .do()
+                //         .then(res => {
+                //             console.log(res)
+                //         })
+                //         .catch(err => {
+                //             console.error(err)
+                //         });
+                // })
+                // .catch(err => {
+                //     console.error(err)
+                // });
+
+                // res.status(200).json({
+                //     message: 'Conversation shared successfully'
+                // });
     
             } catch(error) {
                 console.log(error);
