@@ -14,7 +14,7 @@ export function ShowcasePanels() {
     <>
         {isMobile ?
             <div style={{overflow: 'hidden'}}>
-            <Flex direction='column' py='xl' px='xs' style={{height: '80vh'}}>
+            <Flex direction='column' py='xl' px='xs' style={{height: '85vh'}}>
                 <div style={{height: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center'}}>
                     <ActionIcon size='xl' radius='xl' mb='xl' onClick={() => {setCurrentIndex(currentIndex-1)}} disabled={currentIndex <= 1}>
                         <TbArrowUp size={28} />
