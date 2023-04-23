@@ -1,12 +1,12 @@
-import { Text, Card, Textarea, Button, Paper, Divider, Stack, ScrollArea, Skeleton, useMantineTheme, ActionIcon, Flex, Center } from '@mantine/core';
+import { Text, Card, Textarea, Button, Paper, Divider, ScrollArea, Skeleton, useMantineTheme, ActionIcon, Flex } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { showNotification } from '@mantine/notifications';
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { ShareConversationButton } from '../../../Buttons/ShareConversationButton/ShareConversationButton';
 import { useConversationContext } from '../../../../context/ConversationContext';
 import Axios from 'axios';
 import useSWR from 'swr';
-import { TbArrowDown, TbHeart, TbHeartFilled } from 'react-icons/tb';
+import { TbHeart, TbHeartFilled } from 'react-icons/tb';
 
 
 const fetcher = async(input:RequestInfo, init:RequestInit) => {
@@ -14,7 +14,7 @@ const fetcher = async(input:RequestInfo, init:RequestInit) => {
     return res.json();
 };
 
-export function  SharedConversationPanel({ index, key }: { index: number, key: number }) {
+export function  SharedConversationPanel({ index, key, setTotalCount }: { index: number, key: number, setTotalCount: Dispatch<SetStateAction<number>> }) {
 
     const theme = useMantineTheme();
     let isMobile = useMediaQuery('(max-width: 768px)');
@@ -23,22 +23,28 @@ export function  SharedConversationPanel({ index, key }: { index: number, key: n
     const [messages, setMessages] = useState<Message[]>([]);
     const [generating, setGenerating] = useState<boolean>(false);
     const [liked, setLiked] = useState<boolean>(false);
+    const [likeCount, setLikeCount] = useState<number>(0);
+    const [likeTimeout, setLikeTimeout] = useState<NodeJS.Timeout | null>(null);
     const [selectedMessages, setSelectedMessages] = useState<SelectedMessage[]>([]);
 
-    const { data: conversations, error: conversationsError } = useSWR(`/api/conversations/share?page=${index}`, fetcher);
+    const { data: conversation, error: conversationError } = useSWR(`/api/conversations/share?page=`+index, fetcher);
 
-    useEffect(() => {scrollToBottom(); console.log(messages)}, [messages]);
+    useEffect(() => {scrollToBottom()}, [messages]);
     useEffect(() => {generating && scrollToBottom()}, [generating]);
     useEffect(() => {
-        if(conversations?.sharedConversation[0]) {
-            setSelectedProfile(conversations?.sharedConversation[0].profile);
+        if(conversation?.sharedConversation) {
+            setSelectedProfile(conversation?.sharedConversation.profile);
             let _: Message[] = [];
-            conversations?.sharedConversation[0].messages.forEach((messageItem: {message: Message, index: number}) => {
+            conversation?.sharedConversation.messages.forEach((messageItem: {message: Message, index: number}) => {
                 _.push(messageItem.message);
             });
             setMessages(_);
+            setLikeCount(conversation?.sharedConversation.likeCount);
         }
-    }, [conversations]);
+        if(conversation?.totalCount) {
+            setTotalCount(conversation?.totalCount);
+        }
+    }, [conversation]);
 
     const viewport = useRef<HTMLDivElement>(null);
     const scrollToBottom = () => {viewport.current?.scrollTo({ top: viewport.current.scrollHeight, behavior: 'smooth' });}
@@ -63,6 +69,33 @@ export function  SharedConversationPanel({ index, key }: { index: number, key: n
     const isSelected = (index : number) => {
         return selectedMessages.some((msg) => msg.index === index);
     };
+
+    const addLike = () => {
+        let value: number;
+        if(!liked) {
+            setLikeCount(likeCount + 1);
+            value = 1;
+        } else {
+            setLikeCount(likeCount - 1);
+            value = -1;
+        }
+        setLiked(!liked);
+
+        if(likeTimeout) {
+            clearTimeout(likeTimeout);
+        }
+
+        setLikeTimeout(setTimeout(() => {
+            Axios.post('/api/conversations/like', {
+                conversationId: conversation?.sharedConversation._id,
+                count: value
+            }).then((response) => {
+                console.log('Like response: ', response);
+            }).catch((error) => {
+                console.log('Like error: ', error);
+            });
+        }, 2000));
+    }
 
     useEffect(() => {
         if (messages.length && messages[messages.length - 1].role === 'user') {
@@ -112,33 +145,34 @@ export function  SharedConversationPanel({ index, key }: { index: number, key: n
     return (
         <Flex direction='column'>
             <Card shadow='md' style={isMobile ? {minWidth: '91vw'} : {minWidth: '40vw'}}>
-                <ScrollArea style={isMobile ? {display: 'flex', flexDirection: 'column', height: '60vh', zIndex: 2077} : {display: 'flex', flexDirection: 'column', height: '583px', zIndex: 2077}} viewportRef={viewport} offsetScrollbars>
-                    {messages.length ? messages.map((message, index) => {
-                        return (
-                            <>
-                                {message.role === 'user' 
-                                    ? 
-                                    <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5'})} onClick={() => {selectMessage(message, index)}} shadow='xl'>
-                                        <Text color='#fafafa'>{message.content}</Text>
-                                    </Paper>
-                                    : 
-                                    <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginRight: 'auto'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginRight: 'auto'})} onClick={() => {selectMessage(message, index)}} shadow='xl' withBorder>
-                                        <Text>{message.content}</Text>
-                                    </Paper>
-                                }
-                            </>
-                        );
-                    })
-                        : 
-                           !generating && <Stack style={isMobile ? {height: '60vh'} : {height: '583px'}} justify='center'>
-                    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                        {!isMobile && <h1 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'}}>You don't have any messages yet.</h1>}
-                        <h2 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'}}>Send a message to get started.</h2>
-                    </div>
-                            </Stack>
-                    }
-                    {generating && <Skeleton px={8} py={3} radius='sm' mb='lg' width={isMobile ? '74%' : '45%'} height={35} style={{marginRight: 'auto'}} />}
-                </ScrollArea>
+                {messages.length && 
+                    <ScrollArea style={isMobile ? {display: 'flex', flexDirection: 'column', height: '60vh', zIndex: 1} : {display: 'flex', flexDirection: 'column', height: '583px', zIndex: 1}} viewportRef={viewport} offsetScrollbars>
+                        {messages.map((message, index) => {
+                            return (
+                                <div key={index}>
+                                    {message.role === 'user' 
+                                        ? 
+                                        <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5'})} onClick={() => {selectMessage(message, index)}} shadow='xl'>
+                                            <Text color='#fafafa'>{message.content}</Text>
+                                        </Paper>
+                                        : 
+                                        <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginRight: 'auto'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginRight: 'auto'})} onClick={() => {selectMessage(message, index)}} shadow='xl' withBorder>
+                                            <Text>{message.content}</Text>
+                                        </Paper>
+                                    }
+                                </div>
+                            )})
+                        }
+                        {generating && <Skeleton px={8} py={3} radius='sm' mb='lg' width={isMobile ? '74%' : '45%'} height={35} style={{marginRight: 'auto'}} />}
+                    </ScrollArea>
+                }
+                {!messages.length &&
+                    <Flex direction='column' style={isMobile ? {height: '60vh'} : {height: '583px'}} justify='top' gap='md'>
+                        <Skeleton w={isMobile ? '85%' : '65%'} h={50}/>
+                        <Skeleton w={isMobile ? '85%' : '65%'} h={50} style={{alignSelf: 'end'}}/>
+                        <Skeleton w={isMobile ? '85%' : '65%'} h={50}/>
+                    </Flex>
+                }
                 <Divider mb='sm' mt='md' />
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px'}}>
                     <Textarea style={{width: '100%'}} minRows={1} maxRows={3} value={message} onChange={(event) => setMessage(event.currentTarget.value)} autosize/>
@@ -146,9 +180,9 @@ export function  SharedConversationPanel({ index, key }: { index: number, key: n
                 </div>
             </Card>
             <Flex mt={4} align='center' justify='end'>
-                <Text color='dimmed' mr={2}>1,000</Text>
-                <ActionIcon size='lg' radius='xl' onClick={() => {setLiked(!liked)}}>
-                    {liked ? <TbHeartFilled size={20}/> :  <TbHeart size={20}/>}
+                <Text color='dimmed' mr={2}>{likeCount}</Text>
+                <ActionIcon size='lg' radius='xl' onClick={() => {addLike()}}>
+                    {liked ? <TbHeartFilled size={20}/> : <TbHeart size={20}/>}
                 </ActionIcon>
             </Flex>
             {selectedMessages.length > 2 && 
@@ -156,12 +190,6 @@ export function  SharedConversationPanel({ index, key }: { index: number, key: n
                     <ShareConversationButton highlightedMessages={selectedMessages} messages={messages}/>
                 </div>
             }
-
-            <Center>
-                <ActionIcon size='xl' radius='xl'>
-                    <TbArrowDown size={28} />
-                </ActionIcon>
-            </Center>
         </Flex>
     );
 }

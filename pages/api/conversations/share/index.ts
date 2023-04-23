@@ -37,6 +37,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         if(req.method === 'POST') {
             try{
                 const { messages, highlightedMessages, profile } = req.body;
+                console.log(profile);
                 if(!messages || !profile || !highlightedMessages) {
                     res.status(400).json({
                         message: 'Missing highlighted messages and/or profile'
@@ -90,6 +91,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     res.status(400).json({
                         message: 'Profile does not exist'
                     });
+                    return;
                 }
                 
                 try{
@@ -100,13 +102,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         creator: token.uid,
                     });
                     await sharedConversation.save();
+                    res.status(200).json({
+                        message: 'Conversation shared successfully'
+                    });
                 }catch(error) {
                     console.error('Error creating shared conversation');
                     console.error(error);
+                    res.status(500).json({
+                        message: 'Error creating profile, please try again later'
+                    });
+                    return;
                 }
 
-
-                // //Send conversation data to weaviate
+                //Send conversation data to weaviate
                 // const client = WeaviateClient.client({
                 //     scheme: 'https',
                 //     host: process.env.WEAVIATE_URL ?? '',
@@ -160,20 +168,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 //     console.error(err)
                 // });
 
-                // res.status(200).json({
-                //     message: 'Conversation shared successfully'
-                // });
-    
             } catch(error) {
                 console.log(error);
                 res.status(500).json({
                     message: 'Error retrieving response',
                 });
+                return;
             }
         } else if (req.method === 'GET') {
             const page = req.query.page ? parseInt(req.query.page.toString()) : 1;
-            const limit = 3;
-            const skip = (page - 1) * limit;
+            const limit = 2;
+            let isEnd = false;
             try{
                 await mongooseConnector();
             }catch(error) {
@@ -185,9 +190,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 return;
             }
             try{
-                const sharedConversation = await SharedConversation.find({}).select("-rawMessages").sort({likeCount: -1}).skip(skip).limit(limit).populate('profile');
+                const totalCount = await SharedConversation.countDocuments({});
+                const sharedConversation = await SharedConversation.find({}).select("-rawMessages").sort({likeCount: -1}).skip(page-1).limit(limit).populate('profile');
+                if(sharedConversation.length < 2) {isEnd = true;}
                 res.status(200).json({
-                    sharedConversation
+                    sharedConversation: sharedConversation[0],
+                    totalCount
                 });
             }catch(error) {
                 console.error('Error retrieving shared conversations');
