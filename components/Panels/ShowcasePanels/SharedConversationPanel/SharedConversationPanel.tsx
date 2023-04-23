@@ -146,7 +146,7 @@ export function  SharedConversationPanel({ index, key, setTotalCount }: { index:
         <Flex direction='column'>
             <Card shadow='md' style={isMobile ? {minWidth: '91vw'} : {minWidth: '40vw'}}>
                 {messages.length && 
-                    <ScrollArea style={isMobile ? {display: 'flex', flexDirection: 'column', height: '60vh', zIndex: 1} : {display: 'flex', flexDirection: 'column', height: '583px', zIndex: 1}} viewportRef={viewport} offsetScrollbars>
+                    <ScrollArea style={isMobile ? {display: 'flex', flexDirection: 'column', height: '50vh', zIndex: 1} : {display: 'flex', flexDirection: 'column', height: '583px', zIndex: 1}} viewportRef={viewport} offsetScrollbars>
                         {messages.map((message, index) => {
                             return (
                                 <div key={index}>
