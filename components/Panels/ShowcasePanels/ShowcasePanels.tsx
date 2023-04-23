@@ -28,11 +28,6 @@ export function ShowcasePanels() {
             </div>
         :
             <div style={{height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '-6rem'}}>
-                {/* <div style={{display: 'flex', alignItems: 'center', marginRight: '20px'}}>
-                    <Card shadow='md' pt={5} style={isMobile ? {} : {width: '300px'}}>
-                        <AttributePanel profile={profile} setProfile={setProfile}/>
-                    </Card>
-                </div> */}
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                     <ActionIcon size='xl' radius='xl' mb='xl' onClick={() => {setCurrentIndex(currentIndex-1)}} disabled={currentIndex <= 1}>
                         <TbArrowUp size={28} />

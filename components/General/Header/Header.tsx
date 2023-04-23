@@ -6,7 +6,7 @@ import { signOut, signIn } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 import { useConversationContext } from '../../../context/ConversationContext';
 import { useState } from 'react';
-import { TbUsers, TbCompass, TbDoorExit, TbDoorEnter, TbSpy, TbScale, TbArrowLeft } from 'react-icons/tb';
+import { TbUsers, TbCompass, TbDoorExit, TbDoorEnter, TbSpy, TbScale, TbArrowLeft, TbMedal } from 'react-icons/tb';
 
 export function Header({back = false}) {
 
@@ -53,6 +53,7 @@ export function Header({back = false}) {
                                         <>
                                             <Menu.Label>Application</Menu.Label>
                                             <Menu.Item mb={2} icon={<TbUsers size={20}/>} onClick={() => {router.push('/dashboard')}}>My Profiles</Menu.Item>
+                                            <Menu.Item mb={2} icon={<TbMedal size={20}/>} onClick={() => {router.push('/showcase')}}>Showcase</Menu.Item>
                                             <Menu.Item mb={2} icon={<TbCompass size={20}/>} onClick={() => {router.push('/explore')}}>Explore</Menu.Item>
                                         </>
                                     }

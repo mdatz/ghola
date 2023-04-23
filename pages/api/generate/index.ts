@@ -105,7 +105,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     - Please note that the character description may not be complete, but feel free to use your imagination to play the role.\n
                     - No need for introducing yourself.`;
             } else if(!messages.length) {
-                systemPreamble = `Please create a message to start a conversation as ${profile.name} and role play as if ${profile.name} was beginning a text message conversation. The conversation you are having is with the user ${token.name} (or a fun shorthand name/nickname of it) and the detailed character description of ${profile.name} is as follows: ${profile.description}.\n\n
+                systemPreamble = `Please create a message to start a conversation as ${profile.name} and role play as if ${profile.name} was beginning a text message conversation. The detailed character description of ${profile.name} is as follows: ${profile.description}.\n\n
                                   [ADDITIONAL CONTEXT]\n
                                     - Please note that the character description may not be complete, but feel free to use your imagination to play the role.\n
                                     - No need for introducing yourself.\n
@@ -113,7 +113,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                                     - If there are no messages in the conversation, please just start the conversation.\n
                                     - Please meet all the previous requirements.`;
             } else {
-                systemPreamble = `Please only respond as ${profile.name} and role play as if ${profile.name} was sending a response text message to the following conversation. The conversation you are having is with the user ${token.name} (or a fun shorthand name/nickname of it) and the detailed character description of ${profile.name} is as follows: ${profile.description}.\n\n
+                systemPreamble = `Please only respond as ${profile.name} and role play as if ${profile.name} was sending a response text message to the following conversation. The detailed character description of ${profile.name} is as follows: ${profile.description}.\n\n
                                   [ADDITIONAL CONTEXT]\n
                                     - Please note that the character description may not be complete, but feel free to use your imagination to play the role.\n
                                     - No need for introducing yourself.\n

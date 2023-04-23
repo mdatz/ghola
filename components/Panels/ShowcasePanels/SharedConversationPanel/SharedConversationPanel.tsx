@@ -1,4 +1,4 @@
-import { Text, Card, Textarea, Button, Paper, Divider, ScrollArea, Skeleton, useMantineTheme, ActionIcon, Flex } from '@mantine/core';
+import { Text, Card, Textarea, Button, Paper, Divider, ScrollArea, Skeleton, useMantineTheme, ActionIcon, Flex, Title, createStyles, keyframes, Container } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { showNotification } from '@mantine/notifications';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
@@ -14,9 +14,42 @@ const fetcher = async(input:RequestInfo, init:RequestInit) => {
     return res.json();
 };
 
+export const bounce = keyframes({
+    'from, 20%, 53%, 80%, to': { transform: 'translate3d(0, 0, 0)' },
+    '40%, 43%': { transform: 'translate3d(0, -1.875rem, 0)' },
+    '70%': { transform: 'translate3d(0, -0.9375rem, 0)' },
+    '90%': { transform: 'translate3d(0, -0.25rem, 0)' },
+});
+
+export const fadeOut = keyframes({
+    'from': { opacity: 1 },
+    'to': { opacity: 0 },
+});
+
+const useStyles = createStyles((theme) => ({  
+    title: {
+      fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+      fontWeight: 900,
+      color: theme.white,
+      lineHeight: 1.2,
+      fontSize: 32,
+      marginTop: theme.spacing.xs,
+    },
+    profileCover: {
+        position: 'absolute', 
+        top: 0, 
+        left: 0, 
+        width: '100%', 
+        height: '100%', 
+        zIndex: 100,
+        animation: `${fadeOut} 1.5s forwards 1s`,
+        pointerEvents: 'none',
+    }
+  }));
+
 export function  SharedConversationPanel({ index, key, setTotalCount }: { index: number, key: number, setTotalCount: Dispatch<SetStateAction<number>> }) {
 
-    const theme = useMantineTheme();
+    const { classes } = useStyles();
     let isMobile = useMediaQuery('(max-width: 768px)');
     const { selectedProfile, setSelectedProfile } = useConversationContext();
     const [message, setMessage] = useState<string>('');
@@ -28,6 +61,9 @@ export function  SharedConversationPanel({ index, key, setTotalCount }: { index:
     const [selectedMessages, setSelectedMessages] = useState<SelectedMessage[]>([]);
 
     const { data: conversation, error: conversationError } = useSWR(`/api/conversations/share?page=`+index, fetcher);
+
+    const viewport = useRef<HTMLDivElement>(null);
+    const scrollToBottom = () => {viewport.current?.scrollTo({ top: viewport.current.scrollHeight, behavior: 'smooth' });}
 
     useEffect(() => {scrollToBottom()}, [messages]);
     useEffect(() => {generating && scrollToBottom()}, [generating]);
@@ -45,9 +81,6 @@ export function  SharedConversationPanel({ index, key, setTotalCount }: { index:
             setTotalCount(conversation?.totalCount);
         }
     }, [conversation]);
-
-    const viewport = useRef<HTMLDivElement>(null);
-    const scrollToBottom = () => {viewport.current?.scrollTo({ top: viewport.current.scrollHeight, behavior: 'smooth' });}
 
     const updateConversation = () => {
         setMessages([...messages, {
@@ -144,40 +177,46 @@ export function  SharedConversationPanel({ index, key, setTotalCount }: { index:
 
     return (
         <Flex direction='column'>
-            <Card shadow='md' style={isMobile ? {minWidth: '91vw'} : {minWidth: '40vw'}}>
-                {messages.length && 
-                    <ScrollArea style={isMobile ? {display: 'flex', flexDirection: 'column', height: '45vh', zIndex: 1} : {display: 'flex', flexDirection: 'column', height: '583px', zIndex: 1}} viewportRef={viewport} offsetScrollbars>
-                        {messages.map((message, index) => {
-                            return (
-                                <div key={index}>
-                                    {message.role === 'user' 
-                                        ? 
-                                        <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5'})} onClick={() => {selectMessage(message, index)}} shadow='xl'>
-                                            <Text color='#fafafa'>{message.content}</Text>
-                                        </Paper>
-                                        : 
-                                        <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginRight: 'auto'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginRight: 'auto'})} onClick={() => {selectMessage(message, index)}} shadow='xl' withBorder>
-                                            <Text>{message.content}</Text>
-                                        </Paper>
-                                    }
-                                </div>
-                            )})
-                        }
-                        {generating && <Skeleton px={8} py={3} radius='sm' mb='lg' width={isMobile ? '74%' : '45%'} height={35} style={{marginRight: 'auto'}} />}
-                    </ScrollArea>
+            <Card key={key} shadow='md' style={isMobile ? {minWidth: '91vw'} : {minWidth: '40vw'}} p={0}>
+                {!!messages.length &&
+                    <Container py='md'>
+                        <Flex className={classes.profileCover}>
+                            <img src={selectedProfile?.imageUrl} style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+                            <Title order={3} style={{position: 'absolute', top: 15, left: 20, zIndex: 100}} className={classes.title}>
+                                {selectedProfile?.name}
+                            </Title>
+                        </Flex>
+                        <ScrollArea style={isMobile ? {display: 'flex', flexDirection: 'column', height: '45vh', zIndex: 1} : {display: 'flex', flexDirection: 'column', height: '583px', zIndex: 1}} viewportRef={viewport} offsetScrollbars>
+                            {messages.map((message, index) => {
+                                return (
+                                    <div key={index}>
+                                        {message.role === 'user' 
+                                            ? 
+                                            <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5'})} onClick={() => {selectMessage(message, index)}} shadow='xl'>
+                                                <Text color='#fafafa'>{message.content}</Text>
+                                            </Paper>
+                                            : 
+                                            <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginRight: 'auto'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginRight: 'auto'})} onClick={() => {selectMessage(message, index)}} shadow='xl' withBorder>
+                                                <Text>{message.content}</Text>
+                                            </Paper>
+                                        }
+                                    </div>
+                                )})
+                            }
+                            {generating && <Skeleton px={8} py={3} radius='sm' mb='lg' width={isMobile ? '74%' : '45%'} height={35} style={{marginRight: 'auto'}} />}
+                        </ScrollArea>
+                        <Divider mb='sm' mt='md' />
+                        <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px'}}>
+                            <Textarea style={{width: '100%'}} minRows={1} maxRows={3} value={message} onChange={(event) => setMessage(event.currentTarget.value)} autosize/>
+                            <Button color='grape' onClick={() => {updateConversation()}} loading={generating}>Send</Button>
+                        </div>
+                    </Container>
                 }
                 {!messages.length &&
-                    <Flex direction='column' style={isMobile ? {height: '60vh'} : {height: '583px'}} justify='top' gap='md'>
-                        <Skeleton w={isMobile ? '85%' : '65%'} h={50}/>
-                        <Skeleton w={isMobile ? '85%' : '65%'} h={50} style={{alignSelf: 'end'}}/>
-                        <Skeleton w={isMobile ? '85%' : '65%'} h={50}/>
-                    </Flex>
+                    <div style={isMobile ? {height: '60vh'} : {height: '583px'}}>
+                        <Skeleton w={'100%'} h={'100%'}/>
+                    </div>
                 }
-                <Divider mb='sm' mt='md' />
-                <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '10px'}}>
-                    <Textarea style={{width: '100%'}} minRows={1} maxRows={3} value={message} onChange={(event) => setMessage(event.currentTarget.value)} autosize/>
-                    <Button color='grape' onClick={() => {updateConversation()}} loading={generating}>Send</Button>
-                </div>
             </Card>
             <Flex mt={4} align='center' justify='end'>
                 <Text color='dimmed' mr={2}>{likeCount}</Text>
