@@ -38,6 +38,11 @@ const useStyles = createStyles((theme) => ({
     lineHeight: 1.2,
     fontSize: 32,
     marginTop: theme.spacing.xs,
+    backdropFilter: 'blur(8px)',
+    paddingInline: theme.spacing.xs,
+    paddingBlock: theme.spacing.xs,
+    borderRadius: theme.radius.sm,
+    backgroundColor: '#ffffff33',
   },
 
   category: {
@@ -75,7 +80,7 @@ function Card({ profile, setSelectedProfile }: CardProps) {
           {profile.name}
         </Title>
         <Flex gap={4} mt={4}>
-          <TbMessages size={20}/>
+          <TbMessages size={20} color='white'/>
           <Title order={4} className={classes.category}>
             {profile.messageCount}
           </Title>

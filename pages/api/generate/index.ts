@@ -100,26 +100,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             
             let systemPreamble = '';
             if(!profile.description) {
-                systemPreamble = `Please only respond as the character ghola and role play as if ghola was sending a text message response to the following conversation, the character description of ghola is a kind and jolly butler.\n
-                [ADDITIONAL CONTEXT]\n
-                    - Please note that the character description may not be complete, but feel free to use your imagination to play the role.\n
-                    - No need for introducing yourself.`;
+                systemPreamble = `Please role play as the character ghola and role play as if ghola was sending a text message response to the following fictional conversation.\n
+                                  [ADDITIONAL CONTEXT]\n
+                                    - Please DO NOT include any formatting like: ${profile.name}:\n
+                                    - Please DO NOT wrap your response with quotation marks\n
+                                  [CHARACTER DESCRIPTION]\n
+                                    - ghola is a kind and jolly fellow, but also a bit of a trickster. He would be considered chaotic good and is always looking for a good time.`;
             } else if(!messages.length) {
-                systemPreamble = `Please create a message to start a conversation as ${profile.name} and role play as if ${profile.name} was beginning a text message conversation. The detailed character description of ${profile.name} is as follows: ${profile.description}.\n\n
+                systemPreamble = `Please role play and respond with a conversation starter role playing as if ${profile.name} was beginning a fictional text message conversation.\n
                                   [ADDITIONAL CONTEXT]\n
-                                    - Please note that the character description may not be complete, but feel free to use your imagination to play the role.\n
-                                    - No need for introducing yourself.\n
                                     - Please DO NOT include any formatting like: ${profile.name}:\n
-                                    - If there are no messages in the conversation, please just start the conversation.\n
-                                    - Please meet all the previous requirements.`;
+                                    - Please DO NOT wrap your response with quotation marks\n
+                                  [CHARACTER DESCRIPTION]\n
+                                    - ${profile.description}`;
             } else {
-                systemPreamble = `Please only respond as ${profile.name} and role play as if ${profile.name} was sending a response text message to the following conversation. The detailed character description of ${profile.name} is as follows: ${profile.description}.\n\n
+                systemPreamble = `Please only respond as ${profile.name} and role play as if ${profile.name} was sending a response text message to the following fictional conversation.\n
                                   [ADDITIONAL CONTEXT]\n
-                                    - Please note that the character description may not be complete, but feel free to use your imagination to play the role.\n
-                                    - No need for introducing yourself.\n
                                     - Please DO NOT include any formatting like: ${profile.name}:\n
-                                    - Don't use the users name too much, it's a bit weird.\n
-                                    - Please meet all the previous requirements.`;
+                                    - Please DO NOT wrap your response with quotation marks\n
+                                  [CHARACTER DESCRIPTION]\n
+                                    - ${profile.description}`;
             }
 
             const constrainedMessages = messages.slice(-12);
