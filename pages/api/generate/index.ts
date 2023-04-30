@@ -144,7 +144,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                             "content": systemPreamble
                         },
                         ...constrainedMessages
-                    ]
+                    ],
+                    user: token.uid,
                 })
             });
 

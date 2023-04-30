@@ -6,7 +6,7 @@ import { signOut, signIn } from 'next-auth/react';
 import { useSession } from 'next-auth/react';
 import { useConversationContext } from '../../../context/ConversationContext';
 import { useState } from 'react';
-import { TbUsers, TbCompass, TbDoorExit, TbDoorEnter, TbSpy, TbScale, TbArrowLeft, TbMedal } from 'react-icons/tb';
+import { TbUsers, TbCompass, TbDoorExit, TbDoorEnter, TbSpy, TbScale, TbArrowLeft, TbMedal, TbCode } from 'react-icons/tb';
 
 export function Header({back = false}) {
 
@@ -55,17 +55,17 @@ export function Header({back = false}) {
                                             <Menu.Item mb={2} icon={<TbUsers size={20}/>} onClick={() => {router.push('/dashboard')}}>My Profiles</Menu.Item>
                                             <Menu.Item mb={2} icon={<TbCompass size={20}/>} onClick={() => {router.push('/explore')}}>Explore</Menu.Item>
                                             <Menu.Item mb={2} icon={<TbMedal size={20}/>} onClick={() => {router.push('/showcase')}}>Showcase</Menu.Item>
+                                            {session?.user?.role === 'admin' && <Menu.Item mb={2} icon={<TbCode size={20}/>} onClick={() => {router.push('/developer')}}>Developer Tools</Menu.Item>}
+                                            {(session && status === 'authenticated') ? 
+                                                <Menu.Item color='red' icon={<TbDoorExit size={20}/>} onClick={() => {signOut()}}>Sign Out</Menu.Item> 
+                                            :
+                                                <Menu.Item color='grape' icon={<TbDoorEnter size={20}/>} onClick={() => {signIn('google', {callbackUrl: window.location.origin + '/dashboard'})}}>Sign In / Register</Menu.Item>
+                                            }
                                         </>
                                     }
                                     <Menu.Label>Support</Menu.Label>
-                                    <Menu.Item mb={2} icon={<TbSpy size={20}/>} onClick={() => {router.push('/privacy')}}>Privacy Policy</Menu.Item>
                                     <Menu.Item mb={2} icon={<TbScale size={20}/>} onClick={() => {router.push('/terms')}}>Terms of Service</Menu.Item>
-
-                                    {(session && status === 'authenticated') ? 
-                                        <Menu.Item mb='xs' color='red' icon={<TbDoorExit size={20}/>} onClick={() => {signOut()}}>Sign Out</Menu.Item> 
-                                    :
-                                        <Menu.Item mb='xs' color='grape' icon={<TbDoorEnter size={20}/>} onClick={() => {signIn('google', {callbackUrl: window.location.origin + '/dashboard'})}}>Sign In / Register</Menu.Item>
-                                    }
+                                    <Menu.Item mb={2} icon={<TbSpy size={20}/>} onClick={() => {router.push('/privacy')}}>Privacy Policy</Menu.Item>
                                     <Menu.Divider/>
                                     <div style={{width: '180px'}}>
                                         <ColorSchemeToggle/>

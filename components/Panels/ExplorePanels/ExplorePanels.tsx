@@ -1,10 +1,11 @@
 import { useMediaQuery } from '@mantine/hooks';
-import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, Grid, Center, TextInput, Loader, Stack, Flex } from '@mantine/core';
+import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, Grid, Center, TextInput, Loader, Stack, Flex, ActionIcon, useMantineColorScheme } from '@mantine/core';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { TbSearch, TbMessages } from 'react-icons/tb';
+import { TbSearch, TbMessages, TbSparkles } from 'react-icons/tb';
 import { useConversationContext } from '../../../context/ConversationContext';
 import Axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 const useStyles = createStyles((theme) => ({
   desktopCard: {
@@ -51,18 +52,36 @@ const useStyles = createStyles((theme) => ({
 
 interface CardProps {
   profile: Profile;
-  setSelectedProfile: Dispatch<SetStateAction<null|Profile>>;
 }
 
 interface CharacterPanelProps {
   profiles: Profile[];
 }
 
-function Card({ profile, setSelectedProfile }: CardProps) {
+function Card({ profile }: CardProps) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
+  const [selected, setSelected] = useState(false);
   const router = useRouter();
+  const {data: session} = useSession();
+  const { selectedGroup, setSelectedGroup, setSelectedProfile } = useConversationContext();
+
+  const handleSelect = () => {
+    if(session?.user?.role !== 'admin') {return}
+    if (selectedGroup) {
+      if (selectedGroup.includes(profile)) {
+        setSelectedGroup(selectedGroup.filter((p) => p !== profile));
+        setSelected(false);
+      } else {
+        setSelectedGroup([...selectedGroup, profile]);
+        setSelected(true);
+      }
+    } else {
+      setSelectedGroup([profile]);
+      setSelected(true);
+    }
+  };
 
   return (
     <Paper
@@ -71,6 +90,8 @@ function Card({ profile, setSelectedProfile }: CardProps) {
       radius="md"
       sx={{ backgroundImage: `url(${profile.imageUrl})` }}
       className={mobile ? classes.mobileCard : classes.desktopCard}
+      style={selected ? { border: `2px solid ${theme.colors.grape[6]}` } : {}}
+      onClick={() => {handleSelect()}}
     >
       <div>
         <Title order={3} className={classes.title}>
@@ -93,8 +114,10 @@ function Card({ profile, setSelectedProfile }: CardProps) {
 export function ExplorePanels({profiles}: CharacterPanelProps) {
   
   const theme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
   let mobile = useMediaQuery(`(max-width: 768px)`);
-  const { setSelectedProfile } = useConversationContext();
+  const { selectedGroup, setSelectedGroup } = useConversationContext();
+  const router = useRouter();
 
   const [searchValue, setSearchValue] = useState('');
   const [searching, setSearching] = useState(false);
@@ -120,6 +143,12 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
     }
   }, [searchValue]);
 
+  useEffect(() => {
+    if(selectedGroup && selectedGroup.length > 0) {
+      setSelectedGroup([]);
+    }
+  }, []);
+
   return (
     <div>
       <Center>
@@ -141,7 +170,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
               <Grid style={mobile ? {width: '100%', height: '40vh'} : {width: '95%', height: 'auto'}}>
               {searchResults.map((item, index) => (
                 <Grid.Col span={mobile ? 12 : 3}>
-                    <Card profile={item} setSelectedProfile={setSelectedProfile}/>
+                    <Card profile={item}/>
                 </Grid.Col>
               ))}
               </Grid>
@@ -160,7 +189,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
               <Grid style={mobile ? {width: '100%', height: '40vh'} : {width: '95%', height: 'auto'}}>
               {profiles.map((item) => (
                 <Grid.Col span={mobile ? 12 : 3}>
-                    <Card profile={item} setSelectedProfile={setSelectedProfile}/>
+                    <Card profile={item}/>
                 </Grid.Col>
               ))}
               </Grid>
@@ -196,6 +225,24 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
               )}
             </>
           )
+        }
+      </div>
+      <div style={{position: 'absolute', bottom: 35, right: 35}}>
+        {selectedGroup && selectedGroup.length > 1 && 
+          <ActionIcon
+          onClick={() => {router.push('/showdown')}}
+          size={mobile ? 52 : 64}
+          mb='xs'
+          variant='filled'
+          radius={32}
+          sx={(theme) => ({
+            backgroundColor:
+              theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
+            color: theme.colorScheme === 'dark' ? theme.colors.grape[6] : theme.colors.grape[6],
+          })}
+        >
+          {colorScheme === 'dark' ? <TbSparkles onClick={() => {router.push('/showdown')}} color='yellow' size={32} /> : <TbSparkles onClick={() => {router.push('/showdown')}} color='yellow' size={32}/> }
+        </ActionIcon>
         }
       </div>
     </div>
