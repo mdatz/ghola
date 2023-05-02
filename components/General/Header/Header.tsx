@@ -49,9 +49,9 @@ export function Header({back = false}) {
                                 </Menu.Target>
 
                                 <Menu.Dropdown>
+                                    <Menu.Label>Application</Menu.Label>
                                     {status === 'authenticated' &&
                                         <>
-                                            <Menu.Label>Application</Menu.Label>
                                             <Menu.Item mb={2} icon={<TbUsers size={20}/>} onClick={() => {router.push('/dashboard')}}>My Profiles</Menu.Item>
                                             <Menu.Item mb={2} icon={<TbCompass size={20}/>} onClick={() => {router.push('/explore')}}>Explore</Menu.Item>
                                             <Menu.Item mb={2} icon={<TbMedal size={20}/>} onClick={() => {router.push('/showcase')}}>Showcase</Menu.Item>
