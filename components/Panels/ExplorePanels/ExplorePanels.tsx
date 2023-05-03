@@ -61,7 +61,7 @@ interface CharacterPanelProps {
 function Card({ profile }: CardProps) {
   const { classes } = useStyles();
   const theme = useMantineTheme();
-  const mobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm}px)`);
+  const isMobile = useMediaQuery(`(max-width: 768px)`);
   const [selected, setSelected] = useState(false);
   const router = useRouter();
   const {data: session} = useSession();
@@ -89,7 +89,7 @@ function Card({ profile }: CardProps) {
       p="xl"
       radius="md"
       sx={{ backgroundImage: `url(${profile.imageUrl})` }}
-      className={mobile ? classes.mobileCard : classes.desktopCard}
+      className={isMobile ? classes.mobileCard : classes.desktopCard}
       style={selected ? { border: `2px solid ${theme.colors.grape[6]}` } : {}}
       onClick={() => {handleSelect()}}
     >
@@ -115,7 +115,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
   
   const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
-  let mobile = useMediaQuery(`(max-width: 768px)`);
+  let isMobile = useMediaQuery(`(max-width: 768px)`);
   const { selectedGroup, setSelectedGroup } = useConversationContext();
   const router = useRouter();
 
@@ -167,9 +167,9 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
         {
           (searchResults && searchResults.length > 0 && !searching) && (
             <>
-              <Grid style={mobile ? {width: '100%', height: '40vh'} : {width: '95%', height: 'auto'}}>
+              <Grid style={isMobile ? {width: '100%', height: '40vh'} : {width: '95%', height: 'auto'}}>
               {searchResults.map((item, index) => (
-                <Grid.Col span={mobile ? 12 : 3}>
+                <Grid.Col span={isMobile ? 12 : 3}>
                     <Card profile={item}/>
                 </Grid.Col>
               ))}
@@ -179,16 +179,16 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
         { 
           searchResults && searchResults.length === 0 && searchValue && searchValue.length > 0 && !searching && (
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-              {!mobile && <h1 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'}}>No better time to create a new profile!</h1>}
+              {!isMobile && <h1 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'}}>No better time to create a new profile!</h1>}
               <h2 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 28, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 28, lineHeight: 1.2, textAlign: 'center'}}>No profiles found</h2>
             </div>
           )
         }
           {(profiles && profiles.length > 0 && !searching && searchValue?.length === 0) && (
             <>
-              <Grid style={mobile ? {width: '100%', height: '40vh'} : {width: '95%', height: 'auto'}}>
+              <Grid style={isMobile ? {width: '100%', height: '40vh'} : {width: '95%', height: 'auto'}}>
               {profiles.map((item) => (
-                <Grid.Col span={mobile ? 12 : 3}>
+                <Grid.Col span={isMobile ? 12 : 3}>
                     <Card profile={item}/>
                 </Grid.Col>
               ))}
@@ -198,7 +198,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
         { 
           profiles && profiles.length === 0 && (
             <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-              {!mobile && <h1 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'}}>No community profiles found.</h1>}
+              {!isMobile && <h1 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 32, lineHeight: 1.2, textAlign: 'center'}}>No community profiles found.</h1>}
               <h2 style={theme.colorScheme === 'dark' ? {color: theme.white, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 28, lineHeight: 1.2, textAlign: 'center'} : {color: theme.black, fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900, fontSize: 28, lineHeight: 1.2, textAlign: 'center'}}>Please check back later.</h2>
             </div>
           )
@@ -206,7 +206,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
         {
           (!profiles || searching) && (
             <>
-            {mobile ? 
+            {isMobile ? 
               (
                 <div style={{display: 'flex', height: '90vh', width: '100%', flexDirection: 'column'}}>
                   <Skeleton height='40vh' radius='md' />
@@ -215,9 +215,9 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
               ) 
             : 
               (
-                <Grid style={mobile ? {width: '100%', height: '400px'} : {width: '95%', height: 'auto'}}>
+                <Grid style={isMobile ? {width: '100%', height: '400px'} : {width: '95%', height: 'auto'}}>
                   {[1,2,3,4,5,6,7,8,9,10,11,12].map((item, index) => (
-                      <Grid.Col span={mobile ? 12 : 3} key={index}>
+                      <Grid.Col span={isMobile ? 12 : 3} key={index}>
                         <Skeleton height='20vh' radius='md'/>
                       </Grid.Col>
                   ))}
@@ -227,11 +227,11 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
           )
         }
       </div>
-      <div style={{position: 'fixed', bottom: 35, right: 35}}>
+      <div style={isMobile ? {position: 'fixed', bottom: 55, right: 35, zIndex: 10} : {position: 'fixed', bottom: 35, right: 35, zIndex: 10}}>
         {selectedGroup && selectedGroup.length > 1 && 
           <ActionIcon
           onClick={() => {router.push('/showdown')}}
-          size={mobile ? 52 : 64}
+          size={isMobile ? 52 : 64}
           mb='xs'
           variant='filled'
           radius={32}
