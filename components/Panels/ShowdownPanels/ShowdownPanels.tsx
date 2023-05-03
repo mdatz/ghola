@@ -1,14 +1,70 @@
 import { useMediaQuery } from "@mantine/hooks";
-import { Flex, Card, Center, ActionIcon } from "@mantine/core";
+import { Flex } from "@mantine/core";
 import { GroupConversationPanel } from "./GroupConversationPanel/GroupConversation";
-import { TbArrowDown, TbArrowUp } from "react-icons/tb";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Axios from "axios";
+import { useConversationContext } from "../../../context/ConversationContext";
+import { showNotification } from "@mantine/notifications";
 
 export function ShowdownPanels() {
 
     let isMobile = useMediaQuery('(max-width: 768px)');
-    const [currentIndex, setCurrentIndex] = useState<number>(1);
-    const [totalCount, setTotalCount] = useState<number>(1);
+    const { selectedGroup } = useConversationContext();
+    
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [profiles] = useState<Profile[] | null>(selectedGroup);
+    const [generating, setGenerating] = useState<boolean>(false);
+    const [awaiting, setAwaiting] = useState<boolean>(false);
+    const [paused, setPaused] = useState<boolean>(false);
+
+    useEffect(() => {
+        if(profiles && !generating && !awaiting && !paused) {
+            setGenerating(true);
+            setAwaiting(true);
+            Axios.post('/api/generate/group', {
+                messages: messages,
+                profiles: profiles
+            }).then((response) => {
+                setMessages([...messages, {
+                    role: 'assistant',
+                    content: response.data.message,
+                }]);
+            }).catch((error) => {
+                if(error.response.status === 400) {
+                    if(error.response.data.scores){
+                        console.log('Moderation Categories: ', error.response.data.categories);
+                        console.log('Moderation Scores: ', error.response.data.scores);
+                        setMessages(messages.slice(0, messages.length - 1));
+                        showNotification({
+                            title: 'Error',
+                            message: 'This conversation is not ideal...Please try again...',
+                            autoClose: 3000,
+                            color: 'red'
+                        });
+                    } else {
+                        showNotification({
+                            title: 'Error',
+                            message: 'Bad Request. Please try again later.',
+                            autoClose: 3000,
+                            color: 'red'
+                        });
+                    } 
+                } else {
+                    showNotification({
+                        title: 'Error',
+                        message: 'An error occurred while generating a response. Please try again later.',
+                        autoClose: 3000,
+                        color: 'red'
+                    })
+                }
+            }).finally(() => {
+                setGenerating(false);
+                setTimeout(() => {
+                    setAwaiting(false);
+                }, Math.floor(Math.random() * 5000) + 5000);
+            }); 
+        }
+    }, [messages, paused, awaiting]);
 
     return (
     <>
@@ -16,26 +72,14 @@ export function ShowdownPanels() {
             <div style={{overflow: 'hidden'}}>
             <Flex direction='column' py='xl' px='xs' style={{height: '85vh'}}>
                 <div style={{height: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'center'}}>
-                    <ActionIcon size='xl' radius='xl' mb='xl' onClick={() => {setCurrentIndex(currentIndex-1)}} disabled={currentIndex <= 1}>
-                        <TbArrowUp size={28} />
-                    </ActionIcon>
-                    <GroupConversationPanel key={currentIndex} index={currentIndex} setTotalCount={setTotalCount}/>
-                    <ActionIcon size='xl' radius='xl' onClick={() => {setCurrentIndex(currentIndex+1)}} disabled={currentIndex === totalCount}>
-                        <TbArrowDown size={28} />
-                    </ActionIcon>
+                    <GroupConversationPanel messages={messages} setMessages={setMessages} generating={generating} paused={paused} setPaused={setPaused}/>
                 </div>
             </Flex>
             </div>
         :
             <div style={{height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '-6rem'}}>
                 <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                    <ActionIcon size='xl' radius='xl' mb='xl' onClick={() => {setCurrentIndex(currentIndex-1)}} disabled={currentIndex <= 1}>
-                        <TbArrowUp size={28} />
-                    </ActionIcon>
-                    <GroupConversationPanel key={currentIndex} index={currentIndex} setTotalCount={setTotalCount}/>
-                    <ActionIcon size='xl' radius='xl' onClick={() => {setCurrentIndex(currentIndex+1)}} disabled={currentIndex === totalCount}>
-                        <TbArrowDown size={28} />
-                    </ActionIcon>
+                    <GroupConversationPanel messages={messages} setMessages={setMessages} generating={generating} paused={paused} setPaused={setPaused}/>
                 </div>
             </div>
     }
