@@ -121,17 +121,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                                   [CHARACTER DESCRIPTION]\n
                                     - ghola is a kind and jolly fellow, but also a bit of a trickster. He would be considered chaotic good and is always looking for a good time.`;
             } else if(!messages.length) {
-                systemPreamble = `Please role play and respond with a conversation starter role playing as if ${profile.name} was beginning a fictional group text message conversation on the subject of what the hardest sport is.\n
+                systemPreamble = `Please role play and respond with a conversation starter role playing as if ${profile.name} was beginning a fictional group text message conversation on a random subject or topic of your choice.\n
                                   [ADDITIONAL CONTEXT]\n
                                     - Please DO NOT include any formatting like: ${profile.name}:\n
                                     - Please DO NOT wrap your response with quotation marks\n
                                   [CHARACTER DESCRIPTION]\n
                                     - ${profile.description}`;
             } else {
-                systemPreamble = `Please only respond as ${profile.name} and role play as if ${profile.name} was sending a response text message to the following fictional conversation.\n
+                systemPreamble = `Please only respond as ${profile.name} and role play as if ${profile.name} was sending a response text message to the following fictional group conversation.\n
                                   [ADDITIONAL CONTEXT]\n
                                     - Please include this exact formatting: ${profile.name}:\n
-                                    - Please DO NOT wrap your response with quotation marks\n
+                                    - You are ALLOWED to call ${token.name} by a nickname or shortened name\n
+                                    - DO NOT RESPOND as ${token.name}, only as if you were ${profile.name}\n
                                   [CHARACTER DESCRIPTION]\n
                                     - ${profile.description}`;
             }
@@ -145,6 +146,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 if (message.role === 'user') {
                     message.content = `${token.name}: ` + message.content;
                 }
+                delete message.profileId;
             }
 
             const response = await fetch('https://api.openai.com/v1/chat/completions', {

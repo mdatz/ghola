@@ -28,6 +28,7 @@ export function ShowdownPanels() {
                 setMessages([...messages, {
                     role: 'assistant',
                     content: response.data.message,
+                    profileId: response.data.profileId
                 }]);
             }).catch((error) => {
                 if(error.response.status === 400) {

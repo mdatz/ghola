@@ -1,4 +1,4 @@
-import { Text, Card, Textarea, Button, Paper, Divider, Stack, ScrollArea, Skeleton, useMantineTheme } from '@mantine/core';
+import { Text, Card, Textarea, Button, Paper, Divider, Stack, ScrollArea, Skeleton, useMantineTheme, ActionIcon } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { ShareConversationButton } from '../../../Buttons/ShareConversationButton/ShareConversationButton';
@@ -74,10 +74,16 @@ export function GroupConversationPanel({ messages, setMessages, generating, paus
                 <Divider mb='sm' mt='md' />
                 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'start', gap: '10px'}}>
                     <div style={{width: '100%'}}>
-                        <Textarea  minRows={1} maxRows={3} value={message} onChange={(event) => setMessage(event.currentTarget.value.slice(0, 1000))} autosize/>
+                        <Textarea  minRows={1} maxRows={3} value={message} onFocus={() => {setPaused(true)}} onChange={(event) => setMessage(event.currentTarget.value.slice(0, 1000))} autosize/>
                         <div style={{position: 'relative', display: 'flex', justifyContent: 'end', marginBottom: -10}}><Text size='xs' color='dimmed'>{message?.length}/1000</Text></div>
                     </div>
-                    <Button color='grape' variant='outline' size='md' leftIcon={paused ? <TbPlayerPlay size={20}/> : <TbPlayerPause size={20}/>} onClick={() => {setPaused(!paused)}}>{paused ? 'Resume' : 'Pause'}</Button>
+                    {isMobile ?
+                        <ActionIcon size='md' onClick={() => {setPaused(!paused)}} style={{marginTop: '7px'}}>
+                            {paused ? <TbPlayerPlay size={22}/> : <TbPlayerPause size={22}/>}
+                        </ActionIcon>
+                        :
+                        <Button color='grape' variant='outline' size='md' leftIcon={paused ? <TbPlayerPlay size={20}/> : <TbPlayerPause size={20}/>} onClick={() => {setPaused(!paused)}}>{paused ? 'Resume' : 'Pause'}</Button>
+                    }
                     <Button color='grape' size='md' onClick={() => {updateConversation()}} loading={generating}>Send</Button>
                 </div>
             </Card>

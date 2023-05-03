@@ -227,7 +227,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
           )
         }
       </div>
-      <div style={{position: 'absolute', bottom: 35, right: 35}}>
+      <div style={{position: 'fixed', bottom: 35, right: 35}}>
         {selectedGroup && selectedGroup.length > 1 && 
           <ActionIcon
           onClick={() => {router.push('/showdown')}}
@@ -236,12 +236,13 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
           variant='filled'
           radius={32}
           sx={(theme) => ({
+            pointer: 'cursor',
             backgroundColor:
               theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
             color: theme.colorScheme === 'dark' ? theme.colors.grape[6] : theme.colors.grape[6],
           })}
         >
-          {colorScheme === 'dark' ? <TbSparkles onClick={() => {router.push('/showdown')}} color='yellow' size={32} /> : <TbSparkles onClick={() => {router.push('/showdown')}} color='yellow' size={32}/> }
+          {colorScheme === 'dark' ? <TbSparkles onClick={() => {router.push('/showdown')}} color='white' size={32} style={{cursor: 'pointer'}} /> : <TbSparkles onClick={() => {router.push('/showdown')}} color='white' size={32} style={{cursor: 'pointer'}}/> }
         </ActionIcon>
         }
       </div>
