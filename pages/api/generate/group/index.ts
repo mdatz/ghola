@@ -115,30 +115,28 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             let systemPreamble = '';
             if(!profile.description) {
                 systemPreamble = `Please role play as the character ghola and role play as if ghola was sending a text message response to the following fictional conversation.\n
-[CHARACTER DESCRIPTION]\n
+[CHARACTER DESCRIPTION]
 - ghola is a kind and jolly fellow, but also a bit of a trickster. He would be considered chaotic good and is always looking for a good time.\n
-[ADDITIONAL CONTEXT]\n
-- Please DO NOT include any formatting like: ${profile.name}:\n
+[ADDITIONAL CONTEXT]
+- Please DO NOT include any formatting like: ${profile.name}:
 - Please DO NOT wrap your response with quotation marks`;
             } else if(!messages.length) {
                 systemPreamble = `Please role play and respond with a conversation starter role playing as if ${profile.name} was beginning a fictional group text message conversation on a random subject or topic of your choice.\n
-[CHARACTER DESCRIPTION]\n
+[CHARACTER DESCRIPTION]
 - ${profile.description}\n
-[ADDITIONAL CONTEXT]\n
-- Please DO NOT include any formatting like: ${profile.name}:\n
+[ADDITIONAL CONTEXT]
+- Please DO NOT include any formatting like: ${profile.name}:
 - Please DO NOT wrap your response with quotation marks`;
             } else {
                 systemPreamble = `Please only respond as ${profile.name} and role play as if ${profile.name} was sending a response text message to the following group chat.\n
-[CHARACTER DESCRIPTION]\n
+[CHARACTER DESCRIPTION]
 - ${profile.description}\n
-[ADDITIONAL CONTEXT]\n
-- You are allowed to address other people in the chat using nicknames or shortened names\n
-- If the conversation gets repetitive, please feel free to change the subject\n
-- If a disagreement of ideas occurs, please try to find a compromise or a way to agree to disagree\n
+[ADDITIONAL CONTEXT]
+- You are allowed to address other people in the chat using nicknames or shortened names
+- If the conversation gets repetitive, please feel free to change the subject
+- If a disagreement of ideas occurs, please try to find a compromise or a way to agree to disagree
 - Please include this exact formatting to start your response: ${profile.name}:`;
             }
-
-            console.log(systemPreamble);
 
             const constrainedMessages = messages.slice(-12);
             for(let i = 0; i < constrainedMessages.length; i++) {
