@@ -45,7 +45,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             console.log(error);
             if(error.name === 'TokenExpiredError') {
                 res.status(400).json({
-                    message: 'Token expired, please start a new chat session'
+                    message: 'Token expired, please start a new chat session',
+                    code: 'TOKEN_EXPIRED'
                 });
                 return;
             } else {
@@ -130,7 +131,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 return;
             }
 
-            if(conversation.loggingEnabled) {
+            if(conversation.loggingEnabled && messages.length) {
                 conversation.messages.push(messages[messages.length - 1]);
                 await conversation.save();
             }
