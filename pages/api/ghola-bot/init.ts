@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         if(req.headers.host !== process.env.GHOLA_API_DOMAIN) {
+            console.log(req.headers.host);
             res.status(403).json({
                 message: 'Forbidden'
             });
