@@ -3,14 +3,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
-        if(req.headers.host !== process.env.GHOLA_API_DOMAIN) {
-            console.log(req.headers.host);
-            res.status(403).json({
-                message: 'Forbidden'
-            });
-            return;
-        }
-
         if(req.method !== 'POST') {
             res.status(405).json({
                 message: 'Method not allowed'
@@ -44,7 +36,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 return;
             }
 
-            res.setHeader('Access-Control-Allow-Origin', `${process.env.GHOLA_API_DOMAIN}`);
             res.setHeader('Set-Cookie', `gholaJwt=${jwt}; Path=/; HttpOnly`);
             res.status(200).json({
                 message: 'Conversation initialized, valid for 1 hours',
