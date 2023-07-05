@@ -20,7 +20,7 @@ import imageB from '../public/undraw/undraw_2.svg';
 import { useRouter } from 'next/router';
 import { useMediaQuery } from '@mantine/hooks';
 import { Footer } from '../components/General/Footer/Footer';
-import { Analytics } from '@vercel/analytics/react';
+import { GholaChatButton } from '../components/Buttons/GholaChatButton/GholaChatButton';
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -227,7 +227,9 @@ export default function HomePage() {
       </Container>
     </div>
     <Footer links={links}/>
-    <Analytics/>
+    <div style={{position: 'fixed', bottom: 35, right: 35}}>
+      <GholaChatButton/>
+    </div>
     </div>
   );
 }
