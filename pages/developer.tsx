@@ -19,9 +19,6 @@ export default function Developer() {
         if (status === 'unauthenticated') {
             router.push('/login');
         }
-        if (session?.user?.role !== 'admin') {
-            router.push('/explore');
-        }
     }, [status, session]);
 
     const handleGenerateToken = async() => {
