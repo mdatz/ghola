@@ -45,7 +45,7 @@ export default function Developer() {
     return (
         <>
             <div className='fullscreen'>
-                <Header/>
+                <Header back={true}/>
                 <Container>
                     <Center>
                         <Card mt='xl' shadow='sm' p='md' pt={0} radius='md' style={{width: '100%', maxWidth: '600px'}}>
