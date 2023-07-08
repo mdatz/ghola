@@ -166,7 +166,7 @@ export default function HomePage() {
                 <b>Conversation Showcase</b> - share your funniest or most insightful conversations and let others pick up where you left off 
               </List.Item>
               <List.Item>
-                <b>Backend API</b> <Badge color="grape">In Development</Badge> - use our API to integrate our profiles into your own projects and services
+                <b>Backend API</b> <Badge color="green">Beta</Badge> - use our API to integrate our profiles into your own projects and services
               </List.Item>
             </List>
 
