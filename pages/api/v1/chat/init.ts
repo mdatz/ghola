@@ -53,7 +53,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             }
 
             if(profile.visibility === 'private' && profile.creator.toString() !== user._id.toString()) {
-                res.status(400).json({
+                res.status(401).json({
                     message: 'Profile is not publicly available'
                 });
                 return;

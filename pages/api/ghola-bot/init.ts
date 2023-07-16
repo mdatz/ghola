@@ -10,13 +10,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             return;
         }
 
-        const { customerId } = req.body;
+        const { customerId, profileId } = req.body;
 
         try{
             const response = await axios.post(`${process.env.GHOLA_API_URL}/api/v1/chat/init`, {
                 token: process.env.GHOLA_API_TOKEN,
                 email: process.env.GHOLA_API_EMAIL,
-                profileId: process.env.GHOLA_API_PROFILE_ID,
+                profileId: profileId ?? process.env.GHOLA_API_PROFILE_ID,
                 enableLogging: false,
                 customerId
             });
