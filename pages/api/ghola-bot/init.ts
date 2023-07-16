@@ -17,7 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 token: process.env.GHOLA_API_TOKEN,
                 email: process.env.GHOLA_API_EMAIL,
                 profileId: process.env.GHOLA_API_PROFILE_ID,
-                enableLogging: true,
+                enableLogging: false,
                 customerId
             });
 
