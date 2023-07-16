@@ -63,6 +63,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 res.status(500).json({
                     message: 'Error fetching profiles',
                 });
+                return;
             }
 
         }else if(req.method === 'POST') {
@@ -148,6 +149,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 res.status(500).json({
                     message: 'Error creating profile',
                 });
+                return;
             }
 
         } else if(req.method === 'PUT') {
@@ -243,6 +245,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 res.status(500).json({
                     message: 'Error creating profile',
                 });
+                return;
             }
         } else if(req.method === 'DELETE') {
                 
@@ -294,6 +297,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                     res.status(500).json({
                         message: 'Error deleting profile',
                     });
+                    return;
                 }
         }
 }
