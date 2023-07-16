@@ -132,11 +132,22 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
             if(conversation.loggingEnabled && messages.length) {
                 conversation.messages.push(messages[messages.length - 1]);
+            }
+
+            try{
                 conversation.messageCount++;
                 await conversation.save();
+            }catch(error) {
+                console.error('Error updating conversation message count')
+                console.error(error);
+            }
 
+            try{
                 usageRecord.messageCount++;
                 await usageRecord.save();
+            }catch(error) {
+                console.error('Error updating usageRecord message count')
+                console.error(error);
             }
             
             if(messages.length) {
