@@ -132,7 +132,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
             if(conversation.loggingEnabled && messages.length) {
                 conversation.messages.push(messages[messages.length - 1]);
+                conversation.messageCount++;
                 await conversation.save();
+
+                usageRecord.messageCount++;
+                await usageRecord.save();
             }
             
             if(messages.length) {
