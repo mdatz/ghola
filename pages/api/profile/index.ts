@@ -92,7 +92,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 return;
             }
 
-            if(description.length > 1000) {
+            if(description.length > 2500) {
                 res.status(400).json({
                     message: 'Description too long'
                 });
@@ -184,7 +184,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 return;
             }
 
-            if(description.length > 1000) {
+            if(description.length > 2500) {
                 res.status(400).json({
                     message: 'Description too long'
                 });
