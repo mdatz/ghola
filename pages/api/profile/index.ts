@@ -21,9 +21,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         // @ts-ignore
         const session = await getServerSession(req, res, authOptions)
         if (!session) {
-            res.send({
+            res.status(401).send({
               error: "You must be signed in to use this API",
             });
+            return;
         }
 
         const token = await getToken({ req });
@@ -49,8 +50,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             try{
 
                 const profiles = await Profile.find({ creator: token.uid });
-
-                //return profiles as an array of json objects
                 res.status(200).json({
                     message: 'Profiles fetched successfully',
                     data: profiles,
