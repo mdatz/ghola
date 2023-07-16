@@ -168,8 +168,10 @@ export default function HomePage() {
               <List.Item>
                 <b>Backend API</b> <Badge color="green">Beta</Badge> - use our API to integrate our profiles into your own projects and services
               </List.Item>
+              <List.Item>
+                <b>Group Conversations</b> <Badge color="grape">In Development</Badge> - chat with multiple chat bots at once and see how they interact with each other
+              </List.Item>
             </List>
-
             <Group mt={30}>
               <Button radius="xl" size="md" className={classes.control} color='grape' onClick={() => {router.push('login')}}>
                 Get started
