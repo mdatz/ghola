@@ -18,9 +18,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         // @ts-ignore
         const session = await getServerSession(req, res)
         if (!session) {
-            res.send({
+            res.status(401).send({
               error: "You must be signed in to use this API",
             });
+            return;
         }
 
         const token = await getToken({ req });

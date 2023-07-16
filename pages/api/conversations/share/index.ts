@@ -24,6 +24,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             res.status(401).send({
               error: "You must be signed in to use this API",
             });
+            return;
         }
 
         const token = await getToken({ req });
