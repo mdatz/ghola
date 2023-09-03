@@ -80,8 +80,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 }
             }else if(req.query.page) {
                 try{
-                    const profiles = await Profile.find({ visibility: 'public' }).sort({messageCount: -1}).skip(16 * (parseInt(req.query.page?.[0]) - 1)).limit(12);
-
+                    const profiles = await Profile.find({ visibility: 'public' }).sort({messageCount: -1}).skip(12 * (parseInt(req.query.page as string) - 1)).limit(12);
                     res.status(200).json({
                         message: 'Profiles fetched successfully',
                         data: profiles,

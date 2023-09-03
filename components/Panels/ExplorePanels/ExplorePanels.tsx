@@ -122,16 +122,21 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
   const [searchValue, setSearchValue] = useState('');
   const [searching, setSearching] = useState(false);
   const [searchTimeout, setSearchTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [abortController, setAbortController] = useState<AbortController | null>(null);
   const [searchResults, setSearchResults] = useState<Profile[]>([]);
 
   useEffect(() => {
     if (searchTimeout) {
       clearTimeout(searchTimeout);
     }
+    if (abortController && !abortController.abort) {
+      abortController.abort();
+    }
     if (searchValue.length > 0) {
       setSearching(true);
+      setAbortController(new AbortController());
       setSearchTimeout(setTimeout(() => {
-        Axios.get('/api/profile/public', {params: {search: searchValue}}).then((res) => {
+        Axios.get('/api/profile/public', {params: {search: searchValue}, signal: abortController?.signal}).then((res) => {
           setSearchResults(res.data.data);
         });
         setSearching(false);

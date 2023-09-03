@@ -29,7 +29,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         if (totalProfiles?.data) {
-            setTotalPages(Math.floor(totalProfiles?.data / 12));
+            setTotalPages(Math.ceil(totalProfiles?.data / 12));
         }
     }, [totalProfiles]);
 
