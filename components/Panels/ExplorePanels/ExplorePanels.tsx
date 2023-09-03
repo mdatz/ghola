@@ -1,6 +1,6 @@
 import { useMediaQuery } from '@mantine/hooks';
-import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, Grid, Center, TextInput, Loader, Stack, Flex, ActionIcon, useMantineColorScheme } from '@mantine/core';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, Grid, Center, TextInput, Loader, Flex, ActionIcon, useMantineColorScheme } from '@mantine/core';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { TbSearch, TbMessages, TbSparkles } from 'react-icons/tb';
 import { useConversationContext } from '../../../context/ConversationContext';

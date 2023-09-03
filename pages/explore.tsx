@@ -35,10 +35,10 @@ export default function Dashboard() {
 
     return (
         <>
-            <div className='fullscreen'>
+            <div className='fullscreen-ext'>
                 <Header/>
                 <ExplorePanels profiles={profiles?.data}/>
-                <Center style={{position: 'fixed', bottom: 45, right: 0, left: 0}}>
+                <Center style={{position: 'fixed', bottom: 30, right: 0, left: 0}}>
                     <Pagination total={totalPages} page={page} onChange={setPage} color='grape'/>
                 </Center>
             </div>

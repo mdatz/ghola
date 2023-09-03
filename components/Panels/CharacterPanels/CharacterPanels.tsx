@@ -1,9 +1,8 @@
 import { Carousel } from '@mantine/carousel';
 import { useMediaQuery } from '@mantine/hooks';
-import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, ActionIcon, useMantineColorScheme, Modal, Flex } from '@mantine/core';
+import { createStyles, Paper, Skeleton, Title, Button, useMantineTheme, useMantineColorScheme, Modal, Flex, Text } from '@mantine/core';
 import { AddProfileButton } from '../../Buttons/AddProfileButton/AddProfileButton';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { IconTool } from '@tabler/icons';
 import { useRouter } from 'next/router';
 import { AttributePanel } from '../ConversationPanels/AttributePanel/AttributePanel';
 import { useConversationContext } from '../../../context/ConversationContext';
@@ -96,7 +95,6 @@ function Card({ profile, setSelectedProfile }: CardProps) {
 export function CharacterPanels({profiles}: CharacterPanelProps) {
   const theme = useMantineTheme();
   const mobile = useMediaQuery(`(max-width: 768px)`);
-  const { colorScheme } = useMantineColorScheme();
   const [modalOpen, setModalOpen] = useState(false);
   const [profile, setProfile] = useState<Profile|null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -110,7 +108,7 @@ export function CharacterPanels({profiles}: CharacterPanelProps) {
 
   return (
     <div>
-      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80vh', width: '100%'}}>
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '80vh', width: '100%'}}>
         {
           profiles && profiles.length > 0 && (
             <>
@@ -176,26 +174,10 @@ export function CharacterPanels({profiles}: CharacterPanelProps) {
           </Carousel>
           )
         }
+        {profiles && profiles.length > 0 && mobile && <Text mt='md' color='dimmed' style={{cursor: 'pointer'}} size='lg' weight={600} onClick={() => {editCurrentProfile()}}>Tap to edit</Text>}
       </div>
       <div style={{position: 'absolute', bottom: 35, right: 35}}>
         <AddProfileButton />
-        {/* TODO: Extract this action icon */}
-        {mobile && (
-          <ActionIcon
-            onClick={() => {editCurrentProfile()}}
-            size={mobile ? 52 : 64}
-            mb='xs'
-            variant='filled'
-            radius="xl"
-            sx={(theme) => ({
-              backgroundColor:
-                theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[1],
-              color: theme.colorScheme === 'dark' ? theme.colors.grape[6] : theme.colors.grape[6],
-            })}
-          >
-            {colorScheme === 'dark' ? <IconTool size={32} /> : <IconTool size={32}/> }
-          </ActionIcon>
-        )}
       </div>
     </div>
   );

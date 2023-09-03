@@ -27,6 +27,20 @@
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
 }
 
+.fullscreen-ext {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    overflow: 'hidden';
+    padding-inline: 20px;
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    margin-bottom: 75px;
+}
+
 .index-container {
     overflow: 'hidden';
     padding-inline: 20px;
