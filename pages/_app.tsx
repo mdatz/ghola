@@ -11,7 +11,7 @@ import '../global.css';
 
 export default function App(props: AppProps & { colorScheme: ColorScheme, session: any }) {
   const { Component, pageProps } = props;
-  const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
+  const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme ?? 'dark');
 
   const toggleColorScheme = (value?: ColorScheme) => {
     const nextColorScheme = value || (colorScheme === 'dark' ? 'light' : 'dark');
