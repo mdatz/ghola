@@ -53,8 +53,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         const newToken = crypto.randomUUID().replaceAll('-', '');
         user.token = newToken;
 
+        //Cleanup
         if(!user.emailVerified) {
             user.emailVerified = true;
+        }
+        if(!user.image) {
+            const name = user.name.replace(' ', '+');
+            user.image = `https://ui-avatars.com/api/?name=${name}&background=random`;
         }
 
         const status = await user.save();

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Header } from '../components/General/Header/Header';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { Card, Center, Container, Divider, Text, Button, Modal, PasswordInput, Code, Table } from '@mantine/core';
+import { Card, Center, Container, Divider, Text, Button, Modal, PasswordInput, Code, Table, Title } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -59,6 +59,7 @@ export default function Developer() {
                                     <h3>API Token</h3>
                                     <Text mt={-15}>The following is your API token. Please make sure to save it securely as it will only be shown this one time and you will not be able to see this token again after leaving.</Text>
                                     <PasswordInput visible={visible} onVisibilityChange={toggle} mt='sm' value={apiToken} onChange={() => {}}/>
+                                    <Text mt={2} color='dimmed' size='sm'><b>Note:</b> if this is the first api token you've generated, you will need to re-authenticate (sign-out/sign-in) to get access to profile ID's on the platform.</Text>
                                 </>
                             }
                             <h3>Generate New API Token</h3>
@@ -76,9 +77,10 @@ export default function Developer() {
                             <Text mt={-15}>Designed to be versatile and user-friendly, the ghola API enables developers to access a wide range of features and capabilities. From initiating conversations with predefined profiles, logging conversations to managing customer chat sessions, the API offers extensive control and flexibility. Leveraging the power of natural language processing, developers can harness the power of ghola chat bot profiles to enhance customer support, streamline communication, and provide personalized user interactions.</Text>
                             <br></br>
                             <Text>The ghola API also provides robust security measures, ensuring the protection of sensitive data and maintaining the privacy of users. With encryption protocols and JWT authentication mechanisms in place, developers can confidently build chat bot applications that adhere to industry standards and safeguard user information.</Text>
-                            <h3>Initialize a Conversation</h3>
+                            <h3>Step 1 - Initialize a Conversation</h3>
                             <Text mt={-15}>In order to start a new conversation a chat session must first be initialized. This is done by first sending a POST request to our initialization endpoint <Code color='grape'>https://ghola.ai/api/v1/chat/init</Code> with some info to set up the chat session including:</Text>
-                            <Table my='lg' highlightOnHover withBorder withColumnBorders>
+                            <Title order={5} mt='md' mb={4} ml={4}>Request</Title>
+                            <Table mb='lg' highlightOnHover withBorder withColumnBorders>
                                 <thead>
                                     <tr>
                                         <th>Parameter</th>
@@ -121,7 +123,8 @@ export default function Developer() {
                                 </tbody>
                             </Table>
                             <Text>The response will contain a JWT token <strong>in the response payload</strong>, which will be used by the client side application to send chat messages securely. The chat session will be valid for 1 hour after which a new chat session will need to be initialized.</Text>
-                            <Table my='lg' highlightOnHover withBorder withColumnBorders>
+                            <Title order={5} mt='md' mb={4} ml={4}>Response</Title>
+                            <Table mb='lg' highlightOnHover withBorder withColumnBorders>
                                 <thead>
                                     <tr>
                                         <th>Parameter</th>
@@ -140,9 +143,10 @@ export default function Developer() {
                             <Text><strong>Important: </strong> In order to protect your ghola API token and email, it is recommended that you set up your own initialization endpoint to call the ghola initialization endpoint. This endpoint should be responsible for initiating a conversation with your desired chat bot profile ID, enabling conversation logging, and/or specifying a customerId to initialize the chat session with. Once it has properly initialized the chat session through the ghola api, it's final job is to pass this token back to the user using the HTTP <Code color='grape'>Set-Cookie</Code> header, and specifying a cookie name of <Code color='grape'>gholaJwt</Code>.</Text>
                             <br></br>
                             <Text>Doing this will ensure your email/API token is only available on the back-end and will avoid having to store it in any client side front end code. Despite that, we still support users who wish to hit the ghola initialization endpoint directly from their front end client application, however it is strongly discouraged since your API token will then be exposed publicly.</Text>
-                            <h3>Sending Messages</h3>
+                            <h3>Step 2 - Sending Messages</h3>
                             <Text mt={-15}>Once a chat session has been initialized and the client side JWT cookie has been set, the application can send messages to the ghola API to be processed by the chat bot. This is done by sending a POST request to our message endpoint <Code color='grape'>https://ghola.ai/api/v1/chat</Code> with the conversation messages:</Text>
-                            <Table my='lg' highlightOnHover withBorder withColumnBorders>
+                            <Title order={5} mt='md' mb={4} ml={4}>Request</Title>
+                            <Table mb='lg' highlightOnHover withBorder withColumnBorders>
                                 <thead>
                                     <tr>
                                         <th>Parameter</th>
@@ -157,23 +161,6 @@ export default function Developer() {
                                         <td>array</td>
                                         <td>An array of message objects representing the conversation</td>
                                         <td>Yes</td>
-                                    </tr>
-                                </tbody>
-                            </Table>
-                            <Text mt='lg' mb='xs'>The response will contain the chat bot's response to the messages sent in the request:</Text>
-                            <Table my='lg' highlightOnHover withBorder withColumnBorders>
-                                <thead>
-                                    <tr>
-                                        <th>Parameter</th>
-                                        <th>Type</th>
-                                        <th>Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>message</td>
-                                        <td>string</td>
-                                        <td>The chat bots generated message</td>
                                     </tr>
                                 </tbody>
                             </Table>
@@ -197,6 +184,24 @@ export default function Developer() {
     "content": "Sure thing! What is your order number?"
 }]`}
                             </Code>
+                            <Text mt='lg' mb='xs'>The response will contain the chat bot's response to the messages sent in the request:</Text>
+                            <Title order={5} mt='md' mb={4} ml={4}>Response</Title>
+                            <Table mb='lg' highlightOnHover withBorder withColumnBorders>
+                                <thead>
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>message</td>
+                                        <td>string</td>
+                                        <td>The chat bots generated message</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
                             <Text mt='lg' mb='xs'><strong>Pro Tip:</strong> Sending a chat request with an empty array of messages will cause the chat bot to initiate the conversation, leveraging this is a great way to kick off the conversation in a seamless and organic way!</Text>
                         </Card>
                     </Center>

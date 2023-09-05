@@ -122,9 +122,14 @@ export function AttributePanel({profile, setProfile}: AttributePanelProps) {
               <>
                 <Stack pt='sm'>
                     <Center mb={-10}>
+                      <Flex direction='column' align='center'>
                         <Paper radius={100} shadow='xl' withBorder>
                             <Avatar src={profile?.imageUrl} size={200} radius={100}/>
                         </Paper>
+                        {session?.user?.hasToken && (
+                          <Text size='xs' my={4} color='dimmed'>{profile?._id}</Text>
+                        )}
+                      </Flex>
                     </Center>
                     <Title align='center' mb={-10}>{profile?.name}</Title>
                     <Center>
@@ -156,9 +161,14 @@ export function AttributePanel({profile, setProfile}: AttributePanelProps) {
                         />
                     </div>
                     <Center mb={-20}>
+                      <Flex direction='column' align='center'>
                         <Paper radius={100} shadow='xl' withBorder>
                             <Avatar src={profile?.imageUrl} size={200} radius={100}/>
                         </Paper>
+                        {session?.user?.hasToken && (
+                          <Text size='xs' my={4} color='dimmed'>{profile?._id}</Text>
+                        )}
+                      </Flex>
                     </Center>
                     <Input.Wrapper label='Profile Name'>
                         <Input placeholder='enter a name' value={profile?.name} 

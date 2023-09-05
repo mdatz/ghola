@@ -25,6 +25,9 @@ export const authOptions = {
             if(user?.role) {
                 token.role = user?.role;
             }
+            if(user?.token) {
+                token.hasToken = true;
+            }
         }
         return token;
     },
@@ -33,6 +36,7 @@ export const authOptions = {
         if (session?.user) {
             session.user.id = token.uid;
             session.user.role = token?.role;
+            session.user.hasToken = token?.hasToken;
         }
         return session;
     },

@@ -119,14 +119,12 @@ export function ConversationPanels() {
             </div>
         :
             <div style={{height: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: '-6rem'}}>
-                <div style={{display: 'flex', alignItems: 'center', marginRight: '20px'}}>
+                <Flex direction='row' align='start' gap={16}>
                     <Card shadow='md' pt={5} style={isMobile ? {} : {width: '300px'}}>
                         <AttributePanel profile={profile} setProfile={setProfile}/>
                     </Card>
-                </div>
-                <div style={{display: 'flex', alignItems: 'center'}}>
                     <ConversationPanel messages={messages} setMessages={setMessages} generating={generating}/>
-                </div>
+                </Flex>
                 <div style={{position: 'absolute', bottom: '40px', left: '20px', zIndex: -1}}>
                     <Quote/>                
                 </div>
