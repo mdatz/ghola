@@ -6,6 +6,10 @@ import Profile from '../../../models/profile';
 import UsageRecord from '../../../models/usageRecord';
 import { getToken } from 'next-auth/jwt';
 
+export const config = {
+    maxDuration: 180
+}
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         if(req.method !== 'POST') {

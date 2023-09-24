@@ -6,6 +6,10 @@ import UsageRecord from '../../../../models/usageRecord';
 import ConversationRecord from '../../../../models/conversationRecord';
 import jwt from 'jsonwebtoken';
 
+export const config = {
+    maxDuration: 180
+}
+
 export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         if(req.method !== 'POST') {
