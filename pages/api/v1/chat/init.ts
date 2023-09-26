@@ -18,6 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         const { token, email, profileId, enableLogging, customerId } = req.body;
         if(!token || !email || !profileId) {
+            console.log(req.body);
             res.status(400).json({
                 message: 'Missing token, email and/or enableLogging flag'
             });
@@ -38,6 +39,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         try{
             const user = await User.findOne({ email, token });
             if(!user) {
+                console.log('No user found, please check email and api token in request body');
                 res.status(400).json({
                     message: 'No user found, please check email and api token in request body'
                 });
@@ -46,6 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
             const profile = await Profile.findById(profileId);
             if(!profile) {
+                console.log('Profile does not exist');
                 res.status(400).json({
                     message: 'Profile does not exist'
                 });
@@ -53,6 +56,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             }
 
             if(profile.visibility === 'private' && profile.creator.toString() !== user._id.toString()) {
+                console.log('Profile is not publicly available or owned by user');
                 res.status(401).json({
                     message: 'Profile is not publicly available'
                 });
@@ -88,6 +92,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 jwt: jwtToken,
             });
 
+            console.log('JWT Token created');
             return;
 
         } catch(error) {
