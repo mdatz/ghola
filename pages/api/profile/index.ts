@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from "next-auth/next";
 import { getToken } from 'next-auth/jwt';
 import { authOptions } from "../auth/[...nextauth]";
+import { BLACKLISTED_USER_IDS } from '../../../constants/PUBLIC_BLACKLIST';
 
 import isURL from 'validator/lib/isURL';
 import xss from 'xss';
@@ -218,6 +219,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                         scores: moderationData.results[0].category_scores
                     });
                     return;
+                }
+
+                // BLACKLISTED USER CHECK
+                if(visibility === 'public') {
+                    if(BLACKLISTED_USER_IDS.includes(creator)) {
+                        res.status(401).json({
+                            message: 'You are not allowed to create public profiles'
+                        });
+                        return;
+                    }
                 }
     
                 const profile = await Profile.where({ _id: _id, creator: creator }).updateOne({
