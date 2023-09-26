@@ -20,14 +20,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
 
         if(!req.headers.cookie) {
+            console.log('No cookie found in request');
             res.status(401).json({
                 message: 'Unauthorized'
             });
             return;
         }
 
-        const token = ('; '+req.headers.cookie).split(`; gholaJwt=`).pop()?.split(';')[0];
+        let token = ('; '+req.headers.cookie).split(`; gholaJwt=`).pop()?.split(';')[0];
         if(!token) {
+            token = ('; '+req.headers.cookie).split(`; jwt=`).pop()?.split(';')[0];
+        }
+
+        if(!token) {
+            console.log('No token found in cookie');
             res.status(401).json({
                 message: 'Unauthorized'
             });
@@ -38,6 +44,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         try{
             const claims = jwt.verify(token, process.env.JWT_SECRET ?? '');
             if(!claims) {
+                console.log('No claims found in token');
                 res.status(401).json({
                     message: 'Unauthorized'
                 });
@@ -48,11 +55,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }catch(error: any) {
             console.log(error);
             if(error.name === 'TokenExpiredError') {
+                console.log('Token expired, please start a new chat session');
                 res.status(400).json({
                     message: 'Token expired, please start a new chat session'
                 });
                 return;
             } else {
+                console.log('Error verifying token');
                 res.status(401).json({
                     message: 'Unauthorized'
                 });
@@ -63,6 +72,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         try{
             const { messages } = req.body;
             if(!messages) {
+                console.log('Missing messages in request body');
                 res.status(400).json({
                     message: 'Missing messages in request body'
                 });
@@ -84,6 +94,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             try{
                 conversation = await ConversationRecord.findById(conversationId);
                 if(!conversation) {
+                    console.log('Conversation does not exist, please init a new chat session')
                     res.status(400).json({
                         message: 'Conversation does not exist, please init a new chat session'
                     });
@@ -120,6 +131,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             try{
                 profile = await Profile.findById(conversation.profileId);
                 if(!profile) {
+                    console.log('Profile does not exist');
                     res.status(400).json({
                         message: 'Profile does not exist'
                     });
@@ -237,6 +249,7 @@ systemPreamble = `Please only respond as ${profile.name} and role play as if ${p
             });
 
             if(response.status !== 200) {
+                console.log('Error with chatGPT API request: ' + response.status + ' ' + response.statusText);
                 res.status(500).json({
                     message: 'Error with chatGPT API request',
                 });
