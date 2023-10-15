@@ -80,7 +80,7 @@ import { FcGoogle } from 'react-icons/fc';
           <Title order={2} className={classes.title} align="center" mt="md" mb={50}>
             Welcome to ghola!
           </Title>
-          <Button fullWidth mt="xl" size="md" color='grape' leftIcon={<FcGoogle size={32} />} onClick={() => {signIn("google", { callbackUrl: window.location.origin + '/explore' })}}>
+          <Button fullWidth mt="xl" size="md" color='grape' leftIcon={<FcGoogle size={32} />} loading={status === 'loading'} onClick={() => {signIn("google", { callbackUrl: window.location.origin + '/explore' })}}>
             Sign in with Google
           </Button>
         </Paper>
