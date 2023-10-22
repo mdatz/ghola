@@ -6,6 +6,7 @@ import { Card, Center, Container, Divider, Text, Button, Modal, Flex, ScrollArea
 import useSWR from 'swr';
 import { showNotification } from '@mantine/notifications';
 import { TbAlertCircle } from 'react-icons/tb';
+import { useMediaQuery } from '@mantine/hooks';
 
 const fetcher = async(input:RequestInfo, init:RequestInit) => {
     const res = await fetch(input, init); 
@@ -18,6 +19,7 @@ export default function Settings() {
     const { data: stats, error: statsError } = useSWR(session ? '/api/user/stats' : null, fetcher);
 
     const router = useRouter();
+    let isMobile = useMediaQuery('(max-width: 768px)');
     const [modalOpened, setModalOpened] = useState(false);
     const [loading, setLoading] = useState(true);
 
@@ -67,7 +69,7 @@ export default function Settings() {
                 <Container>
                     <Center>
                     <Flex direction='column'>
-                    <Card mt='xl' shadow='sm' p='md' radius='md' style={{width: '100%', maxWidth: '600px'}}>
+                    <Card mt='xl' shadow='sm' p='md' radius='md' style={isMobile ? {width: '96vw', maxWidth: '600px'} : {width: '100%', maxWidth: '600px'}}>
                         <Flex align='center'>
                             {
                                 loading ? 
@@ -79,7 +81,7 @@ export default function Settings() {
                                 </Flex>
                             }
                             <Divider orientation='vertical' mx='sm'/>
-                            <ScrollArea>
+                            <ScrollArea offsetScrollbars>
                                 <Flex gap='sm' align='center'>
                                     {loading ? 
                                     <>
