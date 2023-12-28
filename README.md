@@ -67,12 +67,21 @@ npm install
 
 3. Create a `.env` file with the following contents:
 
-```
+```bash
 OPEN_AI_KEY=sk-youropenaiapikeyhereplz
 GOOGLE_ID=googleclientidhereplz
 GOOGLE_SECRET=googlesecrethereplz
 MONGODB_URI=mongodb_srv://yourmongodburihereplz
 NEXTAUTH_SECRET=yourjwtsigningsecrethereplz
+```
+
+(Note: For full back-end api functionality you will need these additional environment variables)
+```bash
+GHOLA_API_URL=http://localhost:3000 (if running locally)
+GHOLA_API_DOMAIN=localhost:3000 (if running locally)
+GHOLA_API_TOKEN=yourgholaapitokenhereplz
+GHOLA_API_EMAIL=yourgholaaccountemailhereplz
+GHOLA_API_PROFILE_ID=yourdesiredprofileidhereplz
 ```
 
 4. Start the application:
