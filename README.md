@@ -76,6 +76,7 @@ NEXTAUTH_SECRET=yourjwtsigningsecrethereplz
 ```
 
 (Note: For full back-end api functionality you will need these additional environment variables)
+
 ```bash
 GHOLA_API_URL=http://localhost:3000 (if running locally)
 GHOLA_API_DOMAIN=localhost:3000 (if running locally)

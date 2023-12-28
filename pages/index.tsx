@@ -14,6 +14,7 @@ import {
   Badge,
 } from '@mantine/core';
 import { IconCheck } from '@tabler/icons';
+import { RiGithubLine } from 'react-icons/ri';
 import { Header } from '../components/General/Header/Header';
 import imageA from '../public/undraw/undraw_8.svg';
 import imageB from '../public/undraw/undraw_2.svg';
@@ -175,6 +176,9 @@ export default function HomePage() {
             <Group mt={30}>
               <Button radius="xl" size="md" className={classes.control} color='grape' onClick={() => {router.push('login')}}>
                 Get started
+              </Button>
+              <Button radius="xl" size="md" className={classes.control} color='grape' variant='light' onClick={() => {window.open('https://github.com/mdatz/ghola', '_blank')}} leftIcon={<RiGithubLine />}>
+                Github
               </Button>
             </Group>
           </div>
