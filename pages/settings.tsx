@@ -125,7 +125,7 @@ export default function Settings() {
                         <Text mt='sm'>Easily access a JSON file that contains all your profile information on this platform. This allows you to maintain a copy of your data for your records or future reference at any time.</Text>
                         <Button mt='md' color='grape' onClick={() => {handleDownload()}} fullWidth>Download Data</Button>
                     </Card>
-                    <Card mt='xl' shadow='sm' p='md' pt={0} radius='md' style={{width: '100%', maxWidth: '600px'}}>
+                    <Card my='xl' shadow='sm' p='md' pt={0} radius='md' style={{width: '100%', maxWidth: '600px'}}>
                         <Center>
                             <h2>Delete user account</h2>
                         </Center>
