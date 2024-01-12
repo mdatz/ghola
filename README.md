@@ -55,7 +55,7 @@ To install Ghola, follow these steps:
 1. Clone the repository:
 
 ```
-git clone https://github.com/your-username/ghola.git
+git clone https://github.com/mdatz/ghola.git
 ```
 
 2. Install the dependencies:
