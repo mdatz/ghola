@@ -78,7 +78,7 @@ export default function Developer() {
                             <br></br>
                             <Text>The ghola API also provides robust security measures, ensuring the protection of sensitive data and maintaining the privacy of users. With encryption protocols and JWT authentication mechanisms in place, developers can confidently build chat bot applications that adhere to industry standards and safeguard user information.</Text>
                             <h3>Step 1 - Initialize a Conversation</h3>
-                            <Text mt={-15}>In order to start a new conversation a chat session must first be initialized. This is done by first sending a POST request to our initialization endpoint <Code color='grape'>https://ghola.ai/api/v1/chat/init</Code> with some info to set up the chat session including:</Text>
+                            <Text mt={-15}>In order to start a new conversation a chat session must first be initialized. This is done by first sending a POST request to our initialization endpoint <Code color='grape'>https://www.ghola.ai/api/v1/chat/init</Code> with some info to set up the chat session including:</Text>
                             <Title order={5} mt='md' mb={4} ml={4}>Request</Title>
                             <Table mb='lg' highlightOnHover withBorder withColumnBorders>
                                 <thead>
@@ -144,7 +144,7 @@ export default function Developer() {
                             <br></br>
                             <Text>Doing this will ensure your email/API token is only available on the back-end and will avoid having to store it in any client side front end code. Despite that, we still support users who wish to hit the ghola initialization endpoint directly from their front end client application, however it is strongly discouraged since your API token will then be exposed publicly.</Text>
                             <h3>Step 2 - Sending Messages</h3>
-                            <Text mt={-15}>Once a chat session has been initialized and the client side JWT cookie has been set, the application can send messages to the ghola API to be processed by the chat bot. This is done by sending a POST request to our message endpoint <Code color='grape'>https://ghola.ai/api/v1/chat</Code> with the conversation messages:</Text>
+                            <Text mt={-15}>Once a chat session has been initialized and the client side JWT cookie has been set, the application can send messages to the ghola API to be processed by the chat bot. This is done by sending a POST request to our message endpoint <Code color='grape'>https://www.ghola.ai/api/v1/chat</Code> with the conversation messages:</Text>
                             <Title order={5} mt='md' mb={4} ml={4}>Request</Title>
                             <Table mb='lg' highlightOnHover withBorder withColumnBorders>
                                 <thead>
