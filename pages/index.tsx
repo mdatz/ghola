@@ -167,10 +167,13 @@ export default function HomePage() {
                 <b>Conversation Showcase</b> - share your funniest or most insightful conversations and let others pick up where you left off 
               </List.Item>
               <List.Item>
-                <b>Backend API</b> <Badge color="green">Beta</Badge> - use our API to integrate our profiles into your own projects and services
+                <b>Backend API</b> - use our API to integrate our profiles into your own projects and services
               </List.Item>
               <List.Item>
-                <b>Group Conversations</b> <Badge color="grape">In Development</Badge> - chat with multiple chat bots at once and see how they interact with each other
+                <b>Group Conversations</b> <Badge color="green">Beta</Badge> - chat with multiple chat bots at once and see how they interact with each other
+              </List.Item>
+              <List.Item>
+                <b>Profile Documents</b> <Badge color="grape">In Development</Badge> - augment your chat bot with pdfs, images, and other documents for your chat bot to reference
               </List.Item>
             </List>
             <Group mt={30}>
