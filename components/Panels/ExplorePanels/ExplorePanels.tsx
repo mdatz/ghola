@@ -159,7 +159,7 @@ export function ExplorePanels({profiles}: CharacterPanelProps) {
       <Center>
         <TextInput
           icon={<TbSearch />}
-          placeholder="Search for a profile"
+          placeholder="Search for a persona"
           style={{width: '100%', maxWidth: '1000px', marginTop: '25px'}}
           size="md"
           radius="xl"

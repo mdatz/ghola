@@ -19,23 +19,25 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             return;
         }
 
-        if(!req.headers.cookie) {
-            console.log('No cookie found in request');
-            res.status(401).json({
-                message: 'Unauthorized'
+        if(!req.headers.cookie && !req.headers.authorization) {
+            console.log('No cookie or authorization token found in request');
+            res.status(400).json({
+                message: 'Missing cookie or authorization header'
             });
             return;
         }
-
-        let token = ('; '+req.headers.cookie).split(`; gholaJwt=`).pop()?.split(';')[0];
-        if(!token) {
-            token = ('; '+req.headers.cookie).split(`; jwt=`).pop()?.split(';')[0];
+        
+        let token = null;
+        if(req.headers.cookie) {
+            token = ('; '+req.headers.cookie).split('; gholaJwt=').pop()?.split(';')[0];
+        } else if(req.headers.authorization) {
+            token = req.headers.authorization.split('Bearer ').pop();
         }
 
         if(!token) {
-            console.log('No token found in cookie');
+            console.log('No token found in cookie or authorization header');
             res.status(401).json({
-                message: 'Unauthorized'
+                message: 'Invalid cookie or authorization header value'
             });
             return;
         }

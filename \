@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Header } from '../components/General/Header/Header';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { Card, Center, Container, Divider, Text, Button, Modal, PasswordInput, Code, Table, Title, Flex } from '@mantine/core';
+import { Card, Center, Container, Divider, Text, Button, Modal, PasswordInput, Code, Table, Title } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -164,23 +164,22 @@ export default function Developer() {
                                     </tr>
                                 </tbody>
                             </Table>
-                            <Flex align='end' mb={4}>
-                                <Title order={5}>Headers </Title>
-                                <Title color='dimmed' ml={4} order={6}>(Optional if using cookie)</Title>
-                            </Flex>
+                            <Title order={5} mt='md' mb={4} ml={4}>Headers (Optional if using Cookie)</Title>
                             <Table mb='lg' highlightOnHover withBorder withColumnBorders>
                                 <thead>
                                     <tr>
-                                        <th>Header</th>
-                                        <th>Value</th>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
                                         <th>Required</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Authorization</td>
-                                        <td>Bearer YOUR-JWT-HERE</td>
-                                        <td>If not using cookies</td>
+                                        <td>messages</td>
+                                        <td>array</td>
+                                        <td>An array of message objects representing the conversation</td>
+                                        <td>Yes</td>
                                     </tr>
                                 </tbody>
                             </Table>
@@ -191,30 +190,20 @@ export default function Developer() {
     "content": "Hello there!"
 }`}
                             </Code>
-                            <Text mt='lg' mb='xs'>And an example request payload with multiple messages will look like:</Text>
+                            <Text mt='lg' mb='xs'>And an example request conversation with multiple messages will look like:</Text>
                             <Code block>
-                                {`{
-  "messages": [
-    {
-      "role": "assistant",
-      "content": "Hello there! How may I help you today?"
-    }, {
-      "role": "user",
-      "content": "I need help with my order"
-    }, {
-      "role": "assistant",
-      "content": "Sure thing! What is your order number?"
-    }
-  ]
-}`}
+                                {`[{
+    "role": "assistant",
+    "content": "Hello there! How may I help you today?"
+}, {
+    "role": "user",
+    "content": "I need help with my order"
+}, {
+    "role": "assistant",
+    "content": "Sure thing! What is your order number?"
+}]`}
                             </Code>
-                            <Text mt='lg' mb='xs'><strong>Pro Tip:</strong> Sending a chat request with an empty array of messages will cause the chat bot to initiate the conversation, leveraging this is a great way to kick off the conversation in a seamless and organic way!</Text>
-                            <Code block>
-                                {`{
-  "messages": []
-}`}
-                            </Code>
-                            <Text mt='xl' mb='xs'>The response will contain the chat bot's response to the messages sent in the request:</Text>
+                            <Text mt='lg' mb='xs'>The response will contain the chat bot's response to the messages sent in the request:</Text>
                             <Title order={5} mt='md' mb={4} ml={4}>Response</Title>
                             <Table mb='lg' highlightOnHover withBorder withColumnBorders>
                                 <thead>
@@ -232,6 +221,7 @@ export default function Developer() {
                                     </tr>
                                 </tbody>
                             </Table>
+                            <Text mt='lg' mb='xs'><strong>Pro Tip:</strong> Sending a chat request with an empty array of messages will cause the chat bot to initiate the conversation, leveraging this is a great way to kick off the conversation in a seamless and organic way!</Text>
                         </Card>
                     </Center>
                 </Container>

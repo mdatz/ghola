@@ -20,7 +20,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         if(!token || !email || !profileId) {
             console.log(req.body);
             res.status(400).json({
-                message: 'Missing token, email and/or enableLogging flag'
+                message: 'Missing token, email and/or profileId in request'
             });
             return;
         }
@@ -84,7 +84,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
             await conversationRecord.save();
 
-            //Send back jwt in header + payload of 200 response
             const jwtToken = jwt.sign({conversationId: conversationRecord._id}, `${process.env.JWT_SECRET}`, { expiresIn: '1h' });
             res.setHeader('Set-Cookie', `gholaJwt=${jwtToken}; Path=/; HttpOnly`);
             res.status(200).json({
@@ -102,6 +101,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             });
             return;
         }
-
             
 }
