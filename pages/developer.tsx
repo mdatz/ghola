@@ -232,6 +232,141 @@ export default function Developer() {
                                     </tr>
                                 </tbody>
                             </Table>
+                            <Divider my='lg'/>
+                            <h3>Conversation Records - View your conversations</h3>
+                            <Text mt={-15}>View your previous conversations made through the ghola api, especially useful if logging is enabled when initializing api conversations! sending a POST request to <Code color='grape'>https://www.ghola.ai/api/v1/conversations</Code> with some info regarding your api credentials including:</Text>
+                            <Flex align='end' mb={4} mt='lg'>
+                                <Title order={5}>Request Body </Title>
+                                <Title color='dimmed' ml={4} order={6}>(JSON)</Title>
+                            </Flex>
+                            <Table mb='lg' highlightOnHover withBorder withColumnBorders>
+                                <thead>
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                        <th>Required</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>token</td>
+                                        <td>string</td>
+                                        <td>The API token generated from the developer dashboard</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                    <tr>
+                                        <td>email</td>
+                                        <td>string</td>
+                                        <td>The email for the developer ghola account (same account that generated an API token)</td>
+                                        <td>Yes</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+                            <Flex align='end' mb={4}>
+                                <Title order={5}>Query Parameters </Title>
+                                <Title color='dimmed' ml={4} order={6}>(Optional)</Title>
+                            </Flex>
+                            <Table mb='lg' highlightOnHover withBorder withColumnBorders>
+                                <thead>
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                        <th>Required</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>conversationId</td>
+                                        <td>string</td>
+                                        <td>Filter by a specific conversation id</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>profileId</td>
+                                        <td>string</td>
+                                        <td>Filter by a specific profile id</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>customerId</td>
+                                        <td>string</td>
+                                        <td>Filter by a specific customer id</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>startDate</td>
+                                        <td>date</td>
+                                        <td>Filter for conversations after a specific start date (yyyy-mm-dd)</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>endDate</td>
+                                        <td>date</td>
+                                        <td>Filter for conversations before a specific end date (yyyy-mm-dd)</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>loggingEnabled</td>
+                                        <td>boolean</td>
+                                        <td>Filter for conversations with logging enabled or disabled</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>includeSubobjects</td>
+                                        <td>boolean</td>
+                                        <td>Include profile subobject on the response</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>page</td>
+                                        <td>number</td>
+                                        <td>Page number for results range (<Code>default = 0</Code>)</td>
+                                        <td>No</td>
+                                    </tr>
+                                    <tr>
+                                        <td>limit</td>
+                                        <td>number</td>
+                                        <td>Number of results returned in a single page/query (<Code>default = 1000</Code>)</td>
+                                        <td>No</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
+
+                            <Text>The response will contain an array of conversation records related to your ghola developer account.</Text>
+                            <Title order={5} mt='md' mb={4} ml={4}>Response</Title>
+                            <Table mb='lg' highlightOnHover withBorder withColumnBorders>
+                                <thead>
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Type</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>message</td>
+                                        <td>string</td>
+                                        <td>Result message from the request</td>
+                                    </tr>
+                                    <tr>
+                                        <td>page</td>
+                                        <td>number</td>
+                                        <td>The page number used by the server in the query</td>
+                                    </tr>
+                                    <tr>
+                                        <td>limit</td>
+                                        <td>number</td>
+                                        <td>The limit number used by the server in the query</td>
+                                    </tr>
+                                    <tr>
+                                        <td>records</td>
+                                        <td>array</td>
+                                        <td>The conversation record results from the query</td>
+                                    </tr>
+                                </tbody>
+                            </Table>
                         </Card>
                     </Center>
                 </Container>
