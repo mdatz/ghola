@@ -49,7 +49,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             return;
         }
 
-        const query:any = {}; 
+        const query:any = {
+          'userId': user._id,
+        }; 
+
         const queryLimit = limit ? +limit : DEFAULT_QUERY_LIMIT;
         const queryPage = page ? +page : DEFAULT_QUERY_PAGE;
         
