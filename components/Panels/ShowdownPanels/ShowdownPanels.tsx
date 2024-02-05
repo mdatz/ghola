@@ -23,12 +23,14 @@ export function ShowdownPanels() {
             setAwaiting(true);
             Axios.post('/api/generate/group', {
                 messages: messages,
-                profiles: profiles
+                profiles: profiles.map((profile) => profile._id)
             }).then((response) => {
                 setMessages([...messages, {
                     role: 'assistant',
-                    content: response.data.message,
-                    profileId: response.data.profileId
+                    content: response.data.content,
+                    profileId: response.data.profileId,
+                    profileName: response.data.profileName,
+                    profileImage: response.data.profileImage
                 }]);
             }).catch((error) => {
                 if(error.response.status === 400) {

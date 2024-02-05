@@ -56,11 +56,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 return;
             }
 
+            let srcProfiles = [];
             try{
 
-                const srcProfiles = await Profile.find({
+                srcProfiles = await Profile.find({
                     _id: {
-                        $in: profiles.map((profile: { _id: string; }) => profile._id)
+                        $in: profiles
                     }
                 });
 
@@ -72,7 +73,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 }
 
                 srcProfiles.forEach((srcProfile: { visibility: string; creator: string; }) => {
-                    if(srcProfile.visibility === 'private' && srcProfile.creator.toString() !== token.uid) {
+                    if(srcProfile.visibility === 'private' && srcProfile.creator.toString() !== token.uid) { 
                         res.status(400).json({
                             message: 'One or more of the profiles is not public'
                         });
@@ -88,71 +89,61 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 });
             }
 
-            if(messages.length > 0 && messages[messages.length - 1].role === 'user') {
-                const moderation = await fetch('https://api.openai.com/v1/moderations', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${process.env.OPEN_AI_KEY}`
-                    },
-                    body: JSON.stringify({
-                        input: messages[messages.length - 1].content,
-                    })
-                });
+            // if(messages.length > 0 && messages[messages.length - 1].role === 'user') {
+            //     const moderation = await fetch('https://api.openai.com/v1/moderations', {
+            //         method: 'POST',
+            //         headers: {
+            //             'Content-Type': 'application/json',
+            //             'Authorization': `Bearer ${process.env.OPEN_AI_KEY}`
+            //         },
+            //         body: JSON.stringify({
+            //             input: messages[messages.length - 1].content,
+            //         })
+            //     });
 
-                const moderationData = await moderation.json();
-                if(moderationData.results[0].flagged) {
-                    res.status(400).json({
-                        message: 'Message fails moderation checks',
-                        categories: moderationData.results[0].categories,
-                        scores: moderationData.results[0].category_scores
-                    });
-                    return;
-                }
-            }
+            //     const moderationData = await moderation.json();
+            //     if(moderationData.results[0].flagged) {
+            //         res.status(400).json({
+            //             message: 'Message fails moderation checks',
+            //             categories: moderationData.results[0].categories,
+            //             scores: moderationData.results[0].category_scores
+            //         });
+            //         return;
+            //     }
+            // }
 
-            let _profiles = profiles;
+            let _profiles = srcProfiles;
             if(messages.length > 0 && messages[messages.length - 1].role === 'assistant') {
-                _profiles = _profiles.filter((profile: { _id: string; }) => profile._id !== messages[messages.length - 1].profileId);
+                _profiles = _profiles.filter((profile: { _id: string; }) => profile._id.toString() !== messages[messages.length - 1].profileId.toString());
             }
             const profile = _profiles[Math.floor(Math.random() * _profiles.length)];
-            
-            let systemPreamble = '';
-            if(!profile.description) {
-                systemPreamble = `Please role play as the character ghola and role play as if ghola was sending a text message response to the following fictional conversation.\n
-[CHARACTER DESCRIPTION]
-- ghola is a kind and jolly fellow, but also a bit of a trickster. He would be considered chaotic good and is always looking for a good time.\n
-[ADDITIONAL CONTEXT]
-- Please DO NOT include any formatting like: ${profile.name}:
-- Please DO NOT wrap your response with quotation marks`;
-            } else if(!messages.length) {
-                systemPreamble = `Please role play and respond with a conversation starter role playing as if ${profile.name} was beginning a fictional group text message conversation on a random subject or topic of your choice.\n
+         
+            let systemPreamble = `Please only respond as ${profile.name} and role play as if ${profile.name} was sending a response text message to the following group chat.\n
 [CHARACTER DESCRIPTION]
 - ${profile.description}\n
 [ADDITIONAL CONTEXT]
-- Please DO NOT include any formatting like: ${profile.name}:
-- Please DO NOT wrap your response with quotation marks`;
-            } else {
-                systemPreamble = `Please only respond as ${profile.name} and role play as if ${profile.name} was sending a response text message to the following group chat.\n
-[CHARACTER DESCRIPTION]
-- ${profile.description}\n
-[ADDITIONAL CONTEXT]
-- You are allowed to address other people in the chat using nicknames or shortened names
-- If the conversation gets repetitive, please feel free to change the subject
-- If a disagreement of ideas occurs, please try to find a compromise or a way to agree to disagree
-- Please include this exact formatting to start your response: ${profile.name}:`;
-            }
+- Try to vary your responses from any previous messages and avoid repeating the same message or similar phrasing\n
+- Make sure to continue the conversation and respond to the previous messages as insightfully as possible\n
+- Please do not sign your name at the end of the message\n
+- Please start your response with: [[${profile.name}]]`;
 
             const constrainedMessages = messages.slice(-12);
             for(let i = 0; i < constrainedMessages.length; i++) {
+                
                 const message = constrainedMessages[i];
                 if (message.content.length > 1000 && message.role === 'user') {
                     message.content = message.content.slice(0, 1000);
                 }
-                if (message.role === 'user') {
-                    message.content = `${token.name}: ` + message.content;
+                
+                if(message.role === 'assistant') {
+                    message.content = `[[${message.profileName}]] ${message.content}`
+                } else {
+                    message.content = `[[User]] ${message.content}`
                 }
+                
                 delete message.profileId;
+                delete message.profileName;
+                delete message.profileImage;
             }
 
             const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -183,7 +174,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             }
 
             const data = await response.json();
-            
+             
             try{
                 await Profile.findByIdAndUpdate(profile._id, {
                     $inc: { messageCount: 1 }
@@ -212,10 +203,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
                 console.error(error);
             }
 
+            const message = data.choices[0].message.content.replace(/\[\[.*?\]\]/g, '').replace(/^\s+|\s+$/g, '');
             res.status(200).json({
-                message: !messages.length ? `${profile.name}: ` + data.choices[0].message.content : data.choices[0].message.content,
+                content: message,
+                role: 'assistant',
                 profileId: profile._id,
-            });
+                profileName: profile.name,
+                profileImage: profile.imageUrl
+            });      
 
         } catch(error) {
             console.log(error);

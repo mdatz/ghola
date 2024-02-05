@@ -1,4 +1,4 @@
-import { Text, Card, Textarea, Button, Paper, Divider, Stack, ScrollArea, Skeleton, useMantineTheme, ActionIcon } from '@mantine/core';
+import { Text, Card, Textarea, Button, Paper, Divider, Stack, ScrollArea, Skeleton, useMantineTheme, ActionIcon, Avatar, Flex } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { ShareConversationButton } from '../../../Buttons/ShareConversationButton/ShareConversationButton';
@@ -53,10 +53,16 @@ export function GroupConversationPanel({ messages, setMessages, generating, paus
                                     <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginLeft: 'auto', background: '#9C36B5'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginLeft: 'auto', background: '#9C36B5'})} onClick={() => {selectMessage(message, index)}} shadow='xl'>
                                         <Text color='#fafafa'>{message.content}</Text>
                                     </Paper>
-                                    : 
-                                    <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginRight: 'auto'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginRight: 'auto'})} onClick={() => {selectMessage(message, index)}} shadow='xl' withBorder>
-                                        <Text>{message.content}</Text>
-                                    </Paper>
+                                    :
+                                    <>
+                                        <Flex align='flex-end' justify='flex-start'>
+                                            <Avatar src={message.profileImage} radius='xl' mb={4}/>
+                                            <Text size='xs' color='dimmed' ml={4}>{message.profileName}</Text>
+                                        </Flex>
+                                        <Paper px={8} py={3} radius='sm' mb='lg' style={isMobile ? (isSelected(index) ? {width: 'max-content', maxWidth: '30ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '30ch', marginRight: 'auto'}) : (isSelected(index) ? {width: 'max-content', maxWidth: '50ch', marginRight: 'auto', border: '2px solid #ae3ec9'} : {width: 'max-content', maxWidth: '50ch', marginRight: 'auto'})} onClick={() => {selectMessage(message, index)}} shadow='xl' withBorder>
+                                            <Text>{message.content}</Text>
+                                        </Paper>
+                                    </>
                                 }
                             </>
                         );
