@@ -286,6 +286,7 @@ systemPreamble = `Please only respond as ${profile.name} and role play as if ${p
                 console.error(error);
             }
 
+            console.log('Succesfully Updated conversation:', conversationId);
             res.status(200).json({
                 message: data.choices[0].message.content
             });
